@@ -400,26 +400,26 @@ Use case ends.
      * 4a1. Tutorflow detects an error in the entered data.
      * 4a2. Tutorflow requests the tutor to provide valid details.
 
-   Use case resumes from step 3.
+   * Use case resumes from step 3.
 
   * 4b. Extremely long or invalid input detected
  
      * 4b1. Tutorflow rejects the input and informs tutor that the input is invalid.
    
-  Use case ends.
+  * Use case ends.
 
   * 5a. Student name is empty or invalid
  
      * 5a1. Tutorflow informs the tutor that the parent-student pair already exists.
        
-   Use case ends.
+  * Use case ends.
 
   * 5b. Duplicate field detected
  
      * 5b1. Tutorflow detects duplicate fields in the entered data.
      * 5b2. Tutorflow requests the tutor to provide the details again.
 
-   Use case resumes from step 3.
+  * Use case resumes from step 3.
 
 
 ---
