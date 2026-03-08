@@ -373,7 +373,10 @@ Use case ends.
 
   * 4a1. TutorFlow shows an error message.
   * 4a2. Tutor re-enters the payment information.
+  * Steps 4a1 to 4a2 are repeated until the tutor enters valid payment details.
 * Use case resumes at step 5.
+
+---
 
   **Use case: Add Parent Details with Student Contact**
 
