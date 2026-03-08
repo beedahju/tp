@@ -326,7 +326,19 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 ### Glossary
 
 * **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Tutor**: A freelance private tutor who uses Tutorflow to manage their students and schedules
+* **Student**: A person who is being taught by the tutor
+* **Tuition Fee**: Amount of money that is owed or paid by a student to the tutor for the lessons
+* **Appointment**: A scheduled tutoring session between a tutor and student, including date, time and subject
+* **Attendance**: A record of wheter a student was absent or present for the scheduled lesson
+* **Subject Tag**: A label attached to a student's contact details indicating the academic subject being taught
+* **Level Tag**: A label attached to a student's contact details indicating the student's academic level (e.g., Primary 6, Secondary 3)
+* **Parent-Student Pair**: A linked relationship between a parent contact and a child's entry
+* **CLI (Command Line Interface)**: A text-based interface where the user interacts with the application by typing commands
+* **GUI (Graphical User Interface)**: A visual interface that allows interaction through graphical elements such as windows and buttons
+* **API (Application Programming Interface)**: A defined set of methods and contracts through which software components communicate with each other
+* **JSON**: Javascript Object Notation, a data format and is used to persist data to disk
+* **ObservableList**: A list data structure that notifies listeners (e.g. the UI) automatically when its contents changes
 
 --------------------------------------------------------------------------------------------------------------------
 
