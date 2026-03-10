@@ -18,6 +18,9 @@ public class EditCommandParser implements Parser<EditCommand> {
 
     private final Map<String, Parser<? extends EditCommand>> subCommandParsers;
 
+    /**
+     * Creates an EditCommandParser and registers available sub-command parsers.
+     */
     public EditCommandParser() {
         Map<String, Parser<? extends EditCommand>> parsers = new HashMap<>();
         parsers.put(EditPersonCommand.SUB_COMMAND_WORD, new EditPersonCommandParser());
