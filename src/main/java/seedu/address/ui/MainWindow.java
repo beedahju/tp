@@ -177,6 +177,9 @@ public class MainWindow extends UiPart<Stage> {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+            personListPanel.setDisplayMode(commandResult.isShowAppointments()
+                    ? PersonListPanel.DisplayMode.APPOINTMENT
+                    : PersonListPanel.DisplayMode.PERSON);
 
             if (commandResult.isShowHelp()) {
                 handleHelp();
