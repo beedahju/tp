@@ -32,8 +32,10 @@ public class MainWindow extends UiPart<Stage> {
 
     // Independent Ui parts residing in this Ui container
     private PersonListPanel personListPanel;
+    private AppointmentListPanel appointmentListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
+    private boolean isAppointmentPanelVisible;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -111,7 +113,9 @@ public class MainWindow extends UiPart<Stage> {
      */
     void fillInnerParts() {
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
+        appointmentListPanel = new AppointmentListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
+        isAppointmentPanelVisible = false;
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -168,6 +172,23 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
+     * Switches between person and appointment list panels.
+     */
+    private void showAppointmentPanel(boolean shouldShowAppointmentPanel) {
+        if (isAppointmentPanelVisible == shouldShowAppointmentPanel) {
+            return;
+        }
+
+        personListPanelPlaceholder.getChildren().clear();
+        if (shouldShowAppointmentPanel) {
+            personListPanelPlaceholder.getChildren().add(appointmentListPanel.getRoot());
+        } else {
+            personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
+        }
+        isAppointmentPanelVisible = shouldShowAppointmentPanel;
+    }
+
+    /**
      * Executes the command and returns the result.
      *
      * @see seedu.address.logic.Logic#execute(String)
@@ -177,9 +198,7 @@ public class MainWindow extends UiPart<Stage> {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
-            personListPanel.setDisplayMode(commandResult.isShowAppointments()
-                    ? PersonListPanel.DisplayMode.APPOINTMENT
-                    : PersonListPanel.DisplayMode.PERSON);
+            showAppointmentPanel(commandResult.isShowAppointments());
 
             if (commandResult.isShowHelp()) {
                 handleHelp();
