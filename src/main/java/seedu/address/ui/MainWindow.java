@@ -44,7 +44,7 @@ public class MainWindow extends UiPart<Stage> {
     private MenuItem helpMenuItem;
 
     @FXML
-    private StackPane personListPanelPlaceholder;
+    private StackPane listPanelPlaceholder;
 
     @FXML
     private StackPane resultDisplayPlaceholder;
@@ -114,7 +114,7 @@ public class MainWindow extends UiPart<Stage> {
     void fillInnerParts() {
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         appointmentListPanel = new AppointmentListPanel(logic.getFilteredPersonList());
-        personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
+        listPanelPlaceholder.getChildren().add(personListPanel.getRoot());
         isAppointmentPanelVisible = false;
 
         resultDisplay = new ResultDisplay();
@@ -179,11 +179,11 @@ public class MainWindow extends UiPart<Stage> {
             return;
         }
 
-        personListPanelPlaceholder.getChildren().clear();
+        listPanelPlaceholder.getChildren().clear();
         if (shouldShowAppointmentPanel) {
-            personListPanelPlaceholder.getChildren().add(appointmentListPanel.getRoot());
+            listPanelPlaceholder.getChildren().add(appointmentListPanel.getRoot());
         } else {
-            personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
+            listPanelPlaceholder.getChildren().add(personListPanel.getRoot());
         }
         isAppointmentPanelVisible = shouldShowAppointmentPanel;
     }
