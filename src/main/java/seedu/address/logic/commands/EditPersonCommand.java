@@ -99,7 +99,7 @@ public class EditPersonCommand extends EditCommand {
         Optional<ParentName> preservedParentName = personToEdit.getParentName();
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, currentTags, preservedParentName,
-                personToEdit.getAppointmentStart());
+                personToEdit.getAppointmentStart(), personToEdit.getPaymentDate());
     }
 
     @Override

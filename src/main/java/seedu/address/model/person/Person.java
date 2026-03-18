@@ -28,20 +28,21 @@ public class Person {
     private final Set<Tag> tags = new HashSet<>();
     private final Optional<LocalDateTime> appointmentStart;
     private final Optional<ParentName> parentName;
+    private final Optional<LocalDateTime> paymentDate;
 
     /**
      * Every field must be present and not null. parentName defaults to empty.
      */
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        this(name, phone, email, address, tags, Optional.empty(), Optional.empty());
+        this(name, phone, email, address, tags, Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     /**
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Optional<ParentName> parentName,
-            Optional<LocalDateTime> appointmentStart) {
-        requireAllNonNull(name, phone, email, address, tags, parentName, appointmentStart);
+            Optional<LocalDateTime> appointmentStart, Optional<LocalDateTime> paymentDate) {
+        requireAllNonNull(name, phone, email, address, tags, parentName, appointmentStart, paymentDate);
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -49,6 +50,7 @@ public class Person {
         this.tags.addAll(tags);
         this.parentName = parentName;
         this.appointmentStart = appointmentStart;
+        this.paymentDate = paymentDate;
     }
 
     public Name getName() {
@@ -69,6 +71,10 @@ public class Person {
 
     public Optional<LocalDateTime> getAppointmentStart() {
         return appointmentStart;
+    }
+
+    public Optional<LocalDateTime> getPaymentDate() {
+        return paymentDate;
     }
 
     /**
@@ -121,14 +127,16 @@ public class Person {
                 && address.equals(otherPerson.address)
                 && tags.equals(otherPerson.tags)
                 && parentName.equals(otherPerson.parentName)
-                && appointmentStart.equals(otherPerson.appointmentStart);
+                && appointmentStart.equals(otherPerson.appointmentStart)
+                && paymentDate.equals(otherPerson.paymentDate);
 
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags, parentName, appointmentStart);
+        return Objects.hash(name, phone, email, address, tags, parentName,
+                appointmentStart, paymentDate);
     }
 
     @Override
@@ -141,6 +149,7 @@ public class Person {
                 .add("tags", tags)
                 .add("parentName", parentName.orElse(null))
                 .add("appointmentStart", appointmentStart)
+                .add("paymentDate", paymentDate)
                 .toString();
     }
 
