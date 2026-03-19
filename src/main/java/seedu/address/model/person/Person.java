@@ -13,8 +13,8 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
 
 /**
- * Represents a Person in the address book.
- * Guarantees: details are present and not null, field values are validated, immutable.
+ * Represents a Person in the address book. Guarantees: details are present and
+ * not null, field values are validated, immutable.
  */
 public class Person {
 
@@ -28,13 +28,16 @@ public class Person {
     private final Set<Tag> tags = new HashSet<>();
     private final Optional<LocalDateTime> appointmentStart;
     private final Optional<ParentName> parentName;
+    private final Optional<ParentPhone> parentPhone;
+    private final Optional<ParentEmail> parentEmail;
     private final Optional<LocalDateTime> paymentDate;
 
     /**
-     * Every field must be present and not null. parentName defaults to empty.
+     * Every field must be present and not null. parent fields default to empty.
      */
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        this(name, phone, email, address, tags, Optional.empty(), Optional.empty(), Optional.empty());
+        this(name, phone, email, address, tags, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty());
     }
 
     /**
@@ -42,13 +45,26 @@ public class Person {
      */
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Optional<ParentName> parentName,
             Optional<LocalDateTime> appointmentStart, Optional<LocalDateTime> paymentDate) {
-        requireAllNonNull(name, phone, email, address, tags, parentName, appointmentStart, paymentDate);
+        this(name, phone, email, address, tags, parentName, Optional.empty(), Optional.empty(), appointmentStart,
+                paymentDate);
+    }
+
+    /**
+     * Every field must be present and not null.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Optional<ParentName> parentName,
+            Optional<ParentPhone> parentPhone, Optional<ParentEmail> parentEmail,
+            Optional<LocalDateTime> appointmentStart, Optional<LocalDateTime> paymentDate) {
+        requireAllNonNull(name, phone, email, address, tags, parentName, parentPhone, parentEmail, appointmentStart,
+                paymentDate);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.tags.addAll(tags);
         this.parentName = parentName;
+        this.parentPhone = parentPhone;
+        this.parentEmail = parentEmail;
         this.appointmentStart = appointmentStart;
         this.paymentDate = paymentDate;
     }
@@ -78,8 +94,8 @@ public class Person {
     }
 
     /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
+     * Returns an immutable tag set, which throws
+     * {@code UnsupportedOperationException} if modification is attempted.
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
@@ -93,21 +109,34 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same name.
-     * This defines a weaker notion of equality between two persons.
+     * Returns the parent phone wrapped in an Optional, or empty if not set.
+     */
+    public Optional<ParentPhone> getParentPhone() {
+        return parentPhone;
+    }
+
+    /**
+     * Returns the parent email wrapped in an Optional, or empty if not set.
+     */
+    public Optional<ParentEmail> getParentEmail() {
+        return parentEmail;
+    }
+
+    /**
+     * Returns true if both persons have the same name. This defines a weaker
+     * notion of equality between two persons.
      */
     public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {
             return true;
         }
 
-        return otherPerson != null
-                && otherPerson.getName().equals(getName());
+        return otherPerson != null && otherPerson.getName().equals(getName());
     }
 
     /**
-     * Returns true if both persons have the same identity and data fields.
-     * This defines a stronger notion of equality between two persons.
+     * Returns true if both persons have the same identity and data fields. This
+     * defines a stronger notion of equality between two persons.
      */
     @Override
     public boolean equals(Object other) {
@@ -121,12 +150,11 @@ public class Person {
         }
 
         Person otherPerson = (Person) other;
-        return name.equals(otherPerson.name)
-                && phone.equals(otherPerson.phone)
-                && email.equals(otherPerson.email)
-                && address.equals(otherPerson.address)
-                && tags.equals(otherPerson.tags)
+        return name.equals(otherPerson.name) && phone.equals(otherPerson.phone) && email.equals(otherPerson.email)
+                && address.equals(otherPerson.address) && tags.equals(otherPerson.tags)
                 && parentName.equals(otherPerson.parentName)
+                && parentPhone.equals(otherPerson.parentPhone)
+                && parentEmail.equals(otherPerson.parentEmail)
                 && appointmentStart.equals(otherPerson.appointmentStart)
                 && paymentDate.equals(otherPerson.paymentDate);
 
@@ -134,22 +162,20 @@ public class Person {
 
     @Override
     public int hashCode() {
-        // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags, parentName,
-                appointmentStart, paymentDate);
+        // use this method for custom fields hashing instead of implementing
+        // your own
+        return Objects.hash(name, phone, email, address, tags, parentName, parentPhone, parentEmail, appointmentStart,
+                paymentDate);
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .add("name", name)
-                .add("phone", phone)
-                .add("email", email)
-                .add("address", address)
-                .add("tags", tags)
+        return new ToStringBuilder(this).add("name", name).add("phone", phone).add("email", email)
+                .add("address", address).add("tags", tags)
                 .add("parentName", parentName.orElse(null))
-                .add("appointmentStart", appointmentStart)
-                .add("paymentDate", paymentDate)
+                .add("parentPhone", parentPhone.orElse(null))
+                .add("parentEmail", parentEmail.orElse(null))
+                .add("appointmentStart", appointmentStart).add("paymentDate", paymentDate)
                 .toString();
     }
 

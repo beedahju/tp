@@ -8,7 +8,9 @@ import java.util.Set;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.ParentEmail;
 import seedu.address.model.person.ParentName;
+import seedu.address.model.person.ParentPhone;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
@@ -30,6 +32,8 @@ public class PersonBuilder {
     private Address address;
     private Set<Tag> tags;
     private ParentName parentName;
+    private ParentPhone parentPhone;
+    private ParentEmail parentEmail;
     private LocalDateTime appointmentStart;
     private LocalDateTime paymentDate;
 
@@ -43,6 +47,8 @@ public class PersonBuilder {
         address = new Address(DEFAULT_ADDRESS);
         tags = new HashSet<>();
         parentName = null;
+        parentPhone = null;
+        parentEmail = null;
         appointmentStart = null;
         paymentDate = null;
     }
@@ -57,6 +63,8 @@ public class PersonBuilder {
         address = personToCopy.getAddress();
         tags = new HashSet<>(personToCopy.getTags());
         parentName = personToCopy.getParentName().orElse(null);
+        parentPhone = personToCopy.getParentPhone().orElse(null);
+        parentEmail = personToCopy.getParentEmail().orElse(null);
         appointmentStart = personToCopy.getAppointmentStart().orElse(null);
         paymentDate = personToCopy.getPaymentDate().orElse(null);
     }
@@ -70,9 +78,10 @@ public class PersonBuilder {
     }
 
     /**
-     * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code Person} that we are building.
+     * Parses the {@code tags} into a {@code Set<Tag>} and set it to the
+     * {@code Person} that we are building.
      */
-    public PersonBuilder withTags(String ... tags) {
+    public PersonBuilder withTags(String... tags) {
         this.tags = SampleDataUtil.getTagSet(tags);
         return this;
     }
@@ -110,7 +119,24 @@ public class PersonBuilder {
     }
 
     /**
-     * Sets the appointment start date-time of the {@code Person} that we are building.
+     * Sets the {@code ParentPhone} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withParentPhone(String phone) {
+        this.parentPhone = new ParentPhone(phone);
+        return this;
+    }
+
+    /**
+     * Sets the {@code ParentEmail} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withParentEmail(String email) {
+        this.parentEmail = new ParentEmail(email);
+        return this;
+    }
+
+    /**
+     * Sets the appointment start date-time of the {@code Person} that we are
+     * building.
      */
     public PersonBuilder withAppointmentStart(String appointmentStart) {
         this.appointmentStart = LocalDateTime.parse(appointmentStart);
@@ -118,7 +144,8 @@ public class PersonBuilder {
     }
 
     /**
-     * Sets the appointment start date-time of the {@code Person} that we are building.
+     * Sets the appointment start date-time of the {@code Person} that we are
+     * building.
      */
     public PersonBuilder withPaymentDate(String paymentDate) {
         this.paymentDate = LocalDateTime.parse(paymentDate);
@@ -131,6 +158,8 @@ public class PersonBuilder {
     public Person build() {
         return new Person(name, phone, email, address, tags,
                 Optional.ofNullable(parentName),
+                Optional.ofNullable(parentPhone),
+                Optional.ofNullable(parentEmail),
                 Optional.ofNullable(appointmentStart),
                 Optional.ofNullable(paymentDate));
     }

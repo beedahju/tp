@@ -12,6 +12,8 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
@@ -34,7 +36,8 @@ public class EditParentCommandTest {
     public void execute_validIndexUnfilteredList_success() {
         Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         ParentName newParentName = new ParentName(VALID_PARENT_NAME_AMY);
-        EditParentCommand editParentCommand = new EditParentCommand(INDEX_FIRST_PERSON, newParentName);
+        EditParentCommand editParentCommand = new EditParentCommand(INDEX_FIRST_PERSON, Optional.of(newParentName),
+                Optional.empty(), Optional.empty());
 
         Person editedPerson = new PersonBuilder(personToEdit).withParentName(VALID_PARENT_NAME_AMY).build();
         String expectedMessage = String.format(EditParentCommand.MESSAGE_EDIT_PARENT_SUCCESS,
@@ -50,7 +53,7 @@ public class EditParentCommandTest {
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         EditParentCommand editParentCommand = new EditParentCommand(outOfBoundIndex,
-                new ParentName(VALID_PARENT_NAME_AMY));
+                Optional.of(new ParentName(VALID_PARENT_NAME_AMY)), Optional.empty(), Optional.empty());
 
         assertCommandFailure(editParentCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
@@ -61,7 +64,8 @@ public class EditParentCommandTest {
 
         Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         ParentName newParentName = new ParentName(VALID_PARENT_NAME_AMY);
-        EditParentCommand editParentCommand = new EditParentCommand(INDEX_FIRST_PERSON, newParentName);
+        EditParentCommand editParentCommand = new EditParentCommand(INDEX_FIRST_PERSON, Optional.of(newParentName),
+                Optional.empty(), Optional.empty());
 
         Person editedPerson = new PersonBuilder(personToEdit).withParentName(VALID_PARENT_NAME_AMY).build();
         String expectedMessage = String.format(EditParentCommand.MESSAGE_EDIT_PARENT_SUCCESS,
@@ -83,7 +87,7 @@ public class EditParentCommandTest {
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
 
         EditParentCommand editParentCommand = new EditParentCommand(outOfBoundIndex,
-                new ParentName(VALID_PARENT_NAME_AMY));
+                Optional.of(new ParentName(VALID_PARENT_NAME_AMY)), Optional.empty(), Optional.empty());
 
         assertCommandFailure(editParentCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
@@ -92,14 +96,17 @@ public class EditParentCommandTest {
     public void equals() {
         ParentName parentNameAmy = new ParentName(VALID_PARENT_NAME_AMY);
         ParentName parentNameBob = new ParentName(VALID_PARENT_NAME_BOB);
-        EditParentCommand editFirstCommand = new EditParentCommand(INDEX_FIRST_PERSON, parentNameAmy);
-        EditParentCommand editSecondCommand = new EditParentCommand(INDEX_SECOND_PERSON, parentNameAmy);
+        EditParentCommand editFirstCommand = new EditParentCommand(INDEX_FIRST_PERSON, Optional.of(parentNameAmy),
+                Optional.empty(), Optional.empty());
+        EditParentCommand editSecondCommand = new EditParentCommand(INDEX_SECOND_PERSON, Optional.of(parentNameAmy),
+                Optional.empty(), Optional.empty());
 
         // same object -> returns true
         assertTrue(editFirstCommand.equals(editFirstCommand));
 
         // same values -> returns true
-        EditParentCommand editFirstCommandCopy = new EditParentCommand(INDEX_FIRST_PERSON, parentNameAmy);
+        EditParentCommand editFirstCommandCopy = new EditParentCommand(INDEX_FIRST_PERSON, Optional.of(parentNameAmy),
+                Optional.empty(), Optional.empty());
         assertTrue(editFirstCommand.equals(editFirstCommandCopy));
 
         // different types -> returns false
@@ -112,7 +119,8 @@ public class EditParentCommandTest {
         assertFalse(editFirstCommand.equals(editSecondCommand));
 
         // different parent name -> returns false
-        EditParentCommand editFirstCommandDiffName = new EditParentCommand(INDEX_FIRST_PERSON, parentNameBob);
+        EditParentCommand editFirstCommandDiffName = new EditParentCommand(INDEX_FIRST_PERSON,
+                Optional.of(parentNameBob), Optional.empty(), Optional.empty());
         assertFalse(editFirstCommand.equals(editFirstCommandDiffName));
     }
 
@@ -120,9 +128,10 @@ public class EditParentCommandTest {
     public void toStringMethod() {
         Index index = Index.fromOneBased(1);
         ParentName parentName = new ParentName(VALID_PARENT_NAME_AMY);
-        EditParentCommand editParentCommand = new EditParentCommand(index, parentName);
-        String expected = EditParentCommand.class.getCanonicalName() + "{index=" + index
-                + ", parentName=" + parentName + "}";
+        EditParentCommand editParentCommand = new EditParentCommand(index, Optional.of(parentName), Optional.empty(),
+                Optional.empty());
+        String expected = EditParentCommand.class.getCanonicalName() + "{index=" + index + ", parentName=" + parentName
+                + ", parentPhone=null, parentEmail=null}";
         assertEquals(expected, editParentCommand.toString());
     }
 }

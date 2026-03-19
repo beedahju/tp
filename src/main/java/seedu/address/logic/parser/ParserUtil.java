@@ -17,7 +17,9 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.ParentEmail;
 import seedu.address.model.person.ParentName;
+import seedu.address.model.person.ParentPhone;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
@@ -27,14 +29,16 @@ import seedu.address.model.tag.Tag;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
-    public static final String MESSAGE_INVALID_DATE_TIME =
-            "Date-time must be in ISO 8601 local format, e.g. 2026-01-13T08:00:00";
-    private static final DateTimeFormatter ISO_LOCAL_DATE_TIME_FORMATTER =
-            DateTimeFormatter.ISO_LOCAL_DATE_TIME.withResolverStyle(ResolverStyle.STRICT);
+    public static final String MESSAGE_INVALID_DATE_TIME = """
+            Date-time must be in ISO 8601 local format,
+            e.g. 2026-01-13T08:00:00""";
+    private static final DateTimeFormatter ISO_LOCAL_DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+            .withResolverStyle(ResolverStyle.STRICT);
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
      * trimmed.
+     *
      * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
      */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
@@ -46,8 +50,7 @@ public class ParserUtil {
     }
 
     /**
-     * Parses {@code oneBasedIndex} into an {@code Index}.
-     * Wraps invalid-index errors using the command's usage message.
+     * Parses {@code oneBasedIndex} into an {@code Index}. Wraps invalid-index errors using the command's usage message.
      */
     public static Index parseIndex(String oneBasedIndex, String commandUsage) throws ParseException {
         requireNonNull(commandUsage);
@@ -59,8 +62,7 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String name} into a {@code Name}.
-     * Leading and trailing whitespaces will be trimmed.
+     * Parses a {@code String name} into a {@code Name}. Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code name} is invalid.
      */
@@ -74,8 +76,7 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String parentName} into a {@code ParentName}.
-     * Leading and trailing whitespaces will be trimmed.
+     * Parses a {@code String parentName} into a {@code ParentName}. Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code parentName} is invalid.
      */
@@ -85,8 +86,27 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String phone} into a {@code Phone}.
-     * Leading and trailing whitespaces will be trimmed.
+     * Parses a {@code String parentPhone} into a {@code ParentPhone}. Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code parentPhone} is invalid.
+     */
+    public static ParentPhone parseParentPhone(String parentPhone) throws ParseException {
+        Phone phone = parsePhone(parentPhone);
+        return new ParentPhone(phone.value);
+    }
+
+    /**
+     * Parses a {@code String parentEmail} into a {@code ParentEmail}. Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code parentEmail} is invalid.
+     */
+    public static ParentEmail parseParentEmail(String parentEmail) throws ParseException {
+        Email email = parseEmail(parentEmail);
+        return new ParentEmail(email.value);
+    }
+
+    /**
+     * Parses a {@code String phone} into a {@code Phone}. Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code phone} is invalid.
      */
@@ -100,8 +120,7 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String address} into an {@code Address}.
-     * Leading and trailing whitespaces will be trimmed.
+     * Parses a {@code String address} into an {@code Address}. Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code address} is invalid.
      */
@@ -115,8 +134,7 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String email} into an {@code Email}.
-     * Leading and trailing whitespaces will be trimmed.
+     * Parses a {@code String email} into an {@code Email}. Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code email} is invalid.
      */
@@ -130,8 +148,8 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String appointmentStart} into a {@code LocalDateTime}.
-     * Leading and trailing whitespaces will be trimmed.
+     * Parses a {@code String appointmentStart} into a {@code LocalDateTime}. Leading and trailing whitespaces will be
+     * trimmed.
      *
      * @throws ParseException if the given {@code appointmentStart} is invalid.
      */
@@ -146,8 +164,7 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String tag} into a {@code Tag}.
-     * Leading and trailing whitespaces will be trimmed.
+     * Parses a {@code String tag} into a {@code Tag}. Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code tag} is invalid.
      */

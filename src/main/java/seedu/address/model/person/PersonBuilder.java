@@ -18,6 +18,8 @@ public class PersonBuilder {
     private Address address;
     private Set<Tag> tags;
     private Optional<ParentName> parentName;
+    private Optional<ParentPhone> parentPhone;
+    private Optional<ParentEmail> parentEmail;
     private Optional<LocalDateTime> appointmentStart;
     private Optional<LocalDateTime> paymentDate;
 
@@ -31,6 +33,8 @@ public class PersonBuilder {
         this.address = personToCopy.getAddress();
         this.tags = new HashSet<>(personToCopy.getTags());
         this.parentName = personToCopy.getParentName();
+        this.parentPhone = personToCopy.getParentPhone();
+        this.parentEmail = personToCopy.getParentEmail();
         this.appointmentStart = personToCopy.getAppointmentStart();
         this.paymentDate = personToCopy.getPaymentDate();
     }
@@ -103,6 +107,28 @@ public class PersonBuilder {
     }
 
     /**
+     * Sets the {@code ParentPhone} of the {@code Person} being built.
+     *
+     * @param parentPhone the optional parent phone
+     * @return this {@code PersonBuilder} instance for method chaining
+     */
+    public PersonBuilder withParentPhone(Optional<ParentPhone> parentPhone) {
+        this.parentPhone = parentPhone;
+        return this;
+    }
+
+    /**
+     * Sets the {@code ParentEmail} of the {@code Person} being built.
+     *
+     * @param parentEmail the optional parent email
+     * @return this {@code PersonBuilder} instance for method chaining
+     */
+    public PersonBuilder withParentEmail(Optional<ParentEmail> parentEmail) {
+        this.parentEmail = parentEmail;
+        return this;
+    }
+
+    /**
      * Sets the appointment start time of the {@code Person} being built.
      *
      * @param appointmentStart the optional appointment start time
@@ -135,8 +161,9 @@ public class PersonBuilder {
                 address,
                 tags,
                 parentName,
+                parentPhone,
+                parentEmail,
                 appointmentStart,
-                paymentDate
-        );
+                paymentDate);
     }
 }
