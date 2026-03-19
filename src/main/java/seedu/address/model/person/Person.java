@@ -59,8 +59,6 @@ public class Person {
             Optional<LocalDateTime> appointmentStart, Optional<LocalDateTime> paymentDate) {
         requireAllNonNull(name, phone, email, address, tags, parentName, parentPhone, parentEmail, appointmentStart,
                 paymentDate);
-            Optional<LocalDateTime> appointmentStart, Optional<LocalDate> paymentDate) {
-        requireAllNonNull(name, phone, email, address, tags, parentName, appointmentStart, paymentDate);
         this.name = name;
         this.phone = phone;
         this.email = email;
