@@ -22,8 +22,8 @@ public class EditAttdCommand extends EditCommand {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + " " + SUB_COMMAND_WORD
             + ": Records the last attendance date-time for the person identified "
-            + "by the index number used in the displayed person list.\\n"
-            + "Parameters: attd INDEX (must be a positive integer) [d/DATETIME]\\n"
+            + "by the index number used in the displayed person list.\n"
+            + "Parameters: attd INDEX (must be a positive integer) [d/DATETIME]\n"
             + "Example: " + COMMAND_WORD + " " + SUB_COMMAND_WORD + " 1 d/2026-01-29T08:00:00";
 
     public static final String MESSAGE_EDIT_ATTD_SUCCESS = "Recorded last attendance for %1$s: %2$s";
