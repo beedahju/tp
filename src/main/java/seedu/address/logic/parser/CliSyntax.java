@@ -14,5 +14,7 @@ public class CliSyntax {
     public static final Prefix PREFIX_SUBJECT = new Prefix("s/");
     public static final Prefix PREFIX_LEVEL = new Prefix("l/");
     public static final Prefix PREFIX_PARENT_NAME = new Prefix("pn/");
+    public static final Prefix PREFIX_PARENT_PHONE = new Prefix("pp/");
+    public static final Prefix PREFIX_PARENT_EMAIL = new Prefix("pe/");
     public static final Prefix PREFIX_APPOINTMENT_START = new Prefix("d/");
 }

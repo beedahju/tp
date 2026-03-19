@@ -52,6 +52,7 @@ public class CommandTestUtil {
     public static final String VALID_SUBJECT_SCIENCE_BASIC = "Science:basic";
     public static final String VALID_APPOINTMENT_START = "2026-01-13T08:00:00";
     public static final String VALID_PAYMENT_DATE = "2026-02-03";
+    public static final String VALID_LAST_ATTENDANCE = "2026-01-29T08:00:00";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -79,6 +80,7 @@ public class CommandTestUtil {
                     + " " + PREFIX_SUBJECT + VALID_SUBJECT_SCIENCE
                     + " " + PREFIX_LEVEL + VALID_LEVEL_BASIC;
     public static final String APPOINTMENT_START_DESC = " " + PREFIX_APPOINTMENT_START + VALID_APPOINTMENT_START;
+    public static final String LAST_ATTENDANCE_DESC = " " + PREFIX_APPOINTMENT_START + VALID_LAST_ATTENDANCE;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
@@ -96,6 +98,7 @@ public class CommandTestUtil {
                     + " " + PREFIX_LEVEL + VALID_LEVEL_BASIC;
     public static final String INVALID_SUBJECT_DESC = " s/@@@";
     public static final String INVALID_APPOINTMENT_START_DESC = " " + PREFIX_APPOINTMENT_START + "not-a-date";
+    public static final String INVALID_LAST_ATTENDANCE_DESC = " " + PREFIX_APPOINTMENT_START + "invalid-attendance";
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";

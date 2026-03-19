@@ -18,7 +18,9 @@
     "subjects": [
       { "name": "Math", "level": "strong" },
       { "name": "Science", "level": "basic" }
-    ]
+    ],
+    "parentName" : "Susan Meier",
+    "tags" : [ "owesMoney", "friends" ]
   }, {
     "name" : "Carl Kurz",
     "phone" : "95352563",

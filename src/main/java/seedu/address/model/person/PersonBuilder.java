@@ -20,9 +20,30 @@ public class PersonBuilder {
     private Address address;
     private Set<Tag> tags;
     private Set<Subject> subjects;
-    private Optional<ParentName> parentName;
+    private Optional<Name> parentName;
+    private Optional<Phone> parentPhone;
+    private Optional<Email> parentEmail;
     private Optional<LocalDateTime> appointmentStart;
     private Optional<LocalDate> paymentDate;
+    private Optional<LocalDateTime> lastAttendance;
+
+    /**
+     * Creates a builder initialized with required person fields.
+     * Optional fields default to empty.
+     */
+    public PersonBuilder(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.tags = new HashSet<>(tags);
+        this.parentName = Optional.empty();
+        this.parentPhone = Optional.empty();
+        this.parentEmail = Optional.empty();
+        this.appointmentStart = Optional.empty();
+        this.paymentDate = Optional.empty();
+        this.lastAttendance = Optional.empty();
+    }
 
     /**
      * Creates a builder initialized with the data of {@code personToCopy}.
@@ -35,8 +56,11 @@ public class PersonBuilder {
         this.tags = new HashSet<>(personToCopy.getTags());
         this.subjects = new HashSet<>(personToCopy.getSubjects());
         this.parentName = personToCopy.getParentName();
+        this.parentPhone = personToCopy.getParentPhone();
+        this.parentEmail = personToCopy.getParentEmail();
         this.appointmentStart = personToCopy.getAppointmentStart();
         this.paymentDate = personToCopy.getPaymentDate();
+        this.lastAttendance = personToCopy.getLastAttendance();
     }
 
     /**
@@ -108,13 +132,35 @@ public class PersonBuilder {
     }
 
     /**
-     * Sets the {@code ParentName} of the {@code Person} being built.
+     * Sets the parent's {@code Name} of the {@code Person} being built.
      *
      * @param parentName the optional parent name
      * @return this {@code PersonBuilder} instance for method chaining
      */
-    public PersonBuilder withParentName(Optional<ParentName> parentName) {
+    public PersonBuilder withParentName(Optional<Name> parentName) {
         this.parentName = parentName;
+        return this;
+    }
+
+    /**
+     * Sets the parent's {@code Phone} of the {@code Person} being built.
+     *
+     * @param parentPhone the optional parent phone
+     * @return this {@code PersonBuilder} instance for method chaining
+     */
+    public PersonBuilder withParentPhone(Optional<Phone> parentPhone) {
+        this.parentPhone = parentPhone;
+        return this;
+    }
+
+    /**
+     * Sets the parent's {@code Email} of the {@code Person} being built.
+     *
+     * @param parentEmail the optional parent email
+     * @return this {@code PersonBuilder} instance for method chaining
+     */
+    public PersonBuilder withParentEmail(Optional<Email> parentEmail) {
+        this.parentEmail = parentEmail;
         return this;
     }
 
@@ -141,6 +187,17 @@ public class PersonBuilder {
     }
 
     /**
+     * Sets the last attendance time of the {@code Person} being built.
+     *
+     * @param lastAttendance the optional last attendance time
+     * @return this {@code PersonBuilder} instance for method chaining
+     */
+    public PersonBuilder withLastAttendance(Optional<LocalDateTime> lastAttendance) {
+        this.lastAttendance = lastAttendance;
+        return this;
+    }
+
+    /**
      * Builds a {@code Person} with the current builder state.
      */
     public Person build() {
@@ -152,8 +209,10 @@ public class PersonBuilder {
                 tags,
                 subjects,
                 parentName,
+                parentPhone,
+                parentEmail,
                 appointmentStart,
-                paymentDate
-        );
+                paymentDate,
+                lastAttendance);
     }
 }

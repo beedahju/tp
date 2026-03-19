@@ -45,11 +45,17 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label paymentDate;
     @FXML
+    private Label lastAttendance;
+    @FXML
     private FlowPane tags;
     @FXML
     private FlowPane subjects;
     @FXML
     private Label parentName;
+    @FXML
+    private Label parentPhone;
+    @FXML
+    private Label parentEmail;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -70,6 +76,10 @@ public class PersonCard extends UiPart<Region> {
                 .map(value -> value.format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .orElse("-");
         paymentDate.setText("Payment made on: " + paymentDateValue);
+        String lastAttendanceValue = person.getLastAttendance()
+            .map(value -> value.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+            .orElse("-");
+        lastAttendance.setText("Last Attendance: " + lastAttendanceValue);
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
@@ -84,6 +94,16 @@ public class PersonCard extends UiPart<Region> {
             parentName.setText("Parent: " + person.getParentName().get().fullName);
         } else {
             parentName.setVisible(false);
+        }
+        if (person.getParentPhone().isPresent()) {
+            parentPhone.setText("Parent Phone: " + person.getParentPhone().get().value);
+        } else {
+            parentPhone.setVisible(false);
+        }
+        if (person.getParentEmail().isPresent()) {
+            parentEmail.setText("Parent Email: " + person.getParentEmail().get().value);
+        } else {
+            parentEmail.setVisible(false);
         }
     }
 }
