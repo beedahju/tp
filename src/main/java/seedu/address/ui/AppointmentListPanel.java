@@ -1,7 +1,5 @@
 package seedu.address.ui;
 
-import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -12,15 +10,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonComparators;
 
 /**
  * Panel containing the list of weekly appointments.
  */
 public class AppointmentListPanel extends UiPart<Region> {
     private static final String FXML = "PersonListPanel.fxml";
-    private static final Comparator<Person> APPOINTMENT_ORDER =
-            Comparator.comparing((Person person) -> person.getAppointmentStart().orElse(LocalDateTime.MAX))
-                    .thenComparing(person -> person.getName().fullName.toLowerCase());
     private final Logger logger = LogsCenter.getLogger(AppointmentListPanel.class);
     private final SortedList<Person> appointmentList;
 
@@ -32,7 +28,7 @@ public class AppointmentListPanel extends UiPart<Region> {
      */
     public AppointmentListPanel(ObservableList<Person> personList) {
         super(FXML);
-        appointmentList = new SortedList<>(personList, APPOINTMENT_ORDER);
+        appointmentList = new SortedList<>(personList, PersonComparators.APPOINTMENT_ORDER);
         personListView.setItems(appointmentList);
         personListView.setCellFactory(listView -> new AppointmentListViewCell());
     }
