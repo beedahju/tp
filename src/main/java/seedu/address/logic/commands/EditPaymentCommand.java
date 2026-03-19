@@ -35,7 +35,7 @@ public class EditPaymentCommand extends EditCommand {
 
     /**
      * @param index of the person in the filtered person list to edit
-     * @param appointmentStart appointment start date-time to set
+     * @param paymentDate the payment date to set
      */
     public EditPaymentCommand(Index index, LocalDate paymentDate) {
         super(index);
