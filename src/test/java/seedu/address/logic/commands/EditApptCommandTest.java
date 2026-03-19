@@ -14,7 +14,6 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
@@ -42,9 +41,9 @@ public class EditApptCommandTest {
         LocalDateTime appointmentStart = LocalDateTime.parse(VALID_APPOINTMENT_START);
         EditApptCommand editCommand = new EditApptCommand(INDEX_FIRST_PERSON, appointmentStart);
 
-        Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                personToEdit.getAddress(), personToEdit.getTags(), personToEdit.getParentName(),
-                Optional.of(appointmentStart), personToEdit.getPaymentDate());
+        Person editedPerson = new PersonBuilder(personToEdit)
+                .withAppointmentStart(VALID_APPOINTMENT_START)
+                .build();
         String expectedMessage = String.format(EditApptCommand.MESSAGE_EDIT_APPT_SUCCESS,
                 editedPerson.getName().fullName, appointmentStart.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
@@ -82,10 +81,9 @@ public class EditApptCommandTest {
         LocalDateTime newAppointmentStart = LocalDateTime.parse(VALID_APPOINTMENT_START);
         EditApptCommand editCommand = new EditApptCommand(INDEX_FIRST_PERSON, newAppointmentStart);
 
-        Person editedPerson = new Person(earlierAppointmentPerson.getName(), earlierAppointmentPerson.getPhone(),
-                earlierAppointmentPerson.getEmail(), earlierAppointmentPerson.getAddress(),
-                earlierAppointmentPerson.getTags(), earlierAppointmentPerson.getParentName(),
-                Optional.of(newAppointmentStart));
+        Person editedPerson = new PersonBuilder(earlierAppointmentPerson)
+                .withAppointmentStart(VALID_APPOINTMENT_START)
+                .build();
         String expectedMessage = String.format(EditApptCommand.MESSAGE_EDIT_APPT_SUCCESS,
                 editedPerson.getName().fullName, newAppointmentStart.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
@@ -106,9 +104,9 @@ public class EditApptCommandTest {
         LocalDateTime appointmentStart = LocalDateTime.parse(VALID_APPOINTMENT_START);
         EditApptCommand editCommand = new EditApptCommand(INDEX_FIRST_PERSON, appointmentStart);
 
-        Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
-                personToEdit.getAddress(), personToEdit.getTags(), personToEdit.getParentName(),
-                Optional.of(appointmentStart));
+        Person editedPerson = new PersonBuilder(personToEdit)
+                .withAppointmentStart(VALID_APPOINTMENT_START)
+                .build();
         String expectedMessage = String.format(EditApptCommand.MESSAGE_EDIT_APPT_SUCCESS,
                 editedPerson.getName().fullName, appointmentStart.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
@@ -145,10 +143,9 @@ public class EditApptCommandTest {
         LocalDateTime newAppointmentStart = LocalDateTime.parse("2026-01-22T08:00:00");
         EditApptCommand editCommand = new EditApptCommand(INDEX_FIRST_PERSON, newAppointmentStart);
 
-        Person editedPerson = new Person(earlierAppointmentPerson.getName(), earlierAppointmentPerson.getPhone(),
-                earlierAppointmentPerson.getEmail(), earlierAppointmentPerson.getAddress(),
-                earlierAppointmentPerson.getTags(), earlierAppointmentPerson.getParentName(),
-                Optional.of(newAppointmentStart));
+        Person editedPerson = new PersonBuilder(earlierAppointmentPerson)
+                .withAppointmentStart("2026-01-22T08:00:00")
+                .build();
         String expectedMessage = String.format(EditApptCommand.MESSAGE_EDIT_APPT_SUCCESS,
                 editedPerson.getName().fullName, newAppointmentStart.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
