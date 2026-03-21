@@ -27,7 +27,9 @@ public class EditAttdCommandParser implements Parser<EditAttdCommand> {
         Optional<String> attendanceDateTimeInput = argMultimap.getValue(PREFIX_DATE);
         Optional<LocalDateTime> attendanceDateTime = Optional.empty();
         if (attendanceDateTimeInput.isPresent()) {
-            attendanceDateTime = Optional.of(ParserUtil.parseIsoDateTime(attendanceDateTimeInput.get()));
+            attendanceDateTime = ParserUtil.parseIsoDateTime(attendanceDateTimeInput.get());
+        } else {
+            attendanceDateTime = LocalDateTime.now().withNano(0);
         }
 
         return new EditAttdCommand(index, attendanceDateTime);
