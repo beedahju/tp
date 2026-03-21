@@ -25,7 +25,7 @@ public class EditAttdCommandParser implements Parser<EditAttdCommand> {
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_DATE);
 
         Optional<String> attendanceDateTimeInput = argMultimap.getValue(PREFIX_DATE);
-        Optional<LocalDateTime> attendanceDateTime = Optional.empty();
+        LocalDateTime attendanceDateTime;
         if (attendanceDateTimeInput.isPresent()) {
             attendanceDateTime = ParserUtil.parseIsoDateTime(attendanceDateTimeInput.get());
         } else {
