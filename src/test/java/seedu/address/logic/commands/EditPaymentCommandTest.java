@@ -37,7 +37,7 @@ public class EditPaymentCommandTest {
         Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         LocalDate paymentDate = LocalDate.parse(VALID_PAYMENT_DATE);
         EditPaymentCommand editCommand = new EditPaymentCommand(INDEX_FIRST_PERSON, paymentDate);
-        
+
         Payment updatedPayment = personToEdit.getPayment().recordPayment(paymentDate);
 
         Person editedPerson = new PersonBuilder(personToEdit)

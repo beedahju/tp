@@ -27,7 +27,7 @@ public class PersonBuilder {
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
-    public static final LocalDate DEFAULT_PAYMENT_DATE = LocalDate.of(2026, 02, 10); 
+    public static final LocalDate DEFAULT_PAYMENT_DATE = LocalDate.of(2026, 02, 10);
 
     private Name name;
     private Phone phone;

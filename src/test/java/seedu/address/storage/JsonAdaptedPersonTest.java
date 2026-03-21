@@ -25,10 +25,10 @@ public class JsonAdaptedPersonTest {
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_TAG = "#friend";
     private static final String INVALID_APPOINTMENT_START = "2026-13-40T25:00:00";
-    private static final List<String> INVALID_PAYMENT_DATES = 
+    private static final List<String> INVALID_PAYMENT_DATES =
             List.of("2026-13-40", "2026-10-10T10:00:00");
     private static final String INVALID_PAYMENT_RECURRENCE = "hello";
-     private static final Double INVALID_MONTHLY_RATE = -5.0;
+    private static final Double INVALID_MONTHLY_RATE = -5.0;
     private static final String INVALID_LAST_ATTENDANCE = "2026-01-29T33:00:00";
 
     private static final String VALID_NAME = BENSON.getName().toString();
@@ -61,7 +61,7 @@ public class JsonAdaptedPersonTest {
                 new JsonAdaptedPerson(INVALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
                         VALID_TAGS, VALID_SUBJECTS,
                         VALID_PARENT_NAME, VALID_PARENT_PHONE, VALID_PARENT_EMAIL,
-                        VALID_APPOINTMENT_START, 
+                        VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_RECURRENCE, VALID_MONTHLY_RATE,
                         VALID_LAST_ATTENDANCE);
         String expectedMessage = Name.MESSAGE_CONSTRAINTS;
@@ -74,7 +74,7 @@ public class JsonAdaptedPersonTest {
                 new JsonAdaptedPerson(null, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
                         VALID_TAGS, VALID_SUBJECTS,
                         VALID_PARENT_NAME, VALID_PARENT_PHONE, VALID_PARENT_EMAIL,
-                        VALID_APPOINTMENT_START, 
+                        VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_RECURRENCE, VALID_MONTHLY_RATE,
                         VALID_LAST_ATTENDANCE);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName());
@@ -87,7 +87,7 @@ public class JsonAdaptedPersonTest {
                 new JsonAdaptedPerson(VALID_NAME, INVALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
                         VALID_TAGS, VALID_SUBJECTS,
                         VALID_PARENT_NAME, VALID_PARENT_PHONE, VALID_PARENT_EMAIL,
-                        VALID_APPOINTMENT_START, 
+                        VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_RECURRENCE, VALID_MONTHLY_RATE,
                         VALID_LAST_ATTENDANCE);
         String expectedMessage = Phone.MESSAGE_CONSTRAINTS;
@@ -113,7 +113,7 @@ public class JsonAdaptedPersonTest {
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, INVALID_EMAIL, VALID_ADDRESS,
                         VALID_TAGS, VALID_SUBJECTS,
                         VALID_PARENT_NAME, VALID_PARENT_PHONE, VALID_PARENT_EMAIL,
-                        VALID_APPOINTMENT_START, 
+                        VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_RECURRENCE, VALID_MONTHLY_RATE,
                         VALID_LAST_ATTENDANCE);
         String expectedMessage = Email.MESSAGE_CONSTRAINTS;
@@ -194,7 +194,7 @@ public class JsonAdaptedPersonTest {
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
                         VALID_TAGS, VALID_SUBJECTS,
                         VALID_PARENT_NAME, VALID_PARENT_PHONE, VALID_PARENT_EMAIL,
-                        VALID_APPOINTMENT_START, 
+                        VALID_APPOINTMENT_START,
                         INVALID_PAYMENT_DATES, VALID_PAYMENT_RECURRENCE, VALID_MONTHLY_RATE,
                         VALID_LAST_ATTENDANCE);
         assertThrows(IllegalValueException.class, person::toModelType);
@@ -206,7 +206,7 @@ public class JsonAdaptedPersonTest {
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
                         VALID_TAGS, VALID_SUBJECTS,
                         VALID_PARENT_NAME, VALID_PARENT_PHONE, VALID_PARENT_EMAIL,
-                        VALID_APPOINTMENT_START, 
+                        VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, INVALID_PAYMENT_RECURRENCE, VALID_MONTHLY_RATE,
                         VALID_LAST_ATTENDANCE);
         assertThrows(IllegalValueException.class, person::toModelType);
@@ -218,7 +218,7 @@ public class JsonAdaptedPersonTest {
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
                         VALID_TAGS, VALID_SUBJECTS,
                         VALID_PARENT_NAME, VALID_PARENT_PHONE, VALID_PARENT_EMAIL,
-                        VALID_APPOINTMENT_START, 
+                        VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_RECURRENCE, INVALID_MONTHLY_RATE,
                         VALID_LAST_ATTENDANCE);
         assertThrows(IllegalArgumentException.class, person::toModelType);
@@ -230,7 +230,7 @@ public class JsonAdaptedPersonTest {
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
                         VALID_TAGS, VALID_SUBJECTS,
                         VALID_PARENT_NAME, VALID_PARENT_PHONE, VALID_PARENT_EMAIL,
-                        VALID_APPOINTMENT_START, 
+                        VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_RECURRENCE, VALID_MONTHLY_RATE,
                         INVALID_LAST_ATTENDANCE);
         assertThrows(IllegalValueException.class, person::toModelType);
