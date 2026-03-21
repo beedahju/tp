@@ -101,10 +101,10 @@ public class EditParentCommandTest {
     public void equals() {
         Name parentNameAmy = new Name(VALID_PARENT_NAME_AMY);
         Name parentNameBob = new Name(VALID_PARENT_NAME_BOB);
-        
+
         EditParentDescriptor descriptorAmy = new EditParentDescriptor();
         descriptorAmy.setParentName(parentNameAmy);
-        
+
         EditParentCommand editFirstCommand = new EditParentCommand(INDEX_FIRST_PERSON, descriptorAmy);
         EditParentCommand editSecondCommand = new EditParentCommand(INDEX_SECOND_PERSON, descriptorAmy);
 

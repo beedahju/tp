@@ -34,13 +34,16 @@ public class EditParentCommandParser implements Parser<EditParentCommand> {
         EditParentDescriptor editParentDescriptor = new EditParentDescriptor();
 
         if (argMultimap.getValue(PREFIX_PARENT_NAME).isPresent()) {
-            editParentDescriptor.setParentName(ParserUtil.parseParentName(argMultimap.getValue(PREFIX_PARENT_NAME).get()));
+            editParentDescriptor.setParentName(
+                    ParserUtil.parseParentName(argMultimap.getValue(PREFIX_PARENT_NAME).get()));
         }
         if (argMultimap.getValue(PREFIX_PARENT_PHONE).isPresent()) {
-            editParentDescriptor.setParentPhone(ParserUtil.parseParentPhone(argMultimap.getValue(PREFIX_PARENT_PHONE).get()));
+            editParentDescriptor.setParentPhone(
+                    ParserUtil.parseParentPhone(argMultimap.getValue(PREFIX_PARENT_PHONE).get()));
         }
         if (argMultimap.getValue(PREFIX_PARENT_EMAIL).isPresent()) {
-            editParentDescriptor.setParentEmail(ParserUtil.parseParentEmail(argMultimap.getValue(PREFIX_PARENT_EMAIL).get()));
+            editParentDescriptor.setParentEmail(
+                    ParserUtil.parseParentEmail(argMultimap.getValue(PREFIX_PARENT_EMAIL).get()));
         }
 
         if (!editParentDescriptor.isAnyFieldEdited()) {
