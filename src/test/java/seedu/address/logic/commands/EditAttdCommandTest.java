@@ -43,12 +43,13 @@ public class EditAttdCommandTest {
             .withLastAttendance(VALID_LAST_ATTENDANCE)
             .build();
         String expectedMessage = String.format(EditAttdCommand.MESSAGE_EDIT_ATTD_SUCCESS,
-                editedPerson.getName().fullName, lastAttendance.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                Messages.format(editedPerson), lastAttendance.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
 
-        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        CommandResult expectedCommandResult = new CommandResult(expectedMessage, editedPerson);
+        assertCommandSuccess(editCommand, model, expectedCommandResult, expectedModel);
     }
 
     @Test
