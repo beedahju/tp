@@ -2,6 +2,7 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
@@ -158,6 +159,23 @@ public class Person {
         }
 
         return otherPerson != null && otherPerson.getName().equals(getName());
+    }
+
+    /**
+     * Returns an immutable {@code Payment} object with updated payment history
+     * @param paymentDate A valid {@code LocalDate}
+     * @return {@code Payment} object
+     */
+    public Payment recordPaymentDate(LocalDate paymentDate) {
+        return payment.recordPayment(paymentDate);
+    }
+
+    /**
+     * Returns an immutable {@code Billing} object with updated payment due date
+     * @return {@code Billing} object
+     */
+    public Billing advancePaymentDueDate() {
+        return billing.advanceDueDate();
     }
 
     /**

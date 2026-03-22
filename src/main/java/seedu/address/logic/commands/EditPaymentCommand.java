@@ -48,8 +48,8 @@ public class EditPaymentCommand extends EditCommand {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         Person personToEdit = getTargetPerson(model);
-        Payment updatedPayment = personToEdit.getPayment().recordPayment(paymentDate);
-        Billing updatedBilling = personToEdit.getBilling().advanceDueDate();
+        Payment updatedPayment = personToEdit.recordPaymentDate(paymentDate);
+        Billing updatedBilling = personToEdit.advancePaymentDueDate();
         Person editedPerson = new PersonBuilder(personToEdit)
                 .withPayment(updatedPayment)
                 .withBilling(updatedBilling)

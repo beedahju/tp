@@ -39,8 +39,8 @@ public class EditPaymentCommandTest {
         LocalDate paymentDate = LocalDate.parse(VALID_PAYMENT_DATE);
         EditPaymentCommand editCommand = new EditPaymentCommand(INDEX_FIRST_PERSON, paymentDate);
 
-        Payment updatedPayment = personToEdit.getPayment().recordPayment(paymentDate);
-        Billing updatedBilling = personToEdit.getBilling().advanceDueDate();
+        Payment updatedPayment = personToEdit.recordPaymentDate(paymentDate);
+        Billing updatedBilling = personToEdit.advancePaymentDueDate();
 
         Person editedPerson = new PersonBuilder(personToEdit)
                 .withPayment(updatedPayment)
