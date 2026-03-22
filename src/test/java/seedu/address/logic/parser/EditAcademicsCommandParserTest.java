@@ -15,10 +15,10 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.commands.EditAcademicsCommand;
 import seedu.address.logic.commands.EditCommand;
-import seedu.address.logic.commands.EditSubjectCommand;
-import seedu.address.model.subject.Level;
-import seedu.address.model.subject.Subject;
+import seedu.address.model.academic.Level;
+import seedu.address.model.academic.Subject;
 
 /**
  * Tests for EditSubjectCommandParser.
@@ -31,7 +31,7 @@ public class EditSubjectCommandParserTest {
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
 
     private static final String MESSAGE_INVALID_SUBJECT_FORMAT =
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditSubjectCommand.MESSAGE_USAGE);
+            String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditAcademicsCommand.MESSAGE_USAGE);
 
     private EditSubjectCommandParser parser = new EditSubjectCommandParser();
 
@@ -69,7 +69,7 @@ public class EditSubjectCommandParserTest {
 
         Set<Subject> subjects = Set.of(new Subject("Math", Level.STRONG));
 
-        EditSubjectCommand expectedCommand = new EditSubjectCommand(targetIndex, subjects);
+        EditAcademicsCommand expectedCommand = new EditAcademicsCommand(targetIndex, subjects);
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -86,7 +86,7 @@ public class EditSubjectCommandParserTest {
                 new Subject("Science", Level.BASIC)
         );
 
-        EditSubjectCommand expectedCommand = new EditSubjectCommand(targetIndex, subjects);
+        EditAcademicsCommand expectedCommand = new EditAcademicsCommand(targetIndex, subjects);
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -98,7 +98,7 @@ public class EditSubjectCommandParserTest {
 
         Set<Subject> subjects = Set.of(new Subject("Math", null));
 
-        EditSubjectCommand expectedCommand = new EditSubjectCommand(targetIndex, subjects);
+        EditAcademicsCommand expectedCommand = new EditAcademicsCommand(targetIndex, subjects);
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -110,7 +110,7 @@ public class EditSubjectCommandParserTest {
 
         Set<Subject> subjects = Set.of();
 
-        EditSubjectCommand expectedCommand = new EditSubjectCommand(targetIndex, subjects);
+        EditAcademicsCommand expectedCommand = new EditAcademicsCommand(targetIndex, subjects);
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }

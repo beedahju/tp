@@ -20,12 +20,12 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
-import seedu.address.model.subject.Level;
-import seedu.address.model.subject.Subject;
+import seedu.address.model.academic.Level;
+import seedu.address.model.academic.Subject;
 import seedu.address.testutil.PersonBuilder;
 
 /**
- * Contains integration tests (interaction with the Model) and unit tests for EditSubjectCommand.
+ * Contains integration tests (interaction with the Model) and unit tests for EditAcademicsCommand.
  */
 public class EditSubjectCommandTest {
 
@@ -37,13 +37,13 @@ public class EditSubjectCommandTest {
 
         Set<Subject> subjects = Set.of(); // clear
 
-        EditSubjectCommand editCommand = new EditSubjectCommand(INDEX_FIRST_PERSON, subjects);
+        EditAcademicsCommand editCommand = new EditAcademicsCommand(INDEX_FIRST_PERSON, subjects);
 
         Person editedPerson = new PersonBuilder(personInList)
                 .withSubjects() // empty
                 .build();
 
-        String expectedMessage = String.format(EditSubjectCommand.MESSAGE_EDIT_SUBJECT_SUCCESS,
+        String expectedMessage = String.format(EditAcademicsCommand.MESSAGE_EDIT_SUBJECT_SUCCESS,
                 Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
@@ -59,7 +59,7 @@ public class EditSubjectCommandTest {
 
         Set<Subject> subjects = Set.of(new Subject("Math", Level.STRONG));
 
-        EditSubjectCommand editCommand = new EditSubjectCommand(outOfBoundIndex, subjects);
+        EditAcademicsCommand editCommand = new EditAcademicsCommand(outOfBoundIndex, subjects);
 
         assertCommandFailure(editCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
     }
@@ -68,12 +68,12 @@ public class EditSubjectCommandTest {
     public void equals() {
         Set<Subject> subjects = Set.of(new Subject("Math", Level.STRONG));
 
-        final EditSubjectCommand standardCommand = new EditSubjectCommand(INDEX_FIRST_PERSON, subjects);
+        final EditAcademicsCommand standardCommand = new EditAcademicsCommand(INDEX_FIRST_PERSON, subjects);
 
         // same values -> returns true
         Set<Subject> copySubjects = Set.of(new Subject("Math", Level.STRONG));
-        EditSubjectCommand commandWithSameValues =
-                new EditSubjectCommand(INDEX_FIRST_PERSON, copySubjects);
+        EditAcademicsCommand commandWithSameValues =
+                new EditAcademicsCommand(INDEX_FIRST_PERSON, copySubjects);
         assertTrue(standardCommand.equals(commandWithSameValues));
 
         // same object -> returns true
@@ -87,12 +87,12 @@ public class EditSubjectCommandTest {
 
         // different index -> returns false
         assertFalse(standardCommand.equals(
-                new EditSubjectCommand(INDEX_SECOND_PERSON, subjects)));
+                new EditAcademicsCommand(INDEX_SECOND_PERSON, subjects)));
 
         // different subjects -> returns false
         Set<Subject> differentSubjects = Set.of(new Subject("Physics", Level.BASIC));
         assertFalse(standardCommand.equals(
-                new EditSubjectCommand(INDEX_FIRST_PERSON, differentSubjects)));
+                new EditAcademicsCommand(INDEX_FIRST_PERSON, differentSubjects)));
     }
 
     @Test
@@ -100,9 +100,9 @@ public class EditSubjectCommandTest {
         Index index = Index.fromOneBased(1);
         Set<Subject> subjects = Set.of(new Subject("Math", Level.STRONG));
 
-        EditSubjectCommand command = new EditSubjectCommand(index, subjects);
+        EditAcademicsCommand command = new EditAcademicsCommand(index, subjects);
 
-        String expected = EditSubjectCommand.class.getCanonicalName()
+        String expected = EditAcademicsCommand.class.getCanonicalName()
                 + "{index=" + index + ", subjects=" + subjects + "}";
 
         assertEquals(expected, command.toString());

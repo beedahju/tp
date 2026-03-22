@@ -14,7 +14,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonBuilder;
-import seedu.address.model.subject.Subject;
+import seedu.address.model.academic.Subject;
 
 /**
  * Edits the subjects of an existing person in the address book.
