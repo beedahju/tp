@@ -13,6 +13,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.Guardian;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonBuilder;
@@ -63,14 +64,20 @@ public class EditParentCommand extends EditCommand {
     public CommandResult execute(Model model) throws CommandException {
         Person personToEdit = getTargetPerson(model);
         PersonBuilder builder = new PersonBuilder(personToEdit);
-        parentName.ifPresent(pn -> builder.withParentName(Optional.of(pn)));
-        parentPhone.ifPresent(pp -> builder.withParentPhone(Optional.of(pp)));
-        parentEmail.ifPresent(pe -> builder.withParentEmail(Optional.of(pe)));
+
+        Guardian existing = personToEdit.getGuardian().orElse(null);
+        Name name = parentName.orElse(existing != null ? existing.getName() : null);
+        Phone phone = parentPhone.orElse(existing != null ? existing.getPhone() : null);
+        Email email = parentEmail.orElse(existing != null ? existing.getEmail() : null);
+
+        if (name != null || phone != null || email != null) {
+            builder.withGuardian(Optional.of(new Guardian(name, phone, email)));
+        }
+
         Person editedPerson = builder.build();
 
         replacePerson(model, personToEdit, editedPerson);
-        return new CommandResult(
-                String.format(MESSAGE_EDIT_PARENT_SUCCESS, Messages.format(editedPerson)),
+        return new CommandResult(String.format(MESSAGE_EDIT_PARENT_SUCCESS, Messages.format(editedPerson)),
                 editedPerson);
     }
 

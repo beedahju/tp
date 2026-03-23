@@ -21,8 +21,9 @@ public class PersonTest {
     @Test
     public void asObservableList_modifyList_throwsUnsupportedOperationException() {
         Person person = new PersonBuilder().withTags("friend").build();
-        assertThrows(UnsupportedOperationException.class, () ->
-                person.getTags().stream().findAny().ifPresent(person.getTags()::remove));
+        assertThrows(UnsupportedOperationException.class, () -> {
+            person.getTags().stream().findAny().ifPresent(person.getTags()::remove);
+        });
     }
 
     @Test
@@ -105,20 +106,11 @@ public class PersonTest {
 
     @Test
     public void toStringMethod() {
-        String expected = Person.class.getCanonicalName()
-                + "{name=" + ALICE.getName()
-                + ", phone=" + ALICE.getPhone()
-                + ", email=" + ALICE.getEmail()
-                + ", address=" + ALICE.getAddress()
-                + ", tags=" + ALICE.getTags()
-                + ", subjects=" + ALICE.getSubjects()
-                + ", parentName=" + ALICE.getParentName().orElse(null)
-                + ", parentPhone=" + ALICE.getParentPhone().orElse(null)
-                + ", parentEmail=" + ALICE.getParentEmail().orElse(null)
-                + ", appointmentStart=" + ALICE.getAppointmentStart()
-                + ", paymentDate=" + ALICE.getPaymentDate()
-                + ", lastAttendance=" + ALICE.getLastAttendance()
-                + "}";
+        String expected = Person.class.getCanonicalName() + "{name=" + ALICE.getName() + ", phone=" + ALICE.getPhone()
+                + ", email=" + ALICE.getEmail() + ", address=" + ALICE.getAddress() + ", tags=" + ALICE.getTags()
+                + ", subjects=" + ALICE.getSubjects() + ", guardian=" + ALICE.getGuardian().orElse(null)
+                + ", appointmentStart=" + ALICE.getAppointmentStart() + ", paymentDate=" + ALICE.getPaymentDate()
+                + ", lastAttendance=" + ALICE.getLastAttendance() + "}";
 
         assertEquals(expected, ALICE.toString());
     }

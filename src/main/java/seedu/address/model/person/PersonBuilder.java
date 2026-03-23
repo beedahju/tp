@@ -20,16 +20,13 @@ public class PersonBuilder {
     private Address address;
     private Set<Tag> tags;
     private Set<Subject> subjects;
-    private Optional<Name> parentName;
-    private Optional<Phone> parentPhone;
-    private Optional<Email> parentEmail;
+    private Optional<Guardian> guardian;
     private Optional<LocalDateTime> appointmentStart;
     private Optional<LocalDate> paymentDate;
     private Optional<LocalDateTime> lastAttendance;
 
     /**
-     * Creates a builder initialized with required person fields.
-     * Optional fields default to empty.
+     * Creates a builder initialized with required person fields. Optional fields default to empty.
      */
     public PersonBuilder(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
         this.name = name;
@@ -38,9 +35,7 @@ public class PersonBuilder {
         this.address = address;
         this.tags = new HashSet<>(tags);
         this.subjects = new HashSet<>();
-        this.parentName = Optional.empty();
-        this.parentPhone = Optional.empty();
-        this.parentEmail = Optional.empty();
+        this.guardian = Optional.empty();
         this.appointmentStart = Optional.empty();
         this.paymentDate = Optional.empty();
         this.lastAttendance = Optional.empty();
@@ -56,9 +51,7 @@ public class PersonBuilder {
         this.address = personToCopy.getAddress();
         this.tags = new HashSet<>(personToCopy.getTags());
         this.subjects = new HashSet<>(personToCopy.getSubjects());
-        this.parentName = personToCopy.getParentName();
-        this.parentPhone = personToCopy.getParentPhone();
-        this.parentEmail = personToCopy.getParentEmail();
+        this.guardian = personToCopy.getGuardian();
         this.appointmentStart = personToCopy.getAppointmentStart();
         this.paymentDate = personToCopy.getPaymentDate();
         this.lastAttendance = personToCopy.getLastAttendance();
@@ -109,8 +102,7 @@ public class PersonBuilder {
     }
 
     /**
-     * Replaces the tag set of the {@code Person} being built.
-     * A defensive copy of the provided tag set is created.
+     * Replaces the tag set of the {@code Person} being built. A defensive copy of the provided tag set is created.
      *
      * @param tags the new set of tags
      * @return this {@code PersonBuilder} instance for method chaining
@@ -121,8 +113,8 @@ public class PersonBuilder {
     }
 
     /**
-     * Replaces the subject set of the {@code Person} being built.
-     * A defensive copy of the provided subject set is created.
+     * Replaces the subject set of the {@code Person} being built. A defensive copy of the provided subject set is
+     * created.
      *
      * @param subjects the new set of tags
      * @return this {@code PersonBuilder} instance for method chaining
@@ -133,35 +125,13 @@ public class PersonBuilder {
     }
 
     /**
-     * Sets the parent's {@code Name} of the {@code Person} being built.
+     * Sets the {@code Guardian} of the {@code Person} being built.
      *
-     * @param parentName the optional parent name
+     * @param guardian the optional guardian
      * @return this {@code PersonBuilder} instance for method chaining
      */
-    public PersonBuilder withParentName(Optional<Name> parentName) {
-        this.parentName = parentName;
-        return this;
-    }
-
-    /**
-     * Sets the parent's {@code Phone} of the {@code Person} being built.
-     *
-     * @param parentPhone the optional parent phone
-     * @return this {@code PersonBuilder} instance for method chaining
-     */
-    public PersonBuilder withParentPhone(Optional<Phone> parentPhone) {
-        this.parentPhone = parentPhone;
-        return this;
-    }
-
-    /**
-     * Sets the parent's {@code Email} of the {@code Person} being built.
-     *
-     * @param parentEmail the optional parent email
-     * @return this {@code PersonBuilder} instance for method chaining
-     */
-    public PersonBuilder withParentEmail(Optional<Email> parentEmail) {
-        this.parentEmail = parentEmail;
+    public PersonBuilder withGuardian(Optional<Guardian> guardian) {
+        this.guardian = guardian;
         return this;
     }
 
@@ -202,18 +172,7 @@ public class PersonBuilder {
      * Builds a {@code Person} with the current builder state.
      */
     public Person build() {
-        return new Person(
-                name,
-                phone,
-                email,
-                address,
-                tags,
-                subjects,
-                parentName,
-                parentPhone,
-                parentEmail,
-                appointmentStart,
-                paymentDate,
+        return new Person(name, phone, email, address, tags, subjects, guardian, appointmentStart, paymentDate,
                 lastAttendance);
     }
 }

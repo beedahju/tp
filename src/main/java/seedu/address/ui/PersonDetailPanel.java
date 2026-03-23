@@ -87,9 +87,9 @@ public class PersonDetailPanel extends UiPart<Region> {
         phoneLabel.setText(person.getPhone().value);
         emailLabel.setText(person.getEmail().value);
         addressLabel.setText(person.getAddress().value);
-        parentNameLabel.setText(person.getParentName().map(parent -> parent.fullName).orElse("-"));
-        parentPhoneLabel.setText(person.getParentPhone().map(phone -> phone.value).orElse("-"));
-        parentEmailLabel.setText(person.getParentEmail().map(email -> email.value).orElse("-"));
+        parentNameLabel.setText(person.getGuardian().map(g -> g.getName()).map(n -> n.fullName).orElse("-"));
+        parentPhoneLabel.setText(person.getGuardian().map(g -> g.getPhone()).map(p -> p.value).orElse("-"));
+        parentEmailLabel.setText(person.getGuardian().map(g -> g.getEmail()).map(e -> e.value).orElse("-"));
         lessonStartLabel.setText(formatDateTime(person.getAppointmentStart().orElse(null)));
         paymentDateLabel.setText(formatDate(person.getPaymentDate().orElse(null)));
         lastAttendanceLabel.setText(formatDateTime(person.getLastAttendance().orElse(null)));
@@ -101,13 +101,11 @@ public class PersonDetailPanel extends UiPart<Region> {
             noTagsLabel.getStyleClass().add("detail-field-value");
             tagsFlowPane.getChildren().add(noTagsLabel);
         } else {
-            person.getTags().stream()
-                    .sorted((left, right) -> left.tagName.compareTo(right.tagName))
-                    .forEach(tag -> {
-                        Label tagLabel = new Label(tag.tagName);
-                        tagLabel.getStyleClass().add("detail-tag");
-                        tagsFlowPane.getChildren().add(tagLabel);
-                    });
+            person.getTags().stream().sorted((left, right) -> left.tagName.compareTo(right.tagName)).forEach(tag -> {
+                Label tagLabel = new Label(tag.tagName);
+                tagLabel.getStyleClass().add("detail-tag");
+                tagsFlowPane.getChildren().add(tagLabel);
+            });
         }
 
         if (person.getSubjects().isEmpty()) {

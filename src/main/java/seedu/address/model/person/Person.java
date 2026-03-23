@@ -15,8 +15,8 @@ import seedu.address.model.subject.Subject;
 import seedu.address.model.tag.Tag;
 
 /**
- * Represents a Person in the address book.
- * Guarantees: details are present and not null, field values are validated, immutable.
+ * Represents a Person in the address book. Guarantees: details are present and not null, field values are validated,
+ * immutable.
  */
 public class Person {
 
@@ -31,35 +31,27 @@ public class Person {
     private final Set<Subject> subjects = new HashSet<>();
     private final Optional<LocalDateTime> appointmentStart;
     private final Optional<LocalDateTime> lastAttendance;
-    private final Optional<Name> parentName;
-    private final Optional<Phone> parentPhone;
-    private final Optional<Email> parentEmail;
+    private final Optional<Guardian> guardian;
     private final Optional<LocalDate> paymentDate;
 
     /**
-     * Creates a {@code Person} with the given core fields and tags.
-     * Fields other than personal details (name, phone, email, and address)
-     * are optional and can be empty.
+     * Creates a {@code Person} with the given core fields and tags. Fields other than personal details (name, phone,
+     * email, and address) are optional and can be empty.
      */
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        this(name, phone, email, address, tags, new HashSet<>(),
-                Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty());
+        this(name, phone, email, address, tags, new HashSet<>(), Optional.empty(), Optional.empty(), Optional.empty(),
+                Optional.empty());
     }
 
     /**
-     * Every field must be present and not null. parentName defaults to empty.
+     * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address,
-                  Set<Tag> tags, Set<Subject> subjects,
-                  Optional<Name> parentName, Optional<Phone> parentPhone, Optional<Email> parentEmail,
-                  Optional<LocalDateTime> appointmentStart,
-                  Optional<LocalDate> paymentDate,
-                  Optional<LocalDateTime> lastAttendance) {
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags, Set<Subject> subjects,
+            Optional<Guardian> guardian, Optional<LocalDateTime> appointmentStart, Optional<LocalDate> paymentDate,
+            Optional<LocalDateTime> lastAttendance) {
 
-        requireAllNonNull(name, phone, email, address, tags, subjects,
-                parentName, parentPhone, parentEmail,
-                appointmentStart, paymentDate, lastAttendance);
+        requireAllNonNull(name, phone, email, address, tags, subjects, guardian, appointmentStart, paymentDate,
+                lastAttendance);
 
         this.name = name;
         this.phone = phone;
@@ -67,9 +59,7 @@ public class Person {
         this.address = address;
         this.tags.addAll(tags);
         this.subjects.addAll(subjects);
-        this.parentName = parentName;
-        this.parentPhone = parentPhone;
-        this.parentEmail = parentEmail;
+        this.guardian = guardian;
         this.appointmentStart = appointmentStart;
         this.lastAttendance = lastAttendance;
         this.paymentDate = paymentDate;
@@ -104,45 +94,29 @@ public class Person {
     }
 
     /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
+     * Returns an immutable tag set, which throws {@code UnsupportedOperationException} if modification is attempted.
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
     }
 
     /**
-     * Returns an immutable subject set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
+     * Returns an immutable subject set, which throws {@code UnsupportedOperationException} if modification is
+     * attempted.
      */
     public Set<Subject> getSubjects() {
         return Collections.unmodifiableSet(subjects);
     }
 
     /**
-     * Returns the parent name wrapped in an Optional, or empty if not set.
+     * Returns the guardian wrapped in an Optional, or empty if not set.
      */
-    public Optional<Name> getParentName() {
-        return parentName;
+    public Optional<Guardian> getGuardian() {
+        return guardian;
     }
 
     /**
-     * Returns the parent phone wrapped in an Optional, or empty if not set.
-     */
-    public Optional<Phone> getParentPhone() {
-        return parentPhone;
-    }
-
-    /**
-     * Returns the parent email wrapped in an Optional, or empty if not set.
-     */
-    public Optional<Email> getParentEmail() {
-        return parentEmail;
-    }
-
-    /**
-     * Returns true if both persons have the same name.
-     * This defines a weaker notion of equality between two persons.
+     * Returns true if both persons have the same name. This defines a weaker notion of equality between two persons.
      */
     public boolean isSamePerson(Person otherPerson) {
         if (otherPerson == this) {
@@ -153,8 +127,8 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same identity and data fields.
-     * This defines a stronger notion of equality between two persons.
+     * Returns true if both persons have the same identity and data fields. This defines a stronger notion of equality
+     * between two persons.
      */
     @Override
     public boolean equals(Object other) {
@@ -168,44 +142,26 @@ public class Person {
         }
 
         Person otherPerson = (Person) other;
-        return name.equals(otherPerson.name)
-                && phone.equals(otherPerson.phone)
-                && email.equals(otherPerson.email)
-                && address.equals(otherPerson.address)
-                && tags.equals(otherPerson.tags)
-                && subjects.equals(otherPerson.subjects)
-                && parentName.equals(otherPerson.parentName)
-                && parentPhone.equals(otherPerson.parentPhone)
-                && parentEmail.equals(otherPerson.parentEmail)
-                && appointmentStart.equals(otherPerson.appointmentStart)
-                && paymentDate.equals(otherPerson.paymentDate)
+        return name.equals(otherPerson.name) && phone.equals(otherPerson.phone) && email.equals(otherPerson.email)
+                && address.equals(otherPerson.address) && tags.equals(otherPerson.tags)
+                && subjects.equals(otherPerson.subjects) && guardian.equals(otherPerson.guardian)
+                && appointmentStart.equals(otherPerson.appointmentStart) && paymentDate.equals(otherPerson.paymentDate)
                 && lastAttendance.equals(otherPerson.lastAttendance);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags, subjects,
-                parentName, parentPhone, parentEmail,
-                appointmentStart, paymentDate, lastAttendance);
+        return Objects.hash(name, phone, email, address, tags, subjects, guardian, appointmentStart, paymentDate,
+                lastAttendance);
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .add("name", name)
-                .add("phone", phone)
-                .add("email", email)
-                .add("address", address)
-                .add("tags", tags)
-                .add("subjects", subjects)
-                .add("parentName", parentName.orElse(null))
-                .add("parentPhone", parentPhone.orElse(null))
-                .add("parentEmail", parentEmail.orElse(null))
-                .add("appointmentStart", appointmentStart)
-                .add("paymentDate", paymentDate)
-                .add("lastAttendance", lastAttendance)
-                .toString();
+        return new ToStringBuilder(this).add("name", name).add("phone", phone).add("email", email)
+                .add("address", address).add("tags", tags).add("subjects", subjects)
+                .add("guardian", guardian.orElse(null)).add("appointmentStart", appointmentStart)
+                .add("paymentDate", paymentDate).add("lastAttendance", lastAttendance).toString();
     }
 
 }
