@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import seedu.address.commons.core.index.Index;
-import seedu.address.commons.util.CollectionUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -97,50 +96,58 @@ public class EditParentCommand extends EditCommand {
      * corresponding parent field value of the person.
      */
     public static class EditParentDescriptor {
-        private Name parentName;
-        private Phone parentPhone;
-        private Email parentEmail;
+        private Optional<Name> parentName;
+        private Optional<Phone> parentPhone;
+        private Optional<Email> parentEmail;
 
-        public EditParentDescriptor() {}
+        /**
+         * Creates an empty descriptor with no parent fields set for editing.
+         */
+        public EditParentDescriptor() {
+            parentName = Optional.empty();
+            parentPhone = Optional.empty();
+            parentEmail = Optional.empty();
+        }
 
         /**
          * Copy constructor.
          */
         public EditParentDescriptor(EditParentDescriptor toCopy) {
-            setParentName(toCopy.parentName);
-            setParentPhone(toCopy.parentPhone);
-            setParentEmail(toCopy.parentEmail);
+            requireNonNull(toCopy);
+            parentName = toCopy.parentName;
+            parentPhone = toCopy.parentPhone;
+            parentEmail = toCopy.parentEmail;
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(parentName, parentPhone, parentEmail);
+            return parentName.isPresent() || parentPhone.isPresent() || parentEmail.isPresent();
         }
 
         public void setParentName(Name parentName) {
-            this.parentName = parentName;
+            this.parentName = Optional.of(requireNonNull(parentName));
         }
 
         public Optional<Name> getParentName() {
-            return Optional.ofNullable(parentName);
+            return parentName;
         }
 
         public void setParentPhone(Phone parentPhone) {
-            this.parentPhone = parentPhone;
+            this.parentPhone = Optional.of(requireNonNull(parentPhone));
         }
 
         public Optional<Phone> getParentPhone() {
-            return Optional.ofNullable(parentPhone);
+            return parentPhone;
         }
 
         public void setParentEmail(Email parentEmail) {
-            this.parentEmail = parentEmail;
+            this.parentEmail = Optional.of(requireNonNull(parentEmail));
         }
 
         public Optional<Email> getParentEmail() {
-            return Optional.ofNullable(parentEmail);
+            return parentEmail;
         }
 
         @Override
