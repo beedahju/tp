@@ -12,7 +12,6 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.billing.Billing;
-import seedu.address.model.billing.PaymentHistory;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonBuilder;
 
@@ -48,10 +47,8 @@ public class EditPaymentCommand extends EditCommand {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         Person personToEdit = getTargetPerson(model);
-        PaymentHistory updatedPayment = personToEdit.recordPaymentDate(paymentDate);
-        Billing updatedBilling = personToEdit.advancePaymentDueDate();
+        Billing updatedBilling = personToEdit.recordFeesPaidAndAdvanceBilling(paymentDate);
         Person editedPerson = new PersonBuilder(personToEdit)
-                .withPayment(updatedPayment)
                 .withBilling(updatedBilling)
                 .build();
 

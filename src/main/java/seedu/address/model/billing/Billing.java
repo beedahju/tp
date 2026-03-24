@@ -19,18 +19,21 @@ public class Billing {
     private final Recurrence recurrence;
     private final LocalDate paymentDueDate;
     private final double tuitionFee;
+    private final PaymentHistory paymentHistory;
 
     /**
      * Creates a billing record with a tuition fee
      * @param tuitionFee A non-negative amount
      */
-    public Billing(Recurrence recurrence, LocalDate paymentDueDate, double tuitionfee) {
+    public Billing(Recurrence recurrence, LocalDate paymentDueDate, double tuitionfee, PaymentHistory paymentHistory) {
         requireNonNull(recurrence);
         requireNonNull(paymentDueDate);
+        requireNonNull(paymentHistory);
         checkArgument(tuitionfee >= 0, "Tuition fee must be non-negative");
         this.recurrence = recurrence;
         this.paymentDueDate = paymentDueDate;
         this.tuitionFee = tuitionfee;
+        this.paymentHistory = paymentHistory;
     }
 
     /**
@@ -41,7 +44,8 @@ public class Billing {
         return new Billing(
                 Recurrence.MONTHLY,
                 DEFAULT_PAYMENT_DUE_DATE,
-                DEFAULT_TUITION_FEE);
+                DEFAULT_TUITION_FEE,
+                PaymentHistory.EMPTY);
     }
 
     public Recurrence getRecurrence() {
@@ -54,6 +58,10 @@ public class Billing {
 
     public double getTuitionFee() {
         return tuitionFee;
+    }
+
+    public PaymentHistory getPaymentHistory() {
+        return paymentHistory;
     }
 
     public LocalDate getNextDueDate() {
@@ -70,7 +78,7 @@ public class Billing {
      */
     public Billing updatePaymentDueDate(LocalDate newDueDate) {
         requireNonNull(newDueDate);
-        return new Billing(recurrence, newDueDate, tuitionFee);
+        return new Billing(recurrence, newDueDate, tuitionFee, paymentHistory);
     }
 
     /**
@@ -79,7 +87,17 @@ public class Billing {
      * @return new {@code Billing} with advanced due date
      */
     public Billing advanceDueDate() {
-        return new Billing(recurrence, getNextDueDate(), tuitionFee);
+        return new Billing(recurrence, getNextDueDate(), tuitionFee, paymentHistory);
+    }
+
+    /**
+     * Records the date the student pays his/her tuition fees
+     * @param paymentDate a valid {@code LocalDate}
+     * @return new {@code Billing} with updated payment history
+     */
+    public Billing recordTuitionPaid(LocalDate paymentDate) {
+        PaymentHistory updatedPaymentHistory = paymentHistory.recordPayment(paymentDate);
+        return new Billing(recurrence, paymentDueDate, tuitionFee, updatedPaymentHistory);
     }
 
     @Override
@@ -93,19 +111,20 @@ public class Billing {
         Billing otherBilling = (Billing) other;
         return recurrence.equals(otherBilling.recurrence)
                 && paymentDueDate.equals(otherBilling.paymentDueDate)
-                && Double.compare(tuitionFee, otherBilling.tuitionFee) == 0;
+                && Double.compare(tuitionFee, otherBilling.tuitionFee) == 0
+                && paymentHistory.equals(otherBilling.paymentHistory);
     }
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(recurrence, paymentDueDate, tuitionFee);
+        return java.util.Objects.hash(recurrence, paymentDueDate, tuitionFee, paymentHistory);
     }
 
     @Override
     public String toString() {
         return String.format(
-                "Billing[recurrence=%s, paymentDueDate=%s, tuitionFee=%.2f]",
-                recurrence, paymentDueDate, tuitionFee);
+                "Billing[recurrence=%s, paymentDueDate=%s, tuitionFee=%.2f, paymentHistory=%s]",
+                recurrence, paymentDueDate, tuitionFee, paymentHistory);
     }
 }
 

@@ -126,7 +126,7 @@ class JsonAdaptedPerson {
         parentName = source.getParentName().map(pn -> pn.fullName).orElse(null);
         parentPhone = source.getParentPhone().map(pp -> pp.value).orElse(null);
         parentEmail = source.getParentEmail().map(pe -> pe.value).orElse(null);
-        paymentDates = source.getPayment().getPaidDates().stream()
+        paymentDates = source.getPaymentHistory().getPaidDates().stream()
                 .map(value -> value.format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .collect(java.util.stream.Collectors.toList());
         paymentDueDate = source.getBilling().getLastDueDate()
@@ -275,7 +275,8 @@ class JsonAdaptedPerson {
         if (tuitionFee == null) {
             modelBilling = Billing.defaultBilling();
         } else {
-            modelBilling = new Billing(modelRecurrence, modelPaymentDueDate, tuitionFee);
+            modelBilling = new Billing(
+                    modelRecurrence, modelPaymentDueDate, tuitionFee, modelPayment);
         }
 
         // ---------- Last attendance ----------
@@ -295,7 +296,6 @@ class JsonAdaptedPerson {
             .withParentEmail(Optional.ofNullable(modelParentEmail))
             .withAppointmentStart(Optional.ofNullable(modelAppointmentStart))
             .withBilling(modelBilling)
-            .withPayment(modelPayment)
             .withLastAttendance(Optional.ofNullable(modelLastAttendance))
             .build();
     }

@@ -22,7 +22,6 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.billing.Billing;
-import seedu.address.model.billing.PaymentHistory;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.PersonBuilder;
 
@@ -39,11 +38,9 @@ public class EditPaymentCommandTest {
         LocalDate paymentDate = LocalDate.parse(VALID_PAYMENT_DATE);
         EditPaymentCommand editCommand = new EditPaymentCommand(INDEX_FIRST_PERSON, paymentDate);
 
-        PaymentHistory updatedPayment = personToEdit.recordPaymentDate(paymentDate);
-        Billing updatedBilling = personToEdit.advancePaymentDueDate();
+        Billing updatedBilling = personToEdit.recordFeesPaidAndAdvanceBilling(paymentDate);
 
         Person editedPerson = new PersonBuilder(personToEdit)
-                .withPayment(updatedPayment)
                 .withBilling(updatedBilling)
                 .build();
 

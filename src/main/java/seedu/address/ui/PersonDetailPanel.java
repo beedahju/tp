@@ -130,12 +130,12 @@ public class PersonDetailPanel extends UiPart<Region> {
         }
 
         // Display payment history
-        if (person.getPayment().getPaidDates().isEmpty()) {
+        if (person.getPaymentHistory().getPaidDates().isEmpty()) {
             Label noPaymentsLabel = new Label("No payment history");
             noPaymentsLabel.getStyleClass().add("detail-field-value");
             paymentHistoryFlowPane.getChildren().add(noPaymentsLabel);
         } else {
-            person.getPayment().getPaidDates().stream()
+            person.getPaymentHistory().getPaidDates().stream()
                     .sorted(java.util.Comparator.reverseOrder()) // Most recent first
                     .forEach(date -> {
                         Label paymentLabel = new Label(formatDate(date));

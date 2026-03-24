@@ -16,6 +16,7 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.model.billing.Billing;
 import seedu.address.model.billing.PaymentHistory;
 import seedu.address.testutil.PersonBuilder;
 
@@ -100,7 +101,12 @@ public class PersonTest {
         // different payment date -> returns false
         LocalDate differentPaymentDate = LocalDate.parse("2026-01-13");
         PaymentHistory differentPaymentHistory = new PaymentHistory(differentPaymentDate);
-        editedAlice = new PersonBuilder(ALICE).withPayment(differentPaymentHistory).build();
+        Billing updatedBilling = new Billing(
+                ALICE.getBilling().getRecurrence(),
+                differentPaymentDate,
+                ALICE.getBilling().getTuitionFee(),
+                differentPaymentHistory);
+        editedAlice = new PersonBuilder(ALICE).withBilling(updatedBilling).build();
         assertFalse(ALICE.equals(editedAlice));
 
         // different last attendance -> returns false
@@ -122,7 +128,6 @@ public class PersonTest {
                 + ", parentEmail=" + ALICE.getParentEmail().orElse(null)
                 + ", appointmentStart=" + ALICE.getAppointmentStart()
                 + ", billing=" + ALICE.getBilling()
-                + ", payment=" + ALICE.getPayment()
                 + ", lastAttendance=" + ALICE.getLastAttendance()
                 + "}";
 

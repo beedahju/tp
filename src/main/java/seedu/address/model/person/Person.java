@@ -37,7 +37,6 @@ public class Person {
     private final Optional<Phone> parentPhone;
     private final Optional<Email> parentEmail;
     private final Billing billing;
-    private final PaymentHistory payment;
 
     /**
      * Creates a {@code Person} with the given core fields and tags.
@@ -47,7 +46,7 @@ public class Person {
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
         this(name, phone, email, address, tags, new HashSet<>(),
                 Optional.empty(), Optional.empty(), Optional.empty(),
-                Optional.empty(), Billing.defaultBilling(), PaymentHistory.EMPTY, Optional.empty());
+                Optional.empty(), Billing.defaultBilling(), Optional.empty());
     }
 
     /**
@@ -58,12 +57,11 @@ public class Person {
                   Optional<Name> parentName, Optional<Phone> parentPhone, Optional<Email> parentEmail,
                   Optional<LocalDateTime> appointmentStart,
                   Billing billing,
-                  PaymentHistory payment,
                   Optional<LocalDateTime> lastAttendance) {
 
         requireAllNonNull(name, phone, email, address, tags, subjects,
                 parentName, parentPhone, parentEmail,
-                appointmentStart, billing, payment, lastAttendance);
+                appointmentStart, billing, lastAttendance);
 
         this.name = name;
         this.phone = phone;
@@ -77,7 +75,6 @@ public class Person {
         this.appointmentStart = appointmentStart;
         this.lastAttendance = lastAttendance;
         this.billing = billing;
-        this.payment = payment;
     }
 
     public Name getName() {
@@ -104,8 +101,8 @@ public class Person {
         return billing;
     }
 
-    public PaymentHistory getPayment() {
-        return payment;
+    public PaymentHistory getPaymentHistory() {
+        return billing.getPaymentHistory();
     }
 
     public Optional<LocalDateTime> getLastAttendance() {
@@ -162,20 +159,14 @@ public class Person {
     }
 
     /**
-     * Returns an immutable {@code Payment} object with updated payment history
+     * Returns an immutable {@code Billing} object with updated payment history
+     * and advanced billing cycle
      * @param paymentDate A valid {@code LocalDate}
-     * @return {@code Payment} object
-     */
-    public PaymentHistory recordPaymentDate(LocalDate paymentDate) {
-        return payment.recordPayment(paymentDate);
-    }
-
-    /**
-     * Returns an immutable {@code Billing} object with updated payment due date
      * @return {@code Billing} object
      */
-    public Billing advancePaymentDueDate() {
-        return billing.advanceDueDate();
+    public Billing recordFeesPaidAndAdvanceBilling(LocalDate paymentDate) {
+        Billing updatedBilling = billing.recordTuitionPaid(paymentDate);
+        return updatedBilling.advanceDueDate();
     }
 
     /**
@@ -205,7 +196,6 @@ public class Person {
                 && parentEmail.equals(otherPerson.parentEmail)
                 && appointmentStart.equals(otherPerson.appointmentStart)
                 && billing.equals(otherPerson.billing)
-                && payment.equals(otherPerson.payment)
                 && lastAttendance.equals(otherPerson.lastAttendance);
     }
 
@@ -214,7 +204,7 @@ public class Person {
         // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(name, phone, email, address, tags, subjects,
                 parentName, parentPhone, parentEmail,
-                appointmentStart, billing, payment, lastAttendance);
+                appointmentStart, billing, lastAttendance);
     }
 
     @Override
@@ -231,7 +221,6 @@ public class Person {
                 .add("parentEmail", parentEmail.orElse(null))
                 .add("appointmentStart", appointmentStart)
                 .add("billing", billing)
-                .add("payment", payment)
                 .add("lastAttendance", lastAttendance)
                 .toString();
     }
