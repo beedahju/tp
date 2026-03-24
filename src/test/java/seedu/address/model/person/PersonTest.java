@@ -53,6 +53,31 @@ public class PersonTest {
     }
 
     @Test
+    public void constructor_defaultFieldsInitializedCorrectly() {
+        Person person = new PersonBuilder().build();
+
+        // academics
+        assertTrue(person.getAcademics().getSubjects().isEmpty());
+        assertTrue(person.getAcademics().getNotes().isEmpty());
+
+        // optionals
+        assertTrue(person.getParentName().isEmpty());
+        assertTrue(person.getParentPhone().isEmpty());
+        assertTrue(person.getParentEmail().isEmpty());
+        assertTrue(person.getAppointmentStart().isEmpty());
+        assertTrue(person.getPaymentDate().isEmpty());
+        assertTrue(person.getLastAttendance().isEmpty());
+    }
+
+    @Test
+    public void constructor_defaultAcademicsInitialized() {
+        Person person = new PersonBuilder().build();
+
+        assertTrue(person.getAcademics().getSubjects().isEmpty());
+        assertTrue(person.getAcademics().getNotes().isEmpty());
+    }
+
+    @Test
     public void equals() {
         // same values -> returns true
         Person aliceCopy = new PersonBuilder(ALICE).build();
