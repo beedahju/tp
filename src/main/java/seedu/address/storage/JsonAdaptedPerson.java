@@ -19,6 +19,7 @@ import seedu.address.model.academic.Academics;
 import seedu.address.model.billing.Billing;
 import seedu.address.model.billing.PaymentHistory;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Attendance;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -35,8 +36,8 @@ class JsonAdaptedPerson {
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
     private static final String APPOINTMENT_START_MESSAGE_CONSTRAINTS =
             "Appointment start date-time must be in ISO 8601 local format, e.g. 2026-01-13T08:00:00";
-    private static final String LAST_ATTENDANCE_MESSAGE_CONSTRAINTS =
-            "Last attendance date-time must be in ISO 8601 local format, e.g. 2026-01-29T08:00:00";
+    private static final String ATTENDANCE_HISTORY_MESSAGE_CONSTRAINTS =
+            "Attendance history date-time must be in ISO 8601 local format, e.g. 2026-01-29T08:00:00";
     private static final String PAYMENT_DATE_MESSAGE_CONSTRAINTS =
             "Payment date must be in ISO 8601 local date format, e.g. 2026-01-13";
     private static final String PAYMENT_DUE_DATE_MESSAGE_CONSTRAINTS =
@@ -53,7 +54,7 @@ class JsonAdaptedPerson {
     private final String email;
     private final String address;
     private final String appointmentStart;
-    private final String lastAttendance;
+    private final List<String> attendanceHistory;
     private final String parentName; // optional, may be null
     private final String parentPhone; // optional, may be null
     private final String parentEmail; // optional, may be null
@@ -80,7 +81,7 @@ class JsonAdaptedPerson {
             @JsonProperty("paymentDueDate") String paymentDueDate,
             @JsonProperty("paymentRecurrence") String paymentRecurrence,
             @JsonProperty("billingMonthlyRate") Double tuitionFee,
-            @JsonProperty("lastAttendance") String lastAttendance) {
+            @JsonProperty("attendanceHistory") List<String> attendanceHistory) {
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -93,7 +94,7 @@ class JsonAdaptedPerson {
         this.paymentDueDate = paymentDueDate;
         this.paymentRecurrence = paymentRecurrence;
         this.tuitionFee = tuitionFee;
-        this.lastAttendance = lastAttendance;
+        this.attendanceHistory = attendanceHistory;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -111,9 +112,9 @@ class JsonAdaptedPerson {
         appointmentStart = source.getAppointmentStart()
                 .map(value -> value.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                 .orElse(null);
-        lastAttendance = source.getLastAttendance()
+        attendanceHistory = source.getAttendance().getHistory().stream()
             .map(value -> value.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-            .orElse(null);
+            .collect(Collectors.toList());
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -270,13 +271,16 @@ class JsonAdaptedPerson {
                     modelRecurrence, modelPaymentDueDate, tuitionFee, modelPayment);
         }
 
-        // ---------- Last attendance ----------
-        LocalDateTime modelLastAttendance = null;
-        if (lastAttendance != null) {
-            try {
-                modelLastAttendance = LocalDateTime.parse(lastAttendance, DATETIME_FORMATTER);
-            } catch (DateTimeParseException e) {
-                throw new IllegalValueException(LAST_ATTENDANCE_MESSAGE_CONSTRAINTS);
+        // ---------- Attendance ----------
+        Attendance modelAttendance = Attendance.EMPTY;
+        if (attendanceHistory != null && !attendanceHistory.isEmpty()) {
+            for (String attendanceDateTime : attendanceHistory) {
+                try {
+                    modelAttendance = modelAttendance.addAttendance(
+                            LocalDateTime.parse(attendanceDateTime, DATETIME_FORMATTER));
+                } catch (DateTimeParseException e) {
+                    throw new IllegalValueException(ATTENDANCE_HISTORY_MESSAGE_CONSTRAINTS);
+                }
             }
         }
 
@@ -287,7 +291,7 @@ class JsonAdaptedPerson {
             .withParentEmail(modelParentEmail)
             .withAppointmentStart(modelAppointmentStart)
             .withBilling(modelBilling)
-            .withLastAttendance(modelLastAttendance)
+            .withAttendance(modelAttendance)
             .build();
     }
 }
