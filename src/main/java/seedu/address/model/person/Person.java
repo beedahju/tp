@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.academic.Academics;
 import seedu.address.model.billing.Billing;
@@ -32,7 +33,7 @@ public class Person {
     private final Set<Tag> tags = new HashSet<>();
     private final Academics academics;
     private final Optional<LocalDateTime> appointmentStart;
-    private final Optional<LocalDateTime> lastAttendance;
+    private final Attendance attendance;
     private final Optional<Name> parentName;
     private final Optional<Phone> parentPhone;
     private final Optional<Email> parentEmail;
@@ -59,7 +60,7 @@ public class Person {
         this.parentEmail = Optional.empty();
         this.appointmentStart = Optional.empty();
         this.billing = Billing.defaultBilling();
-        this.lastAttendance = Optional.empty();
+        this.attendance = Attendance.EMPTY;
     }
 
     /**
@@ -70,11 +71,11 @@ public class Person {
                   Optional<Name> parentName, Optional<Phone> parentPhone, Optional<Email> parentEmail,
                   Optional<LocalDateTime> appointmentStart,
                   Billing billing,
-                  Optional<LocalDateTime> lastAttendance) {
+                                    Attendance attendance) {
 
         requireAllNonNull(name, phone, email, address, tags, academics,
                 parentName, parentPhone, parentEmail,
-                appointmentStart, billing, lastAttendance);
+                                appointmentStart, billing, attendance);
 
         this.name = name;
         this.phone = phone;
@@ -87,8 +88,8 @@ public class Person {
         this.parentName = parentName;
         this.parentPhone = parentPhone;
         this.parentEmail = parentEmail;
-        this.appointmentStart = appointmentStart;
-        this.lastAttendance = lastAttendance;
+        this.appointmentStart = appointmentStart.map(DateTimeUtil::normalizeToMinute);
+        this.attendance = attendance;
         this.billing = billing;
     }
 
@@ -120,8 +121,12 @@ public class Person {
         return billing.getPaymentHistory();
     }
 
+    public Attendance getAttendance() {
+        return attendance;
+    }
+
     public Optional<LocalDateTime> getLastAttendance() {
-        return lastAttendance;
+        return attendance.getLastAttendance();
     }
 
     /**
@@ -207,7 +212,7 @@ public class Person {
                 && parentEmail.equals(otherPerson.parentEmail)
                 && appointmentStart.equals(otherPerson.appointmentStart)
                 && billing.equals(otherPerson.billing)
-                && lastAttendance.equals(otherPerson.lastAttendance);
+                && attendance.equals(otherPerson.attendance);
     }
 
     @Override
@@ -215,7 +220,7 @@ public class Person {
         // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(name, phone, email, address, tags, academics,
                 parentName, parentPhone, parentEmail,
-                appointmentStart, billing, lastAttendance);
+            appointmentStart, billing, attendance);
     }
 
     @Override
@@ -232,7 +237,7 @@ public class Person {
                 .add("parentEmail", parentEmail.orElse(null))
                 .add("appointmentStart", appointmentStart)
                 .add("billing", billing)
-                .add("lastAttendance", lastAttendance)
+                .add("attendance", attendance)
                 .toString();
     }
 

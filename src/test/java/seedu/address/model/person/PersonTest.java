@@ -56,6 +56,7 @@ public class PersonTest {
         assertTrue(person.getParentPhone().isEmpty());
         assertTrue(person.getParentEmail().isEmpty());
         assertTrue(person.getAppointmentStart().isEmpty());
+        assertTrue(person.getAttendance().isEmpty());
         assertTrue(person.getLastAttendance().isEmpty());
     }
 
@@ -199,7 +200,7 @@ public class PersonTest {
         editedAlice = new PersonBuilder(ALICE).withBilling(updatedBilling).build();
         assertFalse(ALICE.equals(editedAlice));
 
-        editedAlice = new PersonBuilder(ALICE).withLastAttendance("2026-01-29T08:00:00").build();
+        editedAlice = new PersonBuilder(ALICE).addAttendance("2026-01-29T08:00:00").build();
         assertFalse(ALICE.equals(editedAlice));
     }
 
@@ -217,7 +218,7 @@ public class PersonTest {
                 + ", parentEmail=" + ALICE.getParentEmail().orElse(null)
                 + ", appointmentStart=" + ALICE.getAppointmentStart()
                 + ", billing=" + ALICE.getBilling()
-                + ", lastAttendance=" + ALICE.getLastAttendance()
+                + ", attendance=" + ALICE.getAttendance()
                 + "}";
 
         assertEquals(expected, ALICE.toString());

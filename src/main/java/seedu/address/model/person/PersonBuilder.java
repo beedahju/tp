@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.model.academic.Academics;
 import seedu.address.model.billing.Billing;
 import seedu.address.model.tag.Tag;
@@ -24,7 +25,7 @@ public class PersonBuilder {
     private Optional<Phone> parentPhone;
     private Optional<Email> parentEmail;
     private Optional<LocalDateTime> appointmentStart;
-    private Optional<LocalDateTime> lastAttendance;
+    private Attendance attendance;
     private Billing billing;
 
     /**
@@ -42,7 +43,7 @@ public class PersonBuilder {
         this.parentPhone = Optional.empty();
         this.parentEmail = Optional.empty();
         this.appointmentStart = Optional.empty();
-        this.lastAttendance = Optional.empty();
+        this.attendance = Attendance.EMPTY;
         this.billing = Billing.defaultBilling();
     }
 
@@ -60,7 +61,7 @@ public class PersonBuilder {
         this.parentPhone = personToCopy.getParentPhone();
         this.parentEmail = personToCopy.getParentEmail();
         this.appointmentStart = personToCopy.getAppointmentStart();
-        this.lastAttendance = personToCopy.getLastAttendance();
+        this.attendance = personToCopy.getAttendance();
         this.billing = personToCopy.getBilling();
     }
 
@@ -172,7 +173,8 @@ public class PersonBuilder {
      * @return this {@code PersonBuilder} instance for method chaining
      */
     public PersonBuilder withAppointmentStart(LocalDateTime appointmentStart) {
-        this.appointmentStart = Optional.ofNullable(appointmentStart);
+        this.appointmentStart = Optional.ofNullable(appointmentStart)
+                .map(DateTimeUtil::normalizeToMinute);
         return this;
     }
 
@@ -187,12 +189,22 @@ public class PersonBuilder {
     }
 
     /**
-     * Sets the last attendance time of the {@code Person} being built.
-     * @param lastAttendance the optional last attendance time
+     * Sets the attendance history of the {@code Person} being built.
+     * @param attendance attendance history value object
      * @return this {@code PersonBuilder} instance for method chaining
      */
-    public PersonBuilder withLastAttendance(LocalDateTime lastAttendance) {
-        this.lastAttendance = Optional.ofNullable(lastAttendance);
+    public PersonBuilder withAttendance(Attendance attendance) {
+        this.attendance = attendance;
+        return this;
+    }
+
+    /**
+     * Adds an attendance time to the {@code Person} being built.
+     * @param attendanceDate attendance date-time to append
+     * @return this {@code PersonBuilder} instance for method chaining
+     */
+    public PersonBuilder addAttendance(LocalDateTime attendanceDate) {
+        this.attendance = this.attendance.addAttendance(attendanceDate);
         return this;
     }
 
@@ -212,6 +224,6 @@ public class PersonBuilder {
                 parentEmail,
                 appointmentStart,
                 billing,
-                lastAttendance);
+                attendance);
     }
 }

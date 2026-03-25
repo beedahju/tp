@@ -9,6 +9,7 @@ import java.util.Set;
 import seedu.address.model.academic.Academics;
 import seedu.address.model.billing.Billing;
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Attendance;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
@@ -38,7 +39,7 @@ public class PersonBuilder {
     private Email parentEmail;
     private LocalDateTime appointmentStart;
     private Billing billing;
-    private LocalDateTime lastAttendance;
+    private Attendance attendance;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -55,7 +56,7 @@ public class PersonBuilder {
         parentEmail = null;
         appointmentStart = null;
         billing = Billing.defaultBilling();
-        lastAttendance = null;
+        attendance = Attendance.EMPTY;
     }
 
     /**
@@ -73,7 +74,7 @@ public class PersonBuilder {
         parentEmail = personToCopy.getParentEmail().orElse(null);
         appointmentStart = personToCopy.getAppointmentStart().orElse(null);
         billing = personToCopy.getBilling();
-        lastAttendance = personToCopy.getLastAttendance().orElse(null);
+        attendance = personToCopy.getAttendance();
     }
 
     /**
@@ -157,10 +158,10 @@ public class PersonBuilder {
     }
 
     /**
-     * Sets the last attendance date-time of the {@code Person} that we are building.
+     * Adds an attendance date-time to the {@code Person} that we are building.
      */
-    public PersonBuilder withLastAttendance(String lastAttendance) {
-        this.lastAttendance = LocalDateTime.parse(lastAttendance);
+    public PersonBuilder addAttendance(String attendanceDateTime) {
+        this.attendance = this.attendance.addAttendance(LocalDateTime.parse(attendanceDateTime));
         return this;
     }
 
@@ -182,6 +183,6 @@ public class PersonBuilder {
                 Optional.ofNullable(parentEmail),
                 Optional.ofNullable(appointmentStart),
                 billing,
-                Optional.ofNullable(lastAttendance));
+                attendance);
     }
 }
