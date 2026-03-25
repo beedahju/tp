@@ -37,7 +37,7 @@ public class PersonBuilder {
     private Name parentName;
     private Phone parentPhone;
     private Email parentEmail;
-    private LocalDateTime appointmentStart;
+    private Set<LocalDateTime> appointmentStarts;
     private Billing billing;
     private Attendance attendance;
 
@@ -54,7 +54,7 @@ public class PersonBuilder {
         parentName = null;
         parentPhone = null;
         parentEmail = null;
-        appointmentStart = null;
+        appointmentStarts = new HashSet<>();
         billing = Billing.defaultBilling();
         attendance = Attendance.EMPTY;
     }
@@ -72,7 +72,7 @@ public class PersonBuilder {
         parentName = personToCopy.getParentName().orElse(null);
         parentPhone = personToCopy.getParentPhone().orElse(null);
         parentEmail = personToCopy.getParentEmail().orElse(null);
-        appointmentStart = personToCopy.getAppointmentStart().orElse(null);
+        appointmentStarts = new HashSet<>(personToCopy.getAppointmentStarts());
         billing = personToCopy.getBilling();
         attendance = personToCopy.getAttendance();
     }
@@ -150,10 +150,13 @@ public class PersonBuilder {
     }
 
     /**
-     * Sets the appointment start date-time of the {@code Person} that we are building.
+     * Sets the appointment start date-times of the {@code Person} that we are building.
      */
-    public PersonBuilder withAppointmentStart(String appointmentStart) {
-        this.appointmentStart = LocalDateTime.parse(appointmentStart);
+    public PersonBuilder withAppointmentStart(String... appointmentStartTimes) {
+        this.appointmentStarts.clear();
+        for (String dateTime : appointmentStartTimes) {
+            this.appointmentStarts.add(LocalDateTime.parse(dateTime));
+        }
         return this;
     }
 
@@ -181,7 +184,7 @@ public class PersonBuilder {
                 Optional.ofNullable(parentName),
                 Optional.ofNullable(parentPhone),
                 Optional.ofNullable(parentEmail),
-                appointmentStart == null ? Set.of() : Set.of(appointmentStart),
+                appointmentStarts,
                 billing,
                 attendance);
     }

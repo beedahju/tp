@@ -146,11 +146,9 @@ public class PersonTest {
 
     @Test
     public void getAppointmentStart_multipleAppointments_returnsEarliest() {
-        Person person = new Person(ALICE.getName(), ALICE.getPhone(), ALICE.getEmail(), ALICE.getAddress(),
-                ALICE.getTags(), ALICE.getAcademics(), ALICE.getParentName(), ALICE.getParentPhone(),
-                ALICE.getParentEmail(),
-                Set.of(LocalDateTime.parse("2026-01-15T08:00:00"), LocalDateTime.parse("2026-01-13T08:00:00")),
-                ALICE.getBilling(), ALICE.getLastAttendance());
+        Person person = new PersonBuilder(ALICE)
+                .withAppointmentStart("2026-01-15T08:00:00", "2026-01-13T08:00:00")
+                .build();
         assertEquals(LocalDateTime.parse("2026-01-13T08:00:00"), person.getAppointmentStart().orElseThrow());
     }
 
