@@ -284,14 +284,18 @@ class JsonAdaptedPerson {
             }
         }
 
-        return new PersonBuilder(modelName, modelPhone, modelEmail, modelAddress, modelTags)
+        PersonBuilder personBuilder = new PersonBuilder(modelName, modelPhone, modelEmail, modelAddress, modelTags)
             .withAcademics(modelAcademics)
             .withParentName(modelParentName)
             .withParentPhone(modelParentPhone)
             .withParentEmail(modelParentEmail)
-            .withAppointmentStart(modelAppointmentStart)
             .withBilling(modelBilling)
-            .withAttendance(modelAttendance)
-            .build();
+            .withAttendance(modelAttendance);
+
+        if (modelAppointmentStart != null) {
+            personBuilder.withAppointmentStarts(modelAppointmentStart);
+        }
+
+        return personBuilder.build();
     }
 }
