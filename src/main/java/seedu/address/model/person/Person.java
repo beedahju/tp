@@ -200,6 +200,14 @@ public class Person {
     }
 
     /**
+     * Returns attendance history with the provided attendance date-time appended.
+     */
+    public Attendance withAddedAttendance(LocalDateTime attendanceDateTime) {
+        requireAllNonNull(attendanceDateTime);
+        return attendance.addAttendance(attendanceDateTime);
+    }
+
+    /**
      * Returns true if both persons have the same identity and data fields.
      * This defines a stronger notion of equality between two persons.
      */

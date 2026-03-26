@@ -198,16 +198,6 @@ public class PersonBuilder {
     }
 
     /**
-     * Adds an attendance time to the {@code Person} being built.
-     * @param attendanceDate attendance date-time to append
-     * @return this {@code PersonBuilder} instance for method chaining
-     */
-    public PersonBuilder addAttendance(LocalDateTime attendanceDate) {
-        this.attendance = this.attendance.addAttendance(attendanceDate);
-        return this;
-    }
-
-    /**
      * Builds a {@code Person} with the current builder state.
      */
     public Person build() {

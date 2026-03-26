@@ -12,6 +12,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonBuilder;
+import seedu.address.model.session.Attendance;
 
 /**
  * Appends an attendance date-time for an existing person in the address book.
@@ -43,8 +44,9 @@ public class EditAttdCommand extends EditCommand {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         Person personToEdit = getTargetPerson(model);
+        Attendance updatedAttendance = personToEdit.withAddedAttendance(attendanceToSet);
         Person editedPerson = new PersonBuilder(personToEdit)
-                .addAttendance(attendanceToSet)
+            .withAttendance(updatedAttendance)
                 .build();
 
         replacePerson(model, personToEdit, editedPerson);

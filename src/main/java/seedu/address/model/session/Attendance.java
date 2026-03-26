@@ -16,7 +16,7 @@ import seedu.address.commons.util.DateTimeUtil;
 /**
  * Immutable attendance history value object.
  */
-public class Attendance {
+public final class Attendance {
 
     public static final Attendance EMPTY = new Attendance();
 
