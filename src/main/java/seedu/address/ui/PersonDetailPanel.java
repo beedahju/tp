@@ -155,7 +155,7 @@ public class PersonDetailPanel extends UiPart<Region> {
         } else {
             person.getAttendance().getHistoryDescending().forEach(attendanceDateTime -> {
                 Label attendanceLabel = new Label(formatDateTime(attendanceDateTime));
-                attendanceLabel.getStyleClass().add("detail-payment-date");
+                attendanceLabel.getStyleClass().add("detail-attendance-date");
                 attendanceHistoryFlowPane.getChildren().add(attendanceLabel);
             });
         }
