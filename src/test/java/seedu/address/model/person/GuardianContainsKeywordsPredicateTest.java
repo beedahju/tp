@@ -64,14 +64,20 @@ public class GuardianContainsKeywordsPredicateTest {
     public void test_guardianPhoneContainsKeywords_returnsTrue() {
         GuardianContainsKeywordsPredicate predicate =
                 new GuardianContainsKeywordsPredicate(Collections.emptyList(), "91234567", null);
-        assertTrue(predicate.test(new PersonBuilder().withParentPhone("91234567").build()));
+        assertTrue(predicate.test(new PersonBuilder()
+                .withParentName("Alice Tan")
+                .withParentPhone("91234567")
+                .build()));
     }
 
     @Test
     public void test_guardianEmailContainsKeywords_returnsTrue() {
         GuardianContainsKeywordsPredicate predicate =
                 new GuardianContainsKeywordsPredicate(Collections.emptyList(), null, "alice@example.com");
-        assertTrue(predicate.test(new PersonBuilder().withParentEmail("alice@example.com").build()));
+        assertTrue(predicate.test(new PersonBuilder()
+                .withParentName("Alice Tan")
+                .withParentEmail("alice@example.com")
+                .build()));
     }
 
     @Test
