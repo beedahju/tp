@@ -54,16 +54,18 @@ public class GuardianContainsKeywordsPredicate implements Predicate<Person> {
         if (phoneKeyword == null) {
             return true;
         }
-        return guardian.getPhone() != null
-                && StringUtil.containsWordIgnoreCase(guardian.getPhone().value, phoneKeyword);
+        return guardian.getPhone()
+                .map(phone -> StringUtil.containsWordIgnoreCase(phone.value, phoneKeyword))
+                .orElse(false);
     }
 
     private boolean matchesEmail(Guardian guardian) {
         if (emailKeyword == null) {
             return true;
         }
-        return guardian.getEmail() != null
-                && StringUtil.containsWordIgnoreCase(guardian.getEmail().value, emailKeyword);
+        return guardian.getEmail()
+                .map(email -> StringUtil.containsWordIgnoreCase(email.value, emailKeyword))
+                .orElse(false);
     }
 
     @Override
