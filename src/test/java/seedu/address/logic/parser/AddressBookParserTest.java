@@ -99,8 +99,8 @@ public class AddressBookParserTest {
         assertTrue(parser.parseCommand("LiSt") instanceof ListCommand);
         assertTrue(parser.parseCommand("HeLP") instanceof HelpCommand);
 
-        DeletePersonCommand command = (DeletePersonCommand) parser
-                .parseCommand("DeLeTe person " + INDEX_FIRST_PERSON.getOneBased());
+        DeletePersonCommand command = (DeletePersonCommand) parser.parseCommand(
+                "DeLeTe " + DeletePersonCommand.SUB_COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new DeletePersonCommand(INDEX_FIRST_PERSON), command);
     }
 

@@ -25,7 +25,7 @@ public class Billing {
      * Creates a billing record with a tuition fee
      * @param tuitionFee A non-negative amount
      */
-    public Billing(Recurrence recurrence, LocalDate paymentDueDate, double tuitionfee, PaymentHistory paymentHistory) {
+    public Billing(Recurrence recurrence, LocalDate paymentDueDate, Double tuitionfee, PaymentHistory paymentHistory) {
         requireNonNull(recurrence);
         requireNonNull(paymentDueDate);
         requireNonNull(paymentHistory);
@@ -52,16 +52,26 @@ public class Billing {
         return recurrence;
     }
 
-    public LocalDate getLastDueDate() {
+    public LocalDate getCurrentDueDate() {
         return paymentDueDate;
     }
 
-    public double getTuitionFee() {
+    public Double getTuitionFee() {
         return tuitionFee;
     }
 
     public PaymentHistory getPaymentHistory() {
         return paymentHistory;
+    }
+
+    /**
+     * Returns a new {@code Billing} object with updated tuition fees
+     * @return {@code Billing} object with updated tuition fees
+     */
+    public Billing updateRate(Double newTuitionFees) {
+        checkArgument(newTuitionFees >= 0, "Tuition fees must be non-negative");
+        return new Billing(
+                getRecurrence(), getCurrentDueDate(), newTuitionFees, getPaymentHistory());
     }
 
     public LocalDate getNextDueDate() {

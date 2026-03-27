@@ -28,14 +28,17 @@ public class EditParentCommand extends EditCommand {
     public static final String SUB_COMMAND_WORD = "parent";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + " " + SUB_COMMAND_WORD
-            + ": Sets the parent details of the person identified by the index number in the \n"
-            + "displayed person list.\n" + "At least one of the optional fields must be provided.\n"
-            + "Parameters: INDEX (must be a positive integer) " + "[" + PREFIX_PARENT_NAME + "PARENT_NAME] " + "["
-            + PREFIX_PARENT_PHONE + "PARENT_PHONE] " + "[" + PREFIX_PARENT_EMAIL + "PARENT_EMAIL]\n" + "Example: "
-            + COMMAND_WORD + " " + SUB_COMMAND_WORD + " 3 " + PREFIX_PARENT_NAME + "John Lim " + PREFIX_PARENT_PHONE
-            + "91234567 " + PREFIX_PARENT_EMAIL + "johnlim@example.com";
+            + ": Sets the parent details of the student identified by the index number in the displayed "
+            + "student list. At least one optional field must be provided.\n"
+            + "Parameters: INDEX (must be a positive integer) "
+            + "[" + PREFIX_PARENT_NAME + "PARENT_NAME] "
+            + "[" + PREFIX_PARENT_PHONE + "PARENT_PHONE] "
+            + "[" + PREFIX_PARENT_EMAIL + "PARENT_EMAIL]\n"
+            + "Example: " + COMMAND_WORD + " " + SUB_COMMAND_WORD + " 3 "
+            + PREFIX_PARENT_NAME + "John Lim " + PREFIX_PARENT_PHONE + "91234567 "
+            + PREFIX_PARENT_EMAIL + "johnlim@example.com";
 
-    public static final String MESSAGE_EDIT_PARENT_SUCCESS = "Edited parent details of Person: %1$s";
+    public static final String MESSAGE_EDIT_PARENT_SUCCESS = "Edited parent details of student: %1$s";
 
     private final EditParentDescriptor editParentDescriptor;
 
@@ -58,19 +61,23 @@ public class EditParentCommand extends EditCommand {
         Person personToEdit = getTargetPerson(model);
         PersonBuilder builder = new PersonBuilder(personToEdit);
 
-        Guardian existing = personToEdit.getGuardian().orElse(null);
-        Name name = editParentDescriptor.getParentName().orElse(existing != null ? existing.getName() : null);
-        Phone phone = editParentDescriptor.getParentPhone().orElse(existing != null ? existing.getPhone() : null);
-        Email email = editParentDescriptor.getParentEmail().orElse(existing != null ? existing.getEmail() : null);
+        Optional<Guardian> existingGuardian = personToEdit.getGuardian();
+        Name name = editParentDescriptor.getParentName()
+                .orElse(existingGuardian.map(Guardian::getName).orElse(null));
+        Phone phone = editParentDescriptor.getParentPhone()
+                .orElse(existingGuardian.flatMap(Guardian::getPhone).orElse(null));
+        Email email = editParentDescriptor.getParentEmail()
+                .orElse(existingGuardian.flatMap(Guardian::getEmail).orElse(null));
 
-        if (name != null || phone != null || email != null) {
+        if (name != null) {
             builder.withGuardian(new Guardian(name, phone, email));
         }
 
         Person editedPerson = builder.build();
 
         replacePerson(model, personToEdit, editedPerson);
-        return new CommandResult(String.format(MESSAGE_EDIT_PARENT_SUCCESS, Messages.format(editedPerson)),
+        return new CommandResult(
+                String.format(MESSAGE_EDIT_PARENT_SUCCESS, Messages.format(editedPerson)),
                 editedPerson);
     }
 

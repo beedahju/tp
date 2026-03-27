@@ -13,6 +13,7 @@ import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BOB;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,6 +49,7 @@ public class PersonTest {
         // optionals default
         assertTrue(person.getGuardian().isEmpty());
         assertTrue(person.getAppointmentStart().isEmpty());
+        assertTrue(person.getAttendance().isEmpty());
         assertTrue(person.getLastAttendance().isEmpty());
     }
 
@@ -94,6 +96,21 @@ public class PersonTest {
         assertThrows(UnsupportedOperationException.class, () -> {
             person.getTags().stream().findAny().ifPresent(person.getTags()::remove);
         });
+    }
+
+    @Test
+    public void getAppointmentStarts_modifySet_throwsUnsupportedOperationException() {
+        Person person = new PersonBuilder().withAppointmentStart("2026-01-13T08:00:00").build();
+        assertThrows(UnsupportedOperationException.class, () -> person.getAppointmentStarts()
+                .add(LocalDateTime.parse("2026-01-14T08:00:00")));
+    }
+
+    @Test
+    public void getAppointmentStart_multipleAppointments_returnsEarliest() {
+        Person person = new PersonBuilder(ALICE)
+                .withAppointmentStart("2026-01-15T08:00:00", "2026-01-13T08:00:00")
+                .build();
+        assertEquals(LocalDateTime.parse("2026-01-13T08:00:00"), person.getAppointmentStart().orElseThrow());
     }
 
     @Test
@@ -151,17 +168,25 @@ public class PersonTest {
         editedAlice = new PersonBuilder(ALICE).withBilling(updatedBilling).build();
         assertFalse(ALICE.equals(editedAlice));
 
-        editedAlice = new PersonBuilder(ALICE).withLastAttendance("2026-01-29T08:00:00").build();
+        editedAlice = new PersonBuilder(ALICE).addAttendance("2026-01-29T08:00:00").build();
         assertFalse(ALICE.equals(editedAlice));
     }
 
     @Test
     public void toStringMethod() {
-        String expected = Person.class.getCanonicalName() + "{name=" + ALICE.getName() + ", phone=" + ALICE.getPhone()
-                + ", email=" + ALICE.getEmail() + ", address=" + ALICE.getAddress() + ", tags=" + ALICE.getTags()
-                + ", academics=" + ALICE.getAcademics() + ", guardian=" + ALICE.getGuardian().orElse(null)
-                + ", appointmentStart=" + ALICE.getAppointmentStart() + ", billing=" + ALICE.getBilling()
-                + ", lastAttendance=" + ALICE.getLastAttendance() + "}";
+        String expected = Person.class.getCanonicalName()
+                + "{name=" + ALICE.getName()
+                + ", phone=" + ALICE.getPhone()
+                + ", email=" + ALICE.getEmail()
+                + ", address=" + ALICE.getAddress()
+                + ", tags=" + ALICE.getTags()
+                + ", academics=" + ALICE.getAcademics()
+                + ", guardian=" + ALICE.getGuardian().orElse(null)
+                + ", appointmentStart=" + ALICE.getAppointmentStart()
+                + ", appointmentStarts=" + ALICE.getAppointmentStarts()
+                + ", billing=" + ALICE.getBilling()
+                + ", attendance=" + ALICE.getAttendance()
+                + "}";
 
         assertEquals(expected, ALICE.toString());
     }

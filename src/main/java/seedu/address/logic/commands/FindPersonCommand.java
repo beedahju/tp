@@ -14,10 +14,10 @@ import seedu.address.model.person.NameContainsKeywordsPredicate;
  */
 public class FindPersonCommand extends FindCommand {
 
-    public static final String SUB_COMMAND_WORD = "person";
+    public static final String SUB_COMMAND_WORD = "student";
 
     public static final String MESSAGE_USAGE = FindCommand.COMMAND_WORD + " " + SUB_COMMAND_WORD
-            + ": Finds all persons whose names contain any of the specified keywords "
+            + ": Finds all students whose names contain any of the specified keywords "
             + "(case-insensitive) and displays them as a list with index numbers.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + FindCommand.COMMAND_WORD + " " + SUB_COMMAND_WORD + " alice bob charlie";
@@ -31,7 +31,7 @@ public class FindPersonCommand extends FindCommand {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
-        model.updateFilteredPersonList(predicate);
+        model.updateFilteredPersonListWithAnd(predicate);
         model.setListDisplayMode(ListDisplayMode.PERSON);
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));

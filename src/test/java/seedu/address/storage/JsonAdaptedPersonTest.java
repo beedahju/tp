@@ -5,6 +5,7 @@ import static seedu.address.storage.JsonAdaptedPerson.MISSING_FIELD_MESSAGE_FORM
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.BENSON;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -32,7 +33,7 @@ public class JsonAdaptedPersonTest {
     private static final String INVALID_PAYMENT_DUE_DATE = "2026-02-29T02:00:00";
     private static final String INVALID_PAYMENT_RECURRENCE = "hello";
     private static final Double INVALID_TUITION_FEE = -5.0;
-    private static final String INVALID_LAST_ATTENDANCE = "2026-01-29T33:00:00";
+    private static final String INVALID_ATTENDANCE_ENTRY = "2026-01-29T33:00:00";
 
     private static final String VALID_NAME = BENSON.getName().toString();
     private static final String VALID_PHONE = BENSON.getPhone().toString();
@@ -43,13 +44,16 @@ public class JsonAdaptedPersonTest {
     private static final String VALID_PAYMENT_DUE_DATE = "2026-03-30";
     private static final String VALID_PAYMENT_RECURRENCE = "MONTHLY";
     private static final Double VALID_TUITION_FEE = 25.0;
-    private static final String VALID_LAST_ATTENDANCE = "2026-01-29T08:00:00";
-    private static final String VALID_PARENT_NAME = BENSON.getGuardian().map(g -> g.getName()).map(n -> n.fullName)
-            .orElse(null);
-    private static final String VALID_PARENT_PHONE = BENSON.getGuardian().map(g -> g.getPhone()).map(p -> p.value)
-            .orElse(null);
-    private static final String VALID_PARENT_EMAIL = BENSON.getGuardian().map(g -> g.getEmail()).map(e -> e.value)
-            .orElse(null);
+    private static final String VALID_ATTENDANCE_ENTRY = "2026-01-29T08:00:00";
+    private static final List<String> VALID_ATTENDANCE_HISTORY = List.of(
+            "2026-01-28T08:00:00",
+            VALID_ATTENDANCE_ENTRY);
+    private static final String VALID_PARENT_NAME = BENSON.getGuardian()
+            .map(g -> g.getName().fullName).orElse(null);
+    private static final String VALID_PARENT_PHONE = BENSON.getGuardian()
+            .flatMap(g -> g.getPhone()).map(p -> p.value).orElse(null);
+    private static final String VALID_PARENT_EMAIL = BENSON.getGuardian()
+            .flatMap(g -> g.getEmail()).map(e -> e.value).orElse(null);
     private static final List<JsonAdaptedTag> VALID_TAGS = BENSON.getTags().stream().map(JsonAdaptedTag::new)
             .collect(Collectors.toList());
     private static final JsonAdaptedAcademics VALID_ACADEMICS = new JsonAdaptedAcademics(BENSON.getAcademics());
@@ -69,7 +73,7 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
         String expectedMessage = Name.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -83,7 +87,7 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -97,7 +101,7 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
         String expectedMessage = Phone.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -111,7 +115,7 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -125,7 +129,7 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
         String expectedMessage = Email.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -139,7 +143,7 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -153,7 +157,8 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
+
         String expectedMessage = Address.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -167,7 +172,8 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
+
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -183,7 +189,8 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
+
         assertThrows(IllegalValueException.class, person::toModelType);
     }
 
@@ -196,7 +203,7 @@ public class JsonAdaptedPersonTest {
                         INVALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
         assertThrows(IllegalValueException.class, person::toModelType);
     }
 
@@ -209,7 +216,7 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         INVALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
         assertThrows(IllegalValueException.class, person::toModelType);
     }
 
@@ -222,7 +229,7 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, INVALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
         assertThrows(IllegalValueException.class, person::toModelType);
     }
 
@@ -235,7 +242,7 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         INVALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
         assertThrows(IllegalValueException.class, person::toModelType);
     }
 
@@ -248,12 +255,12 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, INVALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
         assertThrows(IllegalArgumentException.class, person::toModelType);
     }
 
     @Test
-    public void toModelType_invalidLastAttendance_throwsIllegalValueException() {
+    public void toModelType_invalidAttendanceHistory_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
                         VALID_TAGS, VALID_ACADEMICS,
@@ -261,13 +268,42 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        INVALID_LAST_ATTENDANCE);
+                        List.of(INVALID_ATTENDANCE_ENTRY));
         assertThrows(IllegalValueException.class, person::toModelType);
     }
 
     @Test
-    public void toModelType_invalidSubjects_throwsIllegalValueException() {
+    public void toModelType_validAttendanceHistory_usesAttendanceHistory() throws Exception {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
+                VALID_TAGS, VALID_ACADEMICS,
+                VALID_PARENT_NAME, VALID_PARENT_PHONE, VALID_PARENT_EMAIL,
+                VALID_APPOINTMENT_START,
+                VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
+                VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
+                VALID_ATTENDANCE_HISTORY);
 
+        assertEquals(2, person.toModelType().getAttendance().getHistory().size());
+        assertEquals(LocalDateTime.parse(VALID_ATTENDANCE_ENTRY),
+                person.toModelType().getLastAttendance().orElseThrow());
+    }
+
+    @Test
+    public void toModelType_attendanceHistory_roundTripsSuccessfully() throws Exception {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
+                VALID_TAGS, VALID_ACADEMICS,
+                VALID_PARENT_NAME, VALID_PARENT_PHONE, VALID_PARENT_EMAIL,
+                VALID_APPOINTMENT_START,
+                VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
+                VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
+                VALID_ATTENDANCE_HISTORY);
+
+        assertEquals(2, person.toModelType().getAttendance().getHistory().size());
+        assertEquals(LocalDateTime.parse(VALID_ATTENDANCE_ENTRY),
+                person.toModelType().getLastAttendance().orElseThrow());
+    }
+
+    @Test
+    public void toModelType_invalidSubjects_throwsIllegalValueException() {
         List<JsonAdaptedSubject> invalidSubjects = BENSON.getAcademics().getSubjects().stream()
                 .map(JsonAdaptedSubject::new)
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -281,7 +317,7 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
 
         assertThrows(IllegalValueException.class, person::toModelType);
     }
@@ -295,7 +331,7 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
         String expectedMessage = Name.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -309,7 +345,7 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
         String expectedMessage = Phone.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -323,7 +359,7 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
         String expectedMessage = Email.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -348,7 +384,7 @@ public class JsonAdaptedPersonTest {
                         VALID_APPOINTMENT_START,
                         VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                         VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
-                        VALID_LAST_ATTENDANCE);
+                        List.of(VALID_ATTENDANCE_ENTRY));
 
         assertEquals(new JsonAdaptedPerson(person.toModelType()).toModelType(), person.toModelType());
     }

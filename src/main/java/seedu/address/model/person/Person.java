@@ -9,11 +9,14 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.academic.Academics;
 import seedu.address.model.billing.Billing;
 import seedu.address.model.billing.PaymentHistory;
+import seedu.address.model.session.Attendance;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -31,8 +34,8 @@ public class Person {
     // Data fields
     private final Set<Tag> tags = new HashSet<>();
     private final Academics academics;
-    private final Optional<LocalDateTime> appointmentStart;
-    private final Optional<LocalDateTime> lastAttendance;
+    private final Set<LocalDateTime> appointmentStarts = new TreeSet<>();
+    private final Attendance attendance;
     private final Optional<Guardian> guardian;
     private final Billing billing;
 
@@ -51,11 +54,9 @@ public class Person {
         this.tags.addAll(tags);
 
         this.academics = new Academics();
-
         this.guardian = Optional.empty();
-        this.appointmentStart = Optional.empty();
         this.billing = Billing.defaultBilling();
-        this.lastAttendance = Optional.empty();
+        this.attendance = Attendance.EMPTY;
     }
 
     /**
@@ -64,12 +65,10 @@ public class Person {
     public Person(Name name, Phone phone, Email email, Address address,
                   Set<Tag> tags, Academics academics,
                   Optional<Guardian> guardian,
-                  Optional<LocalDateTime> appointmentStart,
-                  Billing billing,
-                  Optional<LocalDateTime> lastAttendance) {
-
+                  Set<LocalDateTime> appointmentStarts,
+                  Billing billing, Attendance attendance) {
         requireAllNonNull(name, phone, email, address, tags, academics,
-                guardian, appointmentStart, billing, lastAttendance);
+                guardian, appointmentStarts, billing, attendance);
 
         this.name = name;
         this.phone = phone;
@@ -78,10 +77,12 @@ public class Person {
         this.tags.addAll(tags);
 
         this.academics = academics;
-
         this.guardian = guardian;
-        this.appointmentStart = appointmentStart;
-        this.lastAttendance = lastAttendance;
+        appointmentStarts.forEach(Objects::requireNonNull);
+        appointmentStarts.stream()
+                .map(DateTimeUtil::normalizeToMinute)
+                .forEach(this.appointmentStarts::add);
+        this.attendance = attendance;
         this.billing = billing;
     }
 
@@ -101,8 +102,18 @@ public class Person {
         return address;
     }
 
+    /**
+     * Returns the earliest appointment start, or empty if no appointments exist.
+     */
     public Optional<LocalDateTime> getAppointmentStart() {
-        return appointmentStart;
+        return appointmentStarts.stream().min(LocalDateTime::compareTo);
+    }
+
+    /**
+     * Returns an immutable appointment set.
+     */
+    public Set<LocalDateTime> getAppointmentStarts() {
+        return Collections.unmodifiableSet(appointmentStarts);
     }
 
     public Billing getBilling() {
@@ -113,8 +124,19 @@ public class Person {
         return billing.getPaymentHistory();
     }
 
+    public Attendance getAttendance() {
+        return attendance;
+    }
+
+    /**
+     * Returns attendance history in insertion order.
+     */
+    public Set<LocalDateTime> getAttendanceHistory() {
+        return attendance.getHistory();
+    }
+
     public Optional<LocalDateTime> getLastAttendance() {
-        return lastAttendance;
+        return attendance.getLastAttendance();
     }
 
     /**
@@ -150,13 +172,22 @@ public class Person {
 
     /**
      * Returns an immutable {@code Billing} object with updated payment history
-     * and advanced billing cycle
+     * and advanced billing cycle.
+     *
      * @param paymentDate A valid {@code LocalDate}
      * @return {@code Billing} object
      */
     public Billing recordFeesPaidAndAdvanceBilling(LocalDate paymentDate) {
         Billing updatedBilling = billing.recordTuitionPaid(paymentDate);
         return updatedBilling.advanceDueDate();
+    }
+
+    /**
+     * Returns attendance history with the provided attendance date-time appended.
+     */
+    public Attendance addAttendance(LocalDateTime attendanceDateTime) {
+        requireAllNonNull(attendanceDateTime);
+        return attendance.addAttendance(attendanceDateTime);
     }
 
     /**
@@ -169,7 +200,6 @@ public class Person {
             return true;
         }
 
-        // instanceof handles nulls
         if (!(other instanceof Person)) {
             return false;
         }
@@ -182,16 +212,15 @@ public class Person {
                 && tags.equals(otherPerson.tags)
                 && academics.equals(otherPerson.academics)
                 && guardian.equals(otherPerson.guardian)
-                && appointmentStart.equals(otherPerson.appointmentStart)
+                && appointmentStarts.equals(otherPerson.appointmentStarts)
                 && billing.equals(otherPerson.billing)
-                && lastAttendance.equals(otherPerson.lastAttendance);
+                && attendance.equals(otherPerson.attendance);
     }
 
     @Override
     public int hashCode() {
-        // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(name, phone, email, address, tags, academics,
-                guardian, appointmentStart, billing, lastAttendance);
+                guardian, appointmentStarts, billing, attendance);
     }
 
     @Override
@@ -204,10 +233,10 @@ public class Person {
                 .add("tags", tags)
                 .add("academics", academics)
                 .add("guardian", guardian.orElse(null))
-                .add("appointmentStart", appointmentStart)
+                .add("appointmentStart", getAppointmentStart())
+                .add("appointmentStarts", appointmentStarts)
                 .add("billing", billing)
-                .add("lastAttendance", lastAttendance)
+                .add("attendance", attendance)
                 .toString();
     }
-
 }
