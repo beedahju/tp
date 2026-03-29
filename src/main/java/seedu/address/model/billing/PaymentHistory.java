@@ -1,6 +1,7 @@
 package seedu.address.model.billing;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.AppUtil.checkArgument;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -52,9 +53,7 @@ public class PaymentHistory {
      */
     public PaymentHistory removePayment(LocalDate date) {
         requireNonNull(date);
-        if (!hasPaidOn(date)) {
-            throw new IllegalArgumentException("Payment date not found");
-        }
+        checkArgument(!hasPaidOn(date), "Payment date not found");
         Set<LocalDate> next = new LinkedHashSet<>(paidDates);
         next.remove(date);
         return new PaymentHistory(next.toArray(LocalDate[]::new));
