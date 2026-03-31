@@ -7,7 +7,6 @@ import static seedu.address.testutil.TypicalPersons.BENSON;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -334,9 +333,9 @@ public class JsonAdaptedPersonTest {
         Person modelPerson = person.toModelType();
 
         assertEquals(2, modelPerson.getNextAppointment().orElseThrow().getAttendance().getRecords().size());
-        assertEquals(LocalDate.parse("2026-01-29"),
+        assertEquals(LocalDateTime.parse("2026-01-29T08:00:00"),
                 modelPerson.getNextAppointment().orElseThrow().getAttendance().getLastRecord().orElseThrow()
-                        .getRecordedDate());
+                        .getRecordedAt());
     }
 
     @Test
@@ -351,9 +350,9 @@ public class JsonAdaptedPersonTest {
         Person modelPerson = person.toModelType();
 
         assertEquals(2, modelPerson.getNextAppointment().orElseThrow().getAttendance().getRecords().size());
-        assertEquals(LocalDate.parse("2026-01-29"),
+        assertEquals(LocalDateTime.parse("2026-01-29T08:00:00"),
                 modelPerson.getNextAppointment().orElseThrow().getAttendance().getLastRecord().orElseThrow()
-                        .getRecordedDate());
+                        .getRecordedAt());
     }
 
     @Test

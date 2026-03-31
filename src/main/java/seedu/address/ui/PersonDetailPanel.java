@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -211,7 +212,10 @@ public class PersonDetailPanel extends UiPart<Region> {
 
     private String formatAttendance(Attendance attendance) {
         String status = attendance.hasAttended() ? "Present" : "Absent";
-        return status + ": " + formatDate(attendance.getRecordedDate());
+        LocalDateTime recordedAt = attendance.getRecordedAt();
+        return status + ": " + (recordedAt.toLocalTime().equals(LocalTime.MIDNIGHT)
+                ? formatDate(recordedAt.toLocalDate())
+                : formatDateTime(recordedAt));
     }
 
     private String formatAppointment(int appointmentIndex, Appointment appointment) {

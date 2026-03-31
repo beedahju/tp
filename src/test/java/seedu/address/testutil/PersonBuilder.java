@@ -205,7 +205,7 @@ public class PersonBuilder {
         }
         Appointment currentAppointment = appointments.get(appointments.size() - 1);
         AttendanceRecords updatedAttendance = currentAppointment.getAttendance()
-                .addAttendance(new Attendance(true, LocalDateTime.parse(attendanceDateTime).toLocalDate()));
+                .addAttendance(new Attendance(true, LocalDateTime.parse(attendanceDateTime)));
         ArrayList<Appointment> updatedAppointments = new ArrayList<>(appointments);
         updatedAppointments.set(updatedAppointments.size() - 1, currentAppointment.withAttendance(updatedAttendance));
         this.appointments = List.copyOf(updatedAppointments);

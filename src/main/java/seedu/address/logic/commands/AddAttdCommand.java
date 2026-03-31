@@ -2,7 +2,9 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +34,8 @@ public class AddAttdCommand extends AddCommand {
             + ": Records attendance for the selected appointment of the student identified by the index number used "
             + "in the displayed student list.\n"
             + "Parameters: PERSON_INDEX (must be a positive integer) APPT_INDEX (must be a positive integer) "
-            + "[y|n] [d/DATE]\n"
-            + "Example: " + COMMAND_WORD + " " + SUB_COMMAND_WORD + " 1 2 d/2026-01-29";
+            + "[y|n] [d/DATE_OR_DATE_TIME]\n"
+            + "Example: " + COMMAND_WORD + " " + SUB_COMMAND_WORD + " 1 2 d/2026-01-29T08:00:00";
 
     public static final String MESSAGE_ADD_ATTD_SUCCESS = "Recorded attendance for %1$s: %2$s on %3$s";
     public static final String MESSAGE_INVALID_APPOINTMENT_INDEX =
@@ -41,25 +43,27 @@ public class AddAttdCommand extends AddCommand {
     public static final String MESSAGE_NON_RECURRING_ATTENDANCE_ALREADY_RECORDED =
             "Attendance has already been recorded for this non-recurring appointment.";
     public static final String MESSAGE_FUTURE_ATTENDANCE_NOT_ALLOWED =
-            "Attendance cannot be recorded for a future date.";
+            "Attendance cannot be recorded for a future date or time.";
+
+    private static final DateTimeFormatter ATTENDANCE_DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     private final Index personIndex;
     private final Index appointmentIndex;
     private final boolean hasAttended;
-    private final Optional<LocalDate> recordedDateOverride;
+    private final Optional<LocalDateTime> recordedAt;
 
     /**
      * Creates an {@code AddAttdCommand}.
      */
     public AddAttdCommand(Index personIndex, Index appointmentIndex,
-                          boolean hasAttended, Optional<LocalDate> recordedDateOverride) {
+                          boolean hasAttended, Optional<LocalDateTime> recordedAt) {
         requireNonNull(personIndex);
         requireNonNull(appointmentIndex);
-        requireNonNull(recordedDateOverride);
+        requireNonNull(recordedAt);
         this.personIndex = personIndex;
         this.appointmentIndex = appointmentIndex;
         this.hasAttended = hasAttended;
-        this.recordedDateOverride = recordedDateOverride;
+        this.recordedAt = recordedAt;
     }
 
     @Override
@@ -70,12 +74,12 @@ public class AddAttdCommand extends AddCommand {
             throw new CommandException(MESSAGE_NON_RECURRING_ATTENDANCE_ALREADY_RECORDED);
         }
 
-        LocalDate defaultRecordedDate = appointment.getNext().toLocalDate();
-        LocalDate recordedDate = recordedDateOverride.orElse(defaultRecordedDate);
-        if (recordedDate.isAfter(LocalDate.now())) {
+        LocalDateTime effectiveRecordedAt = recordedAt
+                .orElseGet(() -> appointment.getNext().toLocalDate().atStartOfDay());
+        if (effectiveRecordedAt.isAfter(LocalDateTime.now())) {
             throw new CommandException(MESSAGE_FUTURE_ATTENDANCE_NOT_ALLOWED);
         }
-        Attendance attendanceRecord = new Attendance(hasAttended, recordedDate);
+        Attendance attendanceRecord = new Attendance(hasAttended, effectiveRecordedAt);
         AttendanceRecords updatedAttendance = appointment.getAttendance().addAttendance(attendanceRecord);
         List<Appointment> updatedAppointments = new ArrayList<>(personToEdit.getAppointments());
         int currentAppointmentIndex = updatedAppointments.indexOf(appointment);
@@ -86,7 +90,15 @@ public class AddAttdCommand extends AddCommand {
 
         model.setPerson(personToEdit, editedPerson);
         return new CommandResult(String.format(MESSAGE_ADD_ATTD_SUCCESS,
-                Messages.format(editedPerson), hasAttended ? "present" : "absent", recordedDate), editedPerson);
+                Messages.format(editedPerson), hasAttended ? "present" : "absent",
+                formatRecordedAt(effectiveRecordedAt)), editedPerson);
+    }
+
+    private String formatRecordedAt(LocalDateTime recordedAt) {
+        if (recordedAt.toLocalTime().equals(LocalTime.MIDNIGHT)) {
+            return recordedAt.toLocalDate().toString();
+        }
+        return recordedAt.format(ATTENDANCE_DATE_TIME_FORMATTER);
     }
 
     private Person getTargetPerson(Model model) throws CommandException {
@@ -133,16 +145,19 @@ public class AddAttdCommand extends AddCommand {
         return personIndex.equals(otherCommand.personIndex)
                 && appointmentIndex.equals(otherCommand.appointmentIndex)
                 && hasAttended == otherCommand.hasAttended
-                && recordedDateOverride.equals(otherCommand.recordedDateOverride);
+                && recordedAt.equals(otherCommand.recordedAt);
     }
 
     @Override
     public String toString() {
+        String formattedRecordedAt = recordedAt
+                .map(this::formatRecordedAt)
+                .orElse(null);
         return new ToStringBuilder(this)
                 .add("personIndex", personIndex)
                 .add("appointmentIndex", appointmentIndex)
                 .add("hasAttended", hasAttended)
-                .add("recordedDateOverride", recordedDateOverride.orElse(null))
+                .add("recordedAt", formattedRecordedAt)
                 .toString();
     }
 }

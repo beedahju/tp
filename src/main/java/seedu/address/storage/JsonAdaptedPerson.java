@@ -376,10 +376,8 @@ class JsonAdaptedPerson {
         } else if (attendanceHistory != null && !attendanceHistory.isEmpty()) {
             for (String attendanceDateTime : attendanceHistory) {
                 try {
-                    LocalDate attendanceDate = LocalDateTime.parse(
-                            attendanceDateTime, DATETIME_FORMATTER).toLocalDate();
                     modelAppointmentAttendanceRecords = modelAppointmentAttendanceRecords.addAttendance(
-                            new Attendance(true, attendanceDate));
+                            new Attendance(true, LocalDateTime.parse(attendanceDateTime, DATETIME_FORMATTER)));
                 } catch (DateTimeParseException e) {
                     throw new IllegalValueException(ATTENDANCE_HISTORY_MESSAGE_CONSTRAINTS);
                 }

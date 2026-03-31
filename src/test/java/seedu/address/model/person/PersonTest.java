@@ -150,13 +150,13 @@ public class PersonTest {
                 .withAppointment("2026-01-13T08:00:00", "Algebra", Recurrence.NONE)
                 .addAttendance("2026-01-29T08:00:00")
                 .build();
-        assertEquals(LocalDate.parse("2026-01-29"),
+        assertEquals(LocalDateTime.parse("2026-01-29T08:00:00"),
                 person.getNextAppointment()
                         .orElseThrow()
                         .getAttendance()
                         .getLastRecord()
                         .orElseThrow()
-                        .getRecordedDate()
+                        .getRecordedAt()
         );
     }
 

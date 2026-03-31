@@ -2,13 +2,15 @@ package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.ATTENDANCE_DATE_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.ATTENDANCE_DATE_TIME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_ATTENDANCE_DATE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ATTENDANCE_DATE;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ATTENDANCE_DATE_TIME;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -41,7 +43,8 @@ public class AddAttdCommandParserTest {
 
     @Test
     public void parse_invalidDate_failure() {
-        assertParseFailure(parser, "1 1 y" + INVALID_ATTENDANCE_DATE_DESC, ParserUtil.MESSAGE_INVALID_DATE);
+        assertParseFailure(parser, "1 1 y" + INVALID_ATTENDANCE_DATE_DESC,
+                AddAttdCommandParser.MESSAGE_INVALID_ATTENDANCE_DATE_OR_TIME);
     }
 
     @Test
@@ -72,7 +75,7 @@ public class AddAttdCommandParserTest {
         Index targetAppointmentIndex = INDEX_FIRST_PERSON;
         assertParseSuccess(parser, "1 1" + ATTENDANCE_DATE_DESC,
                 new AddAttdCommand(targetPersonIndex, targetAppointmentIndex, true,
-                        Optional.of(LocalDate.parse(VALID_ATTENDANCE_DATE))));
+                        Optional.of(LocalDateTime.parse(VALID_ATTENDANCE_DATE + "T00:00:00"))));
     }
 
     @Test
@@ -81,7 +84,16 @@ public class AddAttdCommandParserTest {
         Index targetAppointmentIndex = INDEX_FIRST_PERSON;
         assertParseSuccess(parser, "1 1 y" + ATTENDANCE_DATE_DESC,
                 new AddAttdCommand(targetPersonIndex, targetAppointmentIndex, true,
-                        Optional.of(LocalDate.parse(VALID_ATTENDANCE_DATE))));
+                        Optional.of(LocalDateTime.parse(VALID_ATTENDANCE_DATE + "T00:00:00"))));
+    }
+
+    @Test
+    public void parse_presentWithDateTime_success() {
+        Index targetPersonIndex = INDEX_FIRST_PERSON;
+        Index targetAppointmentIndex = INDEX_FIRST_PERSON;
+        assertParseSuccess(parser, "1 1 y" + ATTENDANCE_DATE_TIME_DESC,
+                new AddAttdCommand(targetPersonIndex, targetAppointmentIndex, true,
+                        Optional.of(LocalDateTime.parse(VALID_ATTENDANCE_DATE_TIME))));
     }
 
     @Test
