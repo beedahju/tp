@@ -4,8 +4,8 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SUBJECT;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import seedu.address.logic.commands.FindAcadCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -58,10 +58,17 @@ public class FindAcadCommandParser implements Parser<FindAcadCommand> {
                     MESSAGE_INVALID_COMMAND_FORMAT, FindAcadCommand.MESSAGE_USAGE));
         }
 
-        Set<Subject> subjects = argMultimap.getAllValues(PREFIX_SUBJECT).stream()
-                .map(String::trim)
-                .map(name -> new Subject(name, null))
-                .collect(Collectors.toSet());
+        Set<Subject> subjects = new HashSet<>();
+
+        for (String raw : argMultimap.getAllValues(PREFIX_SUBJECT)) {
+            String name = raw.trim();
+
+            if (!Subject.isValidSubjectName(name)) {
+                throw new ParseException(Subject.MESSAGE_CONSTRAINTS);
+            }
+
+            subjects.add(new Subject(name, null));
+        }
 
         return new FindAcadCommand(
                 new SubjectContainsKeywordsPredicate(subjects));
