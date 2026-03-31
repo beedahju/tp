@@ -15,7 +15,6 @@ import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.academic.Academics;
-import seedu.address.model.attendance.AttendanceRecords;
 import seedu.address.model.billing.Billing;
 import seedu.address.model.billing.PaymentHistory;
 import seedu.address.model.session.Appointment;
@@ -102,7 +101,11 @@ public class Person {
         return address;
     }
 
-    public Optional<Appointment> getAppointment() {
+    /**
+     * Returns the next upcoming appointment for this person.
+     * If all appointments are in the past, returns the most recent past appointment instead.
+     */
+    public Optional<Appointment> getNextAppointment() {
         if (appointments.isEmpty()) {
             return Optional.empty();
         }
@@ -118,34 +121,12 @@ public class Person {
         return Collections.unmodifiableList(appointments);
     }
 
-    /**
-     * Returns the appointment start, or empty if no appointment exists.
-     */
-    public Optional<LocalDateTime> getAppointmentStart() {
-        return getAppointment().map(Appointment::getStart);
-    }
-
-    /**
-     * Returns the next appointment occurrence, or empty if no appointment exists.
-     */
-    public Optional<LocalDateTime> getAppointmentNext() {
-        return getAppointment().map(Appointment::getNext);
-    }
-
-    public Optional<String> getAppointmentDescription() {
-        return getAppointment().map(Appointment::getDescription);
-    }
-
     public Billing getBilling() {
         return billing;
     }
 
     public PaymentHistory getPaymentHistory() {
         return billing.getPaymentHistory();
-    }
-
-    public AttendanceRecords getAttendance() {
-        return getAppointment().map(Appointment::getAttendance).orElse(AttendanceRecords.EMPTY);
     }
 
     /**

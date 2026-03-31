@@ -50,7 +50,7 @@ public class AddAttdCommandTest {
                 .withAppointment(new Appointment(Recurrence.NONE,
                         LocalDateTime.parse("2026-01-13T08:00:00"),
                         LocalDateTime.parse("2026-01-13T08:00:00"),
-                        personToEdit.getAppointment().orElseThrow().getAttendance()
+                        personToEdit.getNextAppointment().orElseThrow().getAttendance()
                                 .addAttendance(new Attendance(true, LocalDate.parse("2026-01-13"))),
                         "Algebra"))
                 .build();
@@ -77,7 +77,7 @@ public class AddAttdCommandTest {
         addCommand.execute(model);
 
         Person editedPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Attendance recordedAttendance = editedPerson.getAppointment().orElseThrow()
+        Attendance recordedAttendance = editedPerson.getNextAppointment().orElseThrow()
                 .getAttendance().getLastRecord().orElseThrow();
         assertTrue(recordedAttendance.hasAttended());
         assertEquals(LocalDate.parse(VALID_ATTENDANCE_DATE), recordedAttendance.getRecordedDate());
@@ -95,7 +95,7 @@ public class AddAttdCommandTest {
         addCommand.execute(model);
 
         Person editedPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Attendance recordedAttendance = editedPerson.getAppointment().orElseThrow()
+        Attendance recordedAttendance = editedPerson.getNextAppointment().orElseThrow()
                 .getAttendance().getLastRecord().orElseThrow();
         assertFalse(recordedAttendance.hasAttended());
         assertEquals(LocalDate.parse("2026-01-13"), recordedAttendance.getRecordedDate());
@@ -129,8 +129,8 @@ public class AddAttdCommandTest {
         addCommand.execute(model);
 
         Person editedPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        assertEquals(2, editedPerson.getAppointment().orElseThrow().getAttendance().getRecords().size());
-        assertEquals(LocalDate.parse(VALID_ATTENDANCE_DATE), editedPerson.getAppointment().orElseThrow()
+        assertEquals(2, editedPerson.getNextAppointment().orElseThrow().getAttendance().getRecords().size());
+        assertEquals(LocalDate.parse(VALID_ATTENDANCE_DATE), editedPerson.getNextAppointment().orElseThrow()
                 .getAttendance().getLastRecord().orElseThrow().getRecordedDate());
     }
 

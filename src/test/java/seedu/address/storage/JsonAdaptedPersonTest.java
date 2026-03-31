@@ -24,6 +24,7 @@ import seedu.address.model.attendance.AttendanceRecords;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.recurrence.Recurrence;
 import seedu.address.model.session.Appointment;
@@ -330,10 +331,12 @@ public class JsonAdaptedPersonTest {
                 VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                 VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
                 VALID_ATTENDANCE_HISTORY);
+        Person modelPerson = person.toModelType();
 
-        assertEquals(2, person.toModelType().getAttendance().getRecords().size());
+        assertEquals(2, modelPerson.getNextAppointment().orElseThrow().getAttendance().getRecords().size());
         assertEquals(LocalDate.parse("2026-01-29"),
-                person.toModelType().getAttendance().getLastRecord().orElseThrow().getRecordedDate());
+                modelPerson.getNextAppointment().orElseThrow().getAttendance().getLastRecord().orElseThrow()
+                        .getRecordedDate());
     }
 
     @Test
@@ -345,10 +348,12 @@ public class JsonAdaptedPersonTest {
                 VALID_PAYMENT_DATES, VALID_PAYMENT_DUE_DATE,
                 VALID_PAYMENT_RECURRENCE, VALID_TUITION_FEE,
                 VALID_ATTENDANCE_HISTORY);
+        Person modelPerson = person.toModelType();
 
-        assertEquals(2, person.toModelType().getAttendance().getRecords().size());
+        assertEquals(2, modelPerson.getNextAppointment().orElseThrow().getAttendance().getRecords().size());
         assertEquals(LocalDate.parse("2026-01-29"),
-                person.toModelType().getAttendance().getLastRecord().orElseThrow().getRecordedDate());
+                modelPerson.getNextAppointment().orElseThrow().getAttendance().getLastRecord().orElseThrow()
+                        .getRecordedDate());
     }
 
     @Test
