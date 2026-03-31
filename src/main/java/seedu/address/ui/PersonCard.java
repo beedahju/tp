@@ -1,7 +1,6 @@
 package seedu.address.ui;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
 import java.util.List;
 
 import javafx.fxml.FXML;
@@ -78,12 +77,14 @@ public class PersonCard extends UiPart<Region> {
             tags.getChildren().add(new Label((i + 1) + ". " + tag.tagName));
         }
 
-        person.getAcademics().getSubjects().stream()
-                .sorted(Comparator.comparing(Subject::getName))
-                .forEach(subject -> {
-                    Label subjectLabel = new Label(subject.toString());
-                    subjectLabel.getStyleClass().add("tag");
-                    subjects.getChildren().add(subjectLabel);
-                });
+        List<Subject> sortedSubjects = person.getAcademics().getSortedSubjects();
+
+        for (int i = 0; i < sortedSubjects.size(); i++) {
+            Subject subject = sortedSubjects.get(i);
+
+            Label subjectLabel = new Label((i + 1) + ". " + subject.toString());
+            subjectLabel.getStyleClass().add("tag");
+            subjects.getChildren().add(subjectLabel);
+        }
     }
 }

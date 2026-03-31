@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import seedu.address.model.academic.Subject;
 import seedu.address.model.attendance.Attendance;
 import seedu.address.model.person.Person;
 import seedu.address.model.tag.Tag;
@@ -132,13 +133,15 @@ public class PersonDetailPanel extends UiPart<Region> {
             noSubjectsLabel.getStyleClass().add("detail-field-value");
             subjectsFlowPane.getChildren().add(noSubjectsLabel);
         } else {
-            person.getAcademics().getSubjects().stream()
-                    .sorted(java.util.Comparator.comparing(seedu.address.model.academic.Subject::getName))
-                    .forEach(subject -> {
-                        Label subjectLabel = new Label(subject.toString());
-                        subjectLabel.getStyleClass().add("detail-subject-tag");
-                        subjectsFlowPane.getChildren().add(subjectLabel);
-                    });
+            List<Subject> sortedSubjects = person.getAcademics().getSortedSubjects();
+
+            for (int i = 0; i < sortedSubjects.size(); i++) {
+                Subject subject = sortedSubjects.get(i);
+
+                Label subjectLabel = new Label((i + 1) + ". " + subject.toString());
+                subjectLabel.getStyleClass().add("detail-subject-tag");
+                subjectsFlowPane.getChildren().add(subjectLabel);
+            }
         }
 
         // Display payment history
