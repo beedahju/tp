@@ -228,6 +228,47 @@ How the `viewappt` command works:
 1. The command returns a `CommandResult` containing the number of matching appointments and the computed week range.
 1. Unlike `edit`, `viewappt` does not modify the address book, so `LogicManager` does not save any data to storage after execution.
 
+### Subject-related commands
+
+The subject-related feature is centered on `edit acad`, which parses subject and level tokens into an academic profile and assigns that profile to a student.
+
+The first class diagram shows the command and parser side of the feature.
+
+<img src="images/SubjectCommandClassDiagram.png" width="720" />
+
+The second class diagram shows the academic model objects used by that command.
+
+<img src="images/AcademicModelClassDiagram.png" width="600" />
+
+How the subject-related feature works:
+
+1. `EditAcademicsCommandParser` reads `s/` subject tokens and optional `l/` level tokens from `edit acad`.
+1. The parser validates subject names, enforces that a level must follow a subject, and rejects duplicate subject names.
+1. The parsed subjects are wrapped in an `Academics` object.
+1. `EditAcademicsCommand` applies that `Academics` object to the selected student by rebuilding the `Person` with updated academics.
+1. Each `Subject` stores a mandatory name and an optional `Level`, while `Academics` stores the set of subjects for that student.
+
+### Payment and billing commands
+
+The payment and billing feature covers two related workflows:
+`edit payment`, which records a payment and updates billing data, and `find payment`, which filters students by billing due month.
+
+The first class diagram shows the command and parser structure for these workflows.
+
+<img src="images/PaymentBillingCommandClassDiagram.png" width="720" />
+
+The second class diagram shows the billing model objects used by those commands.
+
+<img src="images/BillingModelClassDiagram.png" width="620" />
+
+How the payment and billing feature works:
+
+1. `EditPaymentCommandParser` parses a required `d/DATE` and an optional `a/AMOUNT` from `edit payment`.
+1. `EditPaymentCommand` updates the selected student's `Billing` by recording the payment date, advancing the next due date, and optionally changing the tuition fee.
+1. `FindPaymentCommandParser` parses `d/YYYY-MM` and creates a `PaymentDueMonthPredicate`.
+1. `FindPaymentCommand` applies that predicate to the displayed list so only students with matching billing due months remain visible.
+1. `Billing` stores the recurrence schedule, current due date, tuition fee, and `PaymentHistory`, while `PaymentHistory` stores the set of recorded paid dates.
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation

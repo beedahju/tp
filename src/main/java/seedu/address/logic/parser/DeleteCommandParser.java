@@ -3,9 +3,11 @@ package seedu.address.logic.parser;
 import java.util.HashMap;
 import java.util.Map;
 
+import seedu.address.logic.commands.DeleteAcadCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.DeletePaymentCommand;
 import seedu.address.logic.commands.DeletePersonCommand;
+import seedu.address.logic.commands.DeleteTagCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -21,6 +23,8 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
     public DeleteCommandParser() {
         Map<String, Parser<? extends DeleteCommand>> parsers = new HashMap<>();
         parsers.put(DeletePersonCommand.SUB_COMMAND_WORD, new DeletePersonCommandParser());
+        parsers.put(DeleteTagCommand.SUB_COMMAND_WORD, new DeleteTagCommandParser());
+        parsers.put(DeleteAcadCommand.SUB_COMMAND_WORD, new DeleteAcadCommandParser());
         parsers.put(DeletePaymentCommand.SUB_COMMAND_WORD, new DeletePaymentCommandParser());
         this.dispatcher = new SubcommandDispatcherParser<>(parsers, DeleteCommand.MESSAGE_USAGE);
     }

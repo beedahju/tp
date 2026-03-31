@@ -4,9 +4,11 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
 
+import java.time.Clock;
 import java.time.LocalDate;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.util.AppClock;
 import seedu.address.logic.commands.DeletePaymentCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -14,6 +16,17 @@ import seedu.address.logic.parser.exceptions.ParseException;
  * Parses input arguments and creates a new {@code DeletePaymentCommand} object
  */
 public class DeletePaymentCommandParser implements Parser<DeletePaymentCommand> {
+
+    private final Clock clock;
+
+    public DeletePaymentCommandParser() {
+        this(AppClock.getClock());
+    }
+
+    DeletePaymentCommandParser(Clock clock) {
+        requireNonNull(clock);
+        this.clock = clock;
+    }
 
     /**
      * Parses the given {@code String} of arguments in the context of the DeletePaymentCommand
@@ -32,7 +45,7 @@ public class DeletePaymentCommandParser implements Parser<DeletePaymentCommand> 
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeletePaymentCommand.MESSAGE_USAGE));
         }
 
-        LocalDate paymentDate = ParserUtil.parseIsoDateNotAfterToday(argMultimap.getValue(PREFIX_DATE).get());
+        LocalDate paymentDate = ParserUtil.parseIsoDateNotAfterToday(argMultimap.getValue(PREFIX_DATE).get(), clock);
         return new DeletePaymentCommand(index, paymentDate);
     }
 }
