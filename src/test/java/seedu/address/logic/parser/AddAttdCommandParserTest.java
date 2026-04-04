@@ -103,4 +103,20 @@ public class AddAttdCommandParserTest {
         assertParseSuccess(parser, "1 n s/1",
                 new AddAttdCommand(targetPersonIndex, targetAppointmentIndex, false, Optional.empty()));
     }
+
+    @Test
+    public void parse_presentStatusAfterSession_success() {
+        Index targetPersonIndex = INDEX_FIRST_PERSON;
+        Index targetAppointmentIndex = INDEX_FIRST_PERSON;
+        assertParseSuccess(parser, "1 s/1 y",
+                new AddAttdCommand(targetPersonIndex, targetAppointmentIndex, true, Optional.empty()));
+    }
+
+    @Test
+    public void parse_absentStatusAfterSession_success() {
+        Index targetPersonIndex = INDEX_FIRST_PERSON;
+        Index targetAppointmentIndex = INDEX_FIRST_PERSON;
+        assertParseSuccess(parser, "1 s/1 n",
+                new AddAttdCommand(targetPersonIndex, targetAppointmentIndex, false, Optional.empty()));
+    }
 }

@@ -43,11 +43,28 @@ public class AddAttdCommandParser implements Parser<AddAttdCommand> {
         if (argMultimap.getValue(PREFIX_SESSION).isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddAttdCommand.MESSAGE_USAGE));
         }
-        Index sessionIndex = ParserUtil.parseIndex(
-            argMultimap.getValue(PREFIX_SESSION).get(), AddAttdCommand.MESSAGE_USAGE);
-        boolean hasAttended = true;
+        String sessionValue = argMultimap.getValue(PREFIX_SESSION).get().trim();
+        String[] sessionParts = sessionValue.split("\\s+");
+        if (sessionParts.length < 1 || sessionParts.length > 2) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddAttdCommand.MESSAGE_USAGE));
+        }
+
+        Index sessionIndex = ParserUtil.parseIndex(sessionParts[0], AddAttdCommand.MESSAGE_USAGE);
+
+        java.util.List<String> statusCandidates = new java.util.ArrayList<>();
         if (preambleParts.length == 2) {
-            String attendanceStatus = preambleParts[1].toLowerCase();
+            statusCandidates.add(preambleParts[1]);
+        }
+        if (sessionParts.length == 2) {
+            statusCandidates.add(sessionParts[1]);
+        }
+        if (statusCandidates.size() > 1) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddAttdCommand.MESSAGE_USAGE));
+        }
+
+        boolean hasAttended = true;
+        if (statusCandidates.size() == 1) {
+            String attendanceStatus = statusCandidates.get(0).toLowerCase();
             if (!attendanceStatus.equals("y") && !attendanceStatus.equals("n")) {
                 throw new ParseException(MESSAGE_INVALID_ATTENDANCE_STATUS);
             }
