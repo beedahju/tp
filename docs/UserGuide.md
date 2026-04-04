@@ -238,20 +238,21 @@ Examples:
 
 ### Editing a student's academics : `edit acad`
 
-Replaces a student's academic subjects and/or performance description. Providing no subjects clears all subjects.
+Replaces a student's academic subjects and/or performance description. Providing `s/` with no value clears all subjects.
 
 Format: `edit acad INDEX [s/SUBJECT [l/LEVEL]]…​ [dsc/DESCRIPTION]`
 
 * Edits the academics of the student at the specified `INDEX`. The index refers to the index number shown in the displayed student list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of `s/` or `dsc/` must be provided.
-* All existing subjects are replaced by the provided subjects. Providing no `s/` prefixes clears all subjects.
+* All existing subjects are replaced by the provided subjects. If no `s/` prefixes are provided, existing subjects are retained. Providing `s/` with no value clears all subjects.
 * `dsc/DESCRIPTION` sets a free-text note about the student's academic performance. Providing `dsc/` with no value clears the description.
 * `l/LEVEL` is optional and paired with the preceding `s/SUBJECT`.
 
 Examples:
 * `edit acad 1 s/Math l/Strong s/Science` sets student 1's subjects to Math (Strong) and Science.
-* `edit acad 1 dsc/Good progress this semester` updates the note for student 1.
+* `edit acad 1 dsc/Good progress this semester` updates the note for student 1 while retaining existing subjects.
 * `edit acad 2 s/Physics l/Weak dsc/Needs extra support` sets a subject and description for student 2.
+* `edit acad 3 s/` clears all subjects for student 3.
 * `edit acad 3` (with no other prefixes) is invalid — at least one prefix must be supplied.
 
 ### Deleting subjects from a student : `delete acad`
