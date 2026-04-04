@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -95,6 +97,23 @@ public class PersonCard extends UiPart<Region> {
 
     private String formatAppointment(int appointmentIndex, ScheduledSession session) {
         String formattedTime = session.getNext().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        return "Appt " + appointmentIndex + ": " + formattedTime + " - " + session.getDescription();
+        return "Appt " + appointmentIndex + ": " + formattedTime
+                + " (" + formatRecurrenceSchedule(session) + ") - " + session.getDescription();
+    }
+
+    private String formatRecurrenceSchedule(ScheduledSession session) {
+        LocalDateTime start = session.getStart();
+        String timeText = start.toLocalTime().format(DateTimeFormatter.ofPattern("h:mma"));
+        return switch (session.getRecurrence()) {
+        case NONE -> "one-time";
+        case WEEKLY -> "weekly on " + formatDayOfWeek(start.getDayOfWeek()) + " " + timeText;
+        case BIWEEKLY -> "every 2 weeks on " + formatDayOfWeek(start.getDayOfWeek()) + " " + timeText;
+        case MONTHLY -> "monthly on day " + start.getDayOfMonth() + " " + timeText;
+        };
+    }
+
+    private String formatDayOfWeek(DayOfWeek dayOfWeek) {
+        String lower = dayOfWeek.name().toLowerCase();
+        return Character.toUpperCase(lower.charAt(0)) + lower.substring(1);
     }
 }

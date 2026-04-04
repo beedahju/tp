@@ -2,6 +2,7 @@ package seedu.address.ui;
 
 import static java.util.Objects.requireNonNull;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -27,6 +28,7 @@ public class PersonDetailPanel extends UiPart<Region> {
     private static final String FXML = "PersonDetailPanel.fxml";
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("d MMM uuuu, h:mma");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("d MMM uuuu");
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("h:mma");
 
     @FXML
     private VBox contentContainer;
@@ -229,6 +231,10 @@ public class PersonDetailPanel extends UiPart<Region> {
         appointmentLabel.getStyleClass().add("detail-section-title");
         appointmentLabel.setWrapText(true);
 
+        Label scheduleLabel = new Label("Schedule: " + formatRecurrenceSchedule(session));
+        scheduleLabel.getStyleClass().add("detail-field-value");
+        scheduleLabel.setWrapText(true);
+
         Label attendanceTitle = new Label("Attendance");
         attendanceTitle.getStyleClass().add("detail-field-label");
 
@@ -250,7 +256,23 @@ public class PersonDetailPanel extends UiPart<Region> {
             }
         }
 
-        appointmentSection.getChildren().addAll(appointmentLabel, attendanceTitle, attendancePane);
+        appointmentSection.getChildren().addAll(appointmentLabel, scheduleLabel, attendanceTitle, attendancePane);
         return appointmentSection;
+    }
+
+    private String formatRecurrenceSchedule(ScheduledSession session) {
+        LocalDateTime start = session.getStart();
+        String timeText = start.toLocalTime().format(TIME_FORMATTER);
+        return switch (session.getRecurrence()) {
+        case NONE -> "One-time session";
+        case WEEKLY -> "Every " + formatDayOfWeek(start.getDayOfWeek()) + " at " + timeText;
+        case BIWEEKLY -> "Every 2 weeks on " + formatDayOfWeek(start.getDayOfWeek()) + " at " + timeText;
+        case MONTHLY -> "Every month on day " + start.getDayOfMonth() + " at " + timeText;
+        };
+    }
+
+    private String formatDayOfWeek(DayOfWeek dayOfWeek) {
+        String lower = dayOfWeek.name().toLowerCase();
+        return Character.toUpperCase(lower.charAt(0)) + lower.substring(1);
     }
 }
