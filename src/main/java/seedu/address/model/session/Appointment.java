@@ -90,6 +90,19 @@ public final class Appointment {
     }
 
     /**
+     * Returns a copy with the session at {@code index} replaced by {@code updatedSession}.
+     */
+    public Appointment withSessionAt(int index, ScheduledSession updatedSession) {
+        requireAllNonNull(updatedSession);
+        if (index < 0 || index >= sessions.size()) {
+            throw new IndexOutOfBoundsException("Session index out of range: " + index);
+        }
+        List<ScheduledSession> updatedSessions = new ArrayList<>(sessions);
+        updatedSessions.set(index, updatedSession);
+        return new Appointment(updatedSessions);
+    }
+
+    /**
      * Returns a copy with all sessions at the given 1-based indices removed.
      */
     public Appointment removeSessions(List<Index> sessionIndices) {

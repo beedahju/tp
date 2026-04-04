@@ -420,17 +420,34 @@ Examples:
 
 Deletes a selected appointment from an existing student.
 
-Format: `delete appt PERSON_INDEX APPT_INDEX`
+Format: `delete appt INDEX s/SESSION_INDEX [s/SESSION_INDEX]...`
 
-* Deletes the appointment at `APPT_INDEX` for the student at `PERSON_INDEX`.
-* `PERSON_INDEX` refers to the index number shown in the displayed student list.
-* `APPT_INDEX` refers to the numbered appointment shown for that student in the app.
-* Both indexes **must be positive integers** 1, 2, 3, …​
-* This command only works when the student has the selected appointment.
+* Deletes one or more sessions from the student at `INDEX`.
+* `INDEX` refers to the index number shown in the displayed student list.
+* `SESSION_INDEX` refers to the numbered appointment shown for that student in the app.
+* All provided session indexes **must be positive integers** 1, 2, 3, …​
+* At least one `s/` prefix must be provided.
 
 Examples:
-* `delete appt 1 1` deletes the 1st appointment of the 1st student.
-* `delete appt 2 3` deletes the 3rd appointment of the 2nd student.
+* `delete appt 1 s/1` deletes the 1st appointment of the 1st student.
+* `delete appt 2 s/1 s/3` deletes appointments 1 and 3 of the 2nd student.
+
+### Editing an appointment : `edit appt`
+
+Edits a selected appointment session for an existing student.
+
+Format: `edit appt INDEX s/SESSION_INDEX [d/DATETIME] [r/RECURRENCE] [dsc/DESCRIPTION]`
+
+* Edits the selected appointment session for the student at `INDEX`.
+* `SESSION_INDEX` refers to the numbered appointment shown for that student in the app.
+* At least one of `d/`, `r/`, or `dsc/` must be provided.
+* `d/DATETIME` must be in ISO 8601 local date-time format (`YYYY-MM-DDTHH:MM:SS`).
+* `r/RECURRENCE` supports `NONE`, `WEEKLY`, `BIWEEKLY`, and `MONTHLY`.
+* `dsc/DESCRIPTION` updates the appointment description.
+
+Examples:
+* `edit appt 1 s/2 d/2026-02-12T09:00:00`
+* `edit appt 1 s/2 r/MONTHLY dsc/Physics consultation`
 
 ### Viewing appointments for a week : `viewappt`
 
@@ -466,10 +483,27 @@ Format: `add attd PERSON_INDEX APPT_INDEX [y|n] [d/DATE]`
 * Non-recurring appointments can only have attendance recorded once.
 
 Examples:
-* `add attd 1 1` records attendance (present) for the 1st appointment of student 1.
-* `add attd 1 2 y` same as above but explicit.
-* `add attd 1 2 y d/2026-01-29` records attendance on a specific date.
-* `add attd 1 3 n` records an absence for the 3rd appointment of student 1.
+* `add attd 1 s/1` records attendance (present) for the 1st appointment of student 1.
+* `add attd 1 s/2 y` same as above but explicit.
+* `add attd 1 s/2 y d/2026-01-29` records attendance on a specific date.
+* `add attd 1 s/3 n` records an absence for the 3rd appointment of student 1.
+
+### Deleting appointment attendance : `delete attd`
+
+Deletes attendance records for a selected appointment session.
+
+Format: `delete attd INDEX s/SESSION_INDEX d/DATE_OR_DATE_TIME`
+
+* Deletes attendance for the selected session of the student at `INDEX`.
+* `SESSION_INDEX` refers to the numbered appointment shown for that student in the app.
+* `d/` accepts either ISO local date (`YYYY-MM-DD`) or local date-time (`YYYY-MM-DDTHH:MM:SS`).
+* If deleting by date, records on that date are removed.
+* If deleting by date-time, only the exact record is removed.
+* If the deleted attendance is the latest attendance for the session, recurring sessions roll back by one cycle.
+
+Examples:
+* `delete attd 1 s/2 d/2026-01-29`
+* `delete attd 1 s/2 d/2026-01-29T08:00:00`
 
 --------------------------------------------------------------------------------------------------------------------
 

@@ -81,6 +81,18 @@ public final class ScheduledSession {
         return new ScheduledSession(recurrence, start, advancedDateTime, attendanceHistory, description);
     }
 
+    /**
+     * Returns a copy with next session rolled back by one recurrence cycle.
+     */
+    public ScheduledSession withRolledBackNext() {
+        if (recurrence == Recurrence.NONE) {
+            return this;
+        }
+        LocalDate previousDate = recurrence.previous(next.toLocalDate());
+        LocalDateTime previousDateTime = LocalDateTime.of(previousDate, next.toLocalTime());
+        return new ScheduledSession(recurrence, start, previousDateTime, attendanceHistory, description);
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {

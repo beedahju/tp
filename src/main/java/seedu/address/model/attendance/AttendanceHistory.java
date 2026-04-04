@@ -3,8 +3,10 @@ package seedu.address.model.attendance;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -61,11 +63,30 @@ public final class AttendanceHistory {
     }
 
     /**
+     * Returns a new {@code AttendanceHistory} with records at {@code recordedAt} removed.
+     */
+    public AttendanceHistory removeAttendance(LocalDateTime recordedAt) {
+        requireAllNonNull(recordedAt);
+        List<Attendance> updatedRecords = records.stream()
+                .filter(record -> !record.getRecordedAt().equals(recordedAt))
+                .toList();
+        return new AttendanceHistory(updatedRecords);
+    }
+
+    /**
      * Returns true if there is an attendance record on {@code date}.
      */
     public boolean hasRecordOn(LocalDate date) {
         requireAllNonNull(date);
         return records.stream().anyMatch(record -> record.getRecordedAt().toLocalDate().equals(date));
+    }
+
+    /**
+     * Returns true if there is an attendance record at {@code recordedAt}.
+     */
+    public boolean hasRecordAt(LocalDateTime recordedAt) {
+        requireAllNonNull(recordedAt);
+        return records.stream().anyMatch(record -> record.getRecordedAt().equals(recordedAt));
     }
 
     public boolean isEmpty() {
@@ -81,6 +102,13 @@ public final class AttendanceHistory {
             return Optional.empty();
         }
         return Optional.of(records.get(records.size() - 1));
+    }
+
+    /**
+     * Returns the chronologically latest attendance record by recordedAt.
+     */
+    public Optional<Attendance> getLatestRecordByRecordedAt() {
+        return records.stream().max(Comparator.comparing(Attendance::getRecordedAt));
     }
 
     @Override
