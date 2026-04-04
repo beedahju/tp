@@ -11,7 +11,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import seedu.address.model.academic.Subject;
 import seedu.address.model.person.Person;
-import seedu.address.model.session.Appointment;
+import seedu.address.model.session.ScheduledSession;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -59,10 +59,10 @@ public class PersonCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         name.setText(person.getName().fullName);
 
-        if (showAppointments && !person.getAppointments().isEmpty()) {
-            for (int index = 0; index < person.getAppointments().size(); index++) {
-                Appointment appointment = person.getAppointments().get(index);
-                Label appointmentLabel = new Label(formatAppointment(index + 1, appointment));
+        if (showAppointments && !person.getAppointment().getSessions().isEmpty()) {
+            for (int index = 0; index < person.getAppointment().getSessions().size(); index++) {
+                ScheduledSession session = person.getAppointment().getSessions().get(index);
+                Label appointmentLabel = new Label(formatAppointment(index + 1, session));
                 appointmentLabel.getStyleClass().add("cell_small_label");
                 appointmentLabel.setWrapText(true);
                 appointmentList.getChildren().add(appointmentLabel);
@@ -93,8 +93,8 @@ public class PersonCard extends UiPart<Region> {
         }
     }
 
-    private String formatAppointment(int appointmentIndex, Appointment appointment) {
-        String formattedTime = appointment.getNext().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        return "Appt " + appointmentIndex + ": " + formattedTime + " - " + appointment.getDescription();
+    private String formatAppointment(int appointmentIndex, ScheduledSession session) {
+        String formattedTime = session.getNext().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        return "Appt " + appointmentIndex + ": " + formattedTime + " - " + session.getDescription();
     }
 }

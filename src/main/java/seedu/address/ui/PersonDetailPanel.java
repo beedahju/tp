@@ -16,7 +16,7 @@ import javafx.scene.layout.VBox;
 import seedu.address.model.academic.Subject;
 import seedu.address.model.attendance.Attendance;
 import seedu.address.model.person.Person;
-import seedu.address.model.session.Appointment;
+import seedu.address.model.session.ScheduledSession;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -149,14 +149,14 @@ public class PersonDetailPanel extends UiPart<Region> {
         String description = person.getAcademics().getDescription().orElse("");
         academicsNotesLabel.setText(description.isEmpty() ? "-" : description);
 
-        if (person.getAppointments().isEmpty()) {
+        if (person.getAppointment().getSessions().isEmpty()) {
             Label noAppointmentsLabel = new Label("No appointments");
             noAppointmentsLabel.getStyleClass().add("detail-field-value");
             appointmentListContainer.getChildren().add(noAppointmentsLabel);
         } else {
-            for (int index = 0; index < person.getAppointments().size(); index++) {
+            for (int index = 0; index < person.getAppointment().getSessions().size(); index++) {
                 appointmentListContainer.getChildren().add(
-                        createAppointmentSection(index + 1, person.getAppointments().get(index)));
+                        createAppointmentSection(index + 1, person.getAppointment().getSessions().get(index)));
             }
         }
 
@@ -218,14 +218,14 @@ public class PersonDetailPanel extends UiPart<Region> {
                 : formatDateTime(recordedAt));
     }
 
-    private String formatAppointment(int appointmentIndex, Appointment appointment) {
-        return appointmentIndex + ". " + formatDateTime(appointment.getNext()) + " - " + appointment.getDescription();
+    private String formatAppointment(int appointmentIndex, ScheduledSession session) {
+        return appointmentIndex + ". " + formatDateTime(session.getNext()) + " - " + session.getDescription();
     }
 
-    private VBox createAppointmentSection(int appointmentIndex, Appointment appointment) {
+    private VBox createAppointmentSection(int appointmentIndex, ScheduledSession session) {
         VBox appointmentSection = new VBox(6);
 
-        Label appointmentLabel = new Label(formatAppointment(appointmentIndex, appointment));
+        Label appointmentLabel = new Label(formatAppointment(appointmentIndex, session));
         appointmentLabel.getStyleClass().add("detail-section-title");
         appointmentLabel.setWrapText(true);
 
@@ -237,12 +237,12 @@ public class PersonDetailPanel extends UiPart<Region> {
         attendancePane.setVgap(6);
         attendancePane.setPrefWrapLength(320);
 
-        if (appointment.getAttendance().isEmpty()) {
+        if (session.getAttendanceHistory().isEmpty()) {
             Label noAttendanceLabel = new Label("No attendance history");
             noAttendanceLabel.getStyleClass().add("detail-field-value");
             attendancePane.getChildren().add(noAttendanceLabel);
         } else {
-            java.util.List<Attendance> attendanceRecords = appointment.getAttendance().getRecords();
+            java.util.List<Attendance> attendanceRecords = session.getAttendanceHistory().getRecords();
             for (int index = attendanceRecords.size() - 1; index >= 0; index--) {
                 Label attendanceLabel = new Label(formatAttendance(attendanceRecords.get(index)));
                 attendanceLabel.getStyleClass().add("detail-attendance-date");
