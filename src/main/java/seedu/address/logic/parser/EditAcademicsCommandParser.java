@@ -60,6 +60,11 @@ public class EditAcademicsCommandParser implements Parser<EditAcademicsCommand> 
 
         int dscIndex = remainder.indexOf(PREFIX_DESCRIPTION.getPrefix());
         if (dscIndex != -1) {
+            // Check for multiple dsc/
+            int secondDscIndex = remainder.indexOf(PREFIX_DESCRIPTION.getPrefix(), dscIndex + 1);
+            if (secondDscIndex != -1) {
+                throw new ParseException("Multiple description fields are not allowed.");
+            }
 
             int start = dscIndex + PREFIX_DESCRIPTION.getPrefix().length();
 

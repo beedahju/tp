@@ -43,7 +43,10 @@ public class AddAcademicsCommandTest {
         AddAcademicsCommand command = new AddAcademicsCommand(INDEX_FIRST_PERSON, subjectsToAdd);
 
         Set<Subject> expectedSubjects = new HashSet<>(personToEdit.getAcademics().getSubjects());
-        expectedSubjects.addAll(subjectsToAdd);
+        for (Subject newSub : subjectsToAdd) {
+            expectedSubjects.removeIf(s -> s.getName().equals(newSub.getName()));
+            expectedSubjects.add(newSub);
+        }
 
         Person editedPerson = new PersonBuilder(personToEdit)
                 .withAcademics(new Academics(expectedSubjects))
