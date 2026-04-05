@@ -18,6 +18,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.util.AppClock;
 import seedu.address.logic.Messages;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
@@ -156,7 +157,7 @@ public class AddAttdCommandTest {
 
     @Test
     public void execute_futureAppointmentDate_failure() {
-        LocalDate futureDate = LocalDate.now().plusDays(1);
+        LocalDate futureDate = AppClock.today().plusDays(1);
         LocalDateTime futureDateTime = futureDate.atTime(8, 0);
         Person personToEdit = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
                 .withAppointment(new Appointment(Recurrence.NONE, futureDateTime, futureDateTime,
@@ -172,7 +173,7 @@ public class AddAttdCommandTest {
 
     @Test
     public void execute_futureOverrideDate_failure() {
-        LocalDate futureDate = LocalDate.now().plusDays(1);
+        LocalDate futureDate = AppClock.today().plusDays(1);
         Person personToEdit = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
                 .withAppointment("2026-01-13T08:00:00", "Algebra", Recurrence.WEEKLY)
                 .build();
