@@ -22,9 +22,9 @@ import seedu.address.model.recurrence.Recurrence;
 import seedu.address.testutil.PersonBuilder;
 
 /**
- * Contains integration tests (interaction with the Model) for {@code FindPaymentCommand}.
+ * Contains integration tests (interaction with the Model) for {@code FindBillingCommand}.
  */
-public class FindPaymentCommandTest {
+public class FindBillingCommandTest {
 
     private Model model = new ModelManager(new seedu.address.model.AddressBook(), new UserPrefs());
     private Model expectedModel = new ModelManager(new seedu.address.model.AddressBook(), new UserPrefs());

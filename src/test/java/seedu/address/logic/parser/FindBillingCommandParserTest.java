@@ -13,7 +13,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.FindBillingCommand;
 import seedu.address.model.billing.PaymentDueMonthPredicate;
 
-public class FindPaymentCommandParserTest {
+public class FindBillingCommandParserTest {
 
     private FindBillingCommandParser parser = new FindBillingCommandParser();
 
