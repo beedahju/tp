@@ -14,7 +14,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
-import seedu.address.testutil.PersonBuilder;
+import seedu.address.model.person.PersonBuilder;
 
 public class IndexedPersonCommandTest {
 
@@ -28,7 +28,8 @@ public class IndexedPersonCommandTest {
         @Override
         public CommandResult execute(Model model) throws CommandException {
             Person targetPerson = getTargetPerson(model);
-            Person editedPerson = new PersonBuilder(targetPerson).withName("New Name").build();
+            Person editedPerson = new PersonBuilder(targetPerson)
+                    .withName(new seedu.address.model.person.Name("New Name")).build();
             replacePerson(model, targetPerson, editedPerson);
             return new CommandResult("Dummy success");
         }
@@ -38,7 +39,8 @@ public class IndexedPersonCommandTest {
     public void execute_validIndex_success() throws Exception {
         DummyIndexedPersonCommand dummyCommand = new DummyIndexedPersonCommand(INDEX_FIRST_PERSON);
         Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Person editedPerson = new PersonBuilder(personToEdit).withName("New Name").build();
+        Person editedPerson = new PersonBuilder(personToEdit)
+                .withName(new seedu.address.model.person.Name("New Name")).build();
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setPerson(personToEdit, editedPerson);
@@ -61,7 +63,8 @@ public class IndexedPersonCommandTest {
         Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
 
         DummyIndexedPersonCommand dummyCommand = new DummyIndexedPersonCommand(INDEX_FIRST_PERSON);
-        Person editedPerson = new PersonBuilder(personToEdit).withName("New Name").build();
+        Person editedPerson = new PersonBuilder(personToEdit)
+                .withName(new seedu.address.model.person.Name("New Name")).build();
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.updateFilteredPersonList(person -> person.getName().fullName.startsWith("A"));

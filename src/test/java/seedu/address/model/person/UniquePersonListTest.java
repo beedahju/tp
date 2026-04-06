@@ -12,12 +12,12 @@ import static seedu.address.testutil.TypicalPersons.BOB;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
-import seedu.address.testutil.PersonBuilder;
 
 public class UniquePersonListTest {
 
@@ -42,7 +42,9 @@ public class UniquePersonListTest {
     @Test
     public void contains_personWithSameIdentityFieldsInList_returnsTrue() {
         uniquePersonList.add(ALICE);
-        Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_JC)
+        Person editedAlice = new PersonBuilder(ALICE)
+                .withAddress(new Address(VALID_ADDRESS_BOB))
+                .withTags(Set.of(new seedu.address.model.tag.Tag(VALID_TAG_JC)))
                 .build();
         assertTrue(uniquePersonList.contains(editedAlice));
     }
@@ -85,7 +87,9 @@ public class UniquePersonListTest {
     @Test
     public void setPerson_editedPersonHasSameIdentity_success() {
         uniquePersonList.add(ALICE);
-        Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withTags(VALID_TAG_JC)
+        Person editedAlice = new PersonBuilder(ALICE)
+                .withAddress(new Address(VALID_ADDRESS_BOB))
+                .withTags(Set.of(new seedu.address.model.tag.Tag(VALID_TAG_JC)))
                 .build();
         uniquePersonList.setPerson(ALICE, editedAlice);
         UniquePersonList expectedUniquePersonList = new UniquePersonList();

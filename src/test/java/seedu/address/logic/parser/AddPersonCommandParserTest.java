@@ -41,21 +41,23 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonBuilder;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
-import seedu.address.testutil.PersonBuilder;
+import java.util.Set;
 
 public class AddPersonCommandParserTest {
     private AddPersonCommandParser parser = new AddPersonCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {
-        Person expectedPerson = new PersonBuilder(BOB).withTags(VALID_TAG_JC).build();
+        Person expectedPerson = new PersonBuilder(BOB).withTags(Set.of(new Tag(VALID_TAG_JC))).build();
 
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB + TAG_DESC_JC, new AddPersonCommand(expectedPerson));
 
-        Person expectedPersonMultipleTags = new PersonBuilder(BOB).withTags(VALID_TAG_JC, VALID_TAG_GROUP1)
+        Person expectedPersonMultipleTags = new PersonBuilder(BOB)
+                .withTags(Set.of(new Tag(VALID_TAG_JC), new Tag(VALID_TAG_GROUP1)))
                 .build();
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + TAG_DESC_GROUP1 + TAG_DESC_JC,
@@ -102,7 +104,7 @@ public class AddPersonCommandParserTest {
 
     @Test
     public void parse_optionalFieldsMissing_success() {
-        Person expectedPerson = new PersonBuilder(AMY).withTags().build();
+        Person expectedPerson = new PersonBuilder(AMY).withTags(Set.of()).build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
                 new AddPersonCommand(expectedPerson));
     }

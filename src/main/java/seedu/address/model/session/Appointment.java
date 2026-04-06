@@ -33,6 +33,14 @@ public final class Appointment {
         this.description = description.trim();
     }
 
+    /**
+     * Creates an {@code Appointment} from an ISO-8601 date-time string.
+     */
+    public static Appointment of(String startDateTime, String description, Recurrence recurrence) {
+        LocalDateTime start = LocalDateTime.parse(startDateTime);
+        return new Appointment(recurrence, start, start, AttendanceRecords.EMPTY, description);
+    }
+
     public Recurrence getRecurrence() {
         return recurrence;
     }
