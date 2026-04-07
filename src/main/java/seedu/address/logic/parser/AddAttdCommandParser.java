@@ -18,8 +18,6 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class AddAttdCommandParser implements Parser<AddAttdCommand> {
 
     public static final String MESSAGE_INVALID_ATTENDANCE_STATUS = "Attendance status must be 'y' or 'n'.";
-    public static final String MESSAGE_DATE_NOT_ALLOWED_FOR_ABSENCE =
-            "A date override can only be provided when recording an attended appointment.";
     public static final String MESSAGE_INVALID_ATTENDANCE_DATE_OR_TIME =
             "Attendance date must be in ISO 8601 local date or date-time format, "
                     + "e.g. 2026-01-29 or 2026-01-29T08:00:00";
@@ -72,9 +70,6 @@ public class AddAttdCommandParser implements Parser<AddAttdCommand> {
         }
         Optional<LocalDateTime> recordedAt = Optional.empty();
         if (argMultimap.getValue(PREFIX_DATE).isPresent()) {
-            if (!hasAttended) {
-                throw new ParseException(MESSAGE_DATE_NOT_ALLOWED_FOR_ABSENCE);
-            }
             recordedAt = Optional.of(parseRecordedAt(argMultimap.getValue(PREFIX_DATE).get()));
         }
 

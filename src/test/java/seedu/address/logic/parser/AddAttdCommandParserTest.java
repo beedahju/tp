@@ -48,9 +48,12 @@ public class AddAttdCommandParserTest {
     }
 
     @Test
-    public void parse_dateWithAbsence_failure() {
-        assertParseFailure(parser, "1 n s/1" + ATTENDANCE_DATE_DESC,
-                AddAttdCommandParser.MESSAGE_DATE_NOT_ALLOWED_FOR_ABSENCE);
+    public void parse_absentWithDate_success() {
+        Index targetPersonIndex = INDEX_FIRST_PERSON;
+        Index targetAppointmentIndex = INDEX_FIRST_PERSON;
+        assertParseSuccess(parser, "1 n s/1" + ATTENDANCE_DATE_DESC,
+                new AddAttdCommand(targetPersonIndex, targetAppointmentIndex, false,
+                        Optional.of(LocalDateTime.parse(VALID_ATTENDANCE_DATE + "T00:00:00"))));
     }
 
     @Test
