@@ -3,9 +3,9 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -55,7 +55,7 @@ public class DeletePaymentCommand extends DeleteCommand {
         try {
             updatedBilling = personToEdit.getBilling().deleteRecordedPayment(paymentDate);
         } catch (IllegalArgumentException err) {
-            String formattedDate = paymentDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+            String formattedDate = paymentDate.format(DateTimeUtil.ISO_LOCAL_DATE_FORMATTER);
             throw new CommandException(String.format(MESSAGE_PAYMENT_DATE_NOT_FOUND,
                     formattedDate, Messages.format(personToEdit)));
         }
@@ -65,7 +65,7 @@ public class DeletePaymentCommand extends DeleteCommand {
                 .build();
         replacePerson(model, personToEdit, editedPerson);
 
-        String formattedDate = paymentDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        String formattedDate = paymentDate.format(DateTimeUtil.ISO_LOCAL_DATE_FORMATTER);
         String deleteFeedback = String.format(MESSAGE_DELETE_PAYMENT_SUCCESS,
                 formattedDate, Messages.format(editedPerson));
         String dueDateFeedback;

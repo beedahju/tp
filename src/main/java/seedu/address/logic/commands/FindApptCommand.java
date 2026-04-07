@@ -4,8 +4,8 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.Model;
 import seedu.address.model.person.AppointmentInWeekPredicate;
@@ -42,8 +42,8 @@ public class FindApptCommand extends FindCommand {
         requireNonNull(model);
         model.updateFilteredPersonListWithAnd(predicate);
 
-        String weekStart = predicate.getWeekStart().format(DateTimeFormatter.ISO_LOCAL_DATE);
-        String weekEnd = predicate.getWeekEnd().format(DateTimeFormatter.ISO_LOCAL_DATE);
+        String weekStart = predicate.getWeekStart().format(DateTimeUtil.ISO_LOCAL_DATE_FORMATTER);
+        String weekEnd = predicate.getWeekEnd().format(DateTimeUtil.ISO_LOCAL_DATE_FORMATTER);
         String feedback = String.format(MESSAGE_SUCCESS, model.getFilteredPersonList().size(), weekStart, weekEnd);
         return new CommandResult(feedback);
     }

@@ -4,9 +4,9 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -63,7 +63,7 @@ public class AddPaymentCommand extends AddCommand {
         try {
             updatedBilling = personToEdit.getBilling().recordTuitionPaidAndAdvanceDueDate(paymentDate);
         } catch (IllegalArgumentException err) {
-            String formattedDate = paymentDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+            String formattedDate = paymentDate.format(DateTimeUtil.ISO_LOCAL_DATE_FORMATTER);
             throw new CommandException(String.format(MESSAGE_PAYMENT_DATE_IS_PRESENT,
                     formattedDate, Messages.format(personToEdit)));
         }
@@ -73,7 +73,7 @@ public class AddPaymentCommand extends AddCommand {
                 .build();
         model.setPerson(personToEdit, editedPerson);
 
-        String formattedDate = paymentDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        String formattedDate = paymentDate.format(DateTimeUtil.ISO_LOCAL_DATE_FORMATTER);
         String paymentFeedback = String.format(MESSAGE_ADD_PAYMENT_SUCCESS,
                 editedPerson.getBilling().getTuitionFee(),
                 Messages.format(editedPerson),

@@ -4,9 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.time.Clock;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -19,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.AppClock;
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.model.academic.Academics;
 import seedu.address.model.billing.Billing;
 import seedu.address.model.billing.PaymentHistory;
@@ -49,10 +48,6 @@ class JsonAdaptedPerson {
             "Tuition fee must be a finite non-negative number.";
     private static final String PAYMENT_RECURRENCE_MESSAGE_CONSTRAINTS =
             "Payment recurrence must be one of: WEEKLY, BIWEEKLY, MONTHLY, NONE";
-
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE
-            .withResolverStyle(ResolverStyle.STRICT);
-
 
     private final String name;
     private final String phone;
@@ -119,9 +114,9 @@ class JsonAdaptedPerson {
             extractGuardianEmail(source),
             new JsonAdaptedAppointment(source.getAppointment()),
             source.getPaymentHistory().getPaidDates().stream()
-                .map(value -> value.format(DATE_FORMATTER))
+                .map(value -> value.format(DateTimeUtil.ISO_LOCAL_DATE_STRICT_FORMATTER))
                 .collect(Collectors.toList()),
-            source.getBilling().getCurrentDueDate().format(DATE_FORMATTER),
+            source.getBilling().getCurrentDueDate().format(DateTimeUtil.ISO_LOCAL_DATE_STRICT_FORMATTER),
             source.getBilling().getRecurrence().name(),
             source.getBilling().getTuitionFee());
     }
@@ -315,7 +310,8 @@ class JsonAdaptedPerson {
         if (paymentDates != null) {
             for (String dateString : paymentDates) {
                 try {
-                    LocalDate parsedPaymentDate = LocalDate.parse(dateString, DATE_FORMATTER);
+                    LocalDate parsedPaymentDate = LocalDate.parse(dateString,
+                            DateTimeUtil.ISO_LOCAL_DATE_STRICT_FORMATTER);
                     if (parsedPaymentDate.isAfter(today)) {
                         throw new IllegalValueException(PAYMENT_DATE_AFTER_TODAY_MESSAGE_CONSTRAINTS);
                     }
@@ -358,7 +354,7 @@ class JsonAdaptedPerson {
         LocalDate modelPaymentDueDate = LocalDate.now(clock).withDayOfMonth(1);
         if (paymentDueDate != null) {
             try {
-                modelPaymentDueDate = LocalDate.parse(paymentDueDate, DATE_FORMATTER);
+                modelPaymentDueDate = LocalDate.parse(paymentDueDate, DateTimeUtil.ISO_LOCAL_DATE_STRICT_FORMATTER);
             } catch (DateTimeParseException e) {
                 throw new IllegalValueException(PAYMENT_DUE_DATE_MESSAGE_CONSTRAINTS);
             }

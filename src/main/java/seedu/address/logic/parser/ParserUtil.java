@@ -6,14 +6,13 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
@@ -38,10 +37,6 @@ public class ParserUtil {
     public static final String MESSAGE_INVALID_AMOUNT = "Amount must be a positive number greater than 0.";
     public static final String MESSAGE_INVALID_RECURRENCE =
             "Recurrence must be one of: WEEKLY, BIWEEKLY, MONTHLY, NONE";
-    private static final DateTimeFormatter ISO_LOCAL_DATE_FORMATTER =
-            DateTimeFormatter.ISO_LOCAL_DATE.withResolverStyle(ResolverStyle.STRICT);
-    private static final DateTimeFormatter ISO_LOCAL_DATE_TIME_FORMATTER =
-            DateTimeFormatter.ISO_LOCAL_DATE_TIME.withResolverStyle(ResolverStyle.STRICT);
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
      * trimmed.
@@ -165,7 +160,7 @@ public class ParserUtil {
         requireNonNull(dateTime);
         String trimmedDateTime = dateTime.trim();
         try {
-            return LocalDateTime.parse(trimmedDateTime, ISO_LOCAL_DATE_TIME_FORMATTER);
+            return LocalDateTime.parse(trimmedDateTime, DateTimeUtil.ISO_LOCAL_DATE_TIME_STRICT_FORMATTER);
         } catch (DateTimeParseException e) {
             throw new ParseException(MESSAGE_INVALID_DATE_TIME);
         }
@@ -181,7 +176,7 @@ public class ParserUtil {
         requireNonNull(date);
         String trimmedDate = date.trim();
         try {
-            return LocalDate.parse(trimmedDate, ISO_LOCAL_DATE_FORMATTER);
+            return LocalDate.parse(trimmedDate, DateTimeUtil.ISO_LOCAL_DATE_STRICT_FORMATTER);
         } catch (DateTimeParseException e) {
             throw new ParseException(MESSAGE_INVALID_DATE);
         }
