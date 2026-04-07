@@ -33,6 +33,7 @@ public class PersonDetailPanel extends UiPart<Region> {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("d MMM uuuu");
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("h:mma");
     private static final int MAX_VISIBLE_ATTENDANCE_RECORDS = 3;
+    private static final int MAX_VISIBLE_PAYMENT_HISTORY_RECORDS = 3;
     private static final String NOT_SET_TEXT = "Not set";
 
     @FXML
@@ -192,13 +193,23 @@ public class PersonDetailPanel extends UiPart<Region> {
             noPaymentsLabel.getStyleClass().add("detail-field-value");
             paymentHistoryFlowPane.getChildren().add(noPaymentsLabel);
         } else {
-            person.getPaymentHistory().getPaidDates().stream()
+            List<LocalDate> paymentDates = person.getPaymentHistory().getPaidDates().stream()
                     .sorted(java.util.Comparator.reverseOrder()) // Most recent first
-                    .forEach(date -> {
-                        Label paymentLabel = new Label(formatDate(date));
-                        paymentLabel.getStyleClass().add("detail-payment-date");
-                        paymentHistoryFlowPane.getChildren().add(paymentLabel);
-                    });
+                    .toList();
+
+            int visiblePayments = Math.min(MAX_VISIBLE_PAYMENT_HISTORY_RECORDS, paymentDates.size());
+            for (int index = 0; index < visiblePayments; index++) {
+                Label paymentLabel = new Label(formatDate(paymentDates.get(index)));
+                paymentLabel.getStyleClass().add("detail-payment-date");
+                paymentHistoryFlowPane.getChildren().add(paymentLabel);
+            }
+
+            int hiddenPaymentCount = paymentDates.size() - visiblePayments;
+            if (hiddenPaymentCount > 0) {
+                Label hiddenPaymentsLabel = new Label("+" + hiddenPaymentCount + " more");
+                hiddenPaymentsLabel.getStyleClass().add("detail-attendance-more");
+                paymentHistoryFlowPane.getChildren().add(hiddenPaymentsLabel);
+            }
         }
 
         contentContainer.setManaged(true);
