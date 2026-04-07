@@ -14,7 +14,6 @@ public abstract class DeleteCommand extends IndexedPersonCommand {
             + "Format: " + COMMAND_WORD + " SUBCOMMAND PARAMETERS\n"
             + "Examples: " + COMMAND_WORD + " student 1, " + COMMAND_WORD + " appt 1 2";
 
-    public static final String MESSAGE_NOT_DELETED = "At least one field to delete must be provided.";
 
     protected DeleteCommand(Index index) {
         super(index);

@@ -1,7 +1,5 @@
 package seedu.address.commons.util;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -73,14 +71,6 @@ public class CollectionUtilTest {
         assertNullPointerExceptionNotThrown(Arrays.asList(containingNull, new Object()));
     }
 
-    @Test
-    public void isAnyNonNull() {
-        assertFalse(CollectionUtil.isAnyNonNull());
-        assertFalse(CollectionUtil.isAnyNonNull((Object) null));
-        assertFalse(CollectionUtil.isAnyNonNull((Object[]) null));
-        assertTrue(CollectionUtil.isAnyNonNull(new Object()));
-        assertTrue(CollectionUtil.isAnyNonNull(new Object(), null));
-    }
 
     /**
      * Asserts that {@code CollectionUtil#requireAllNonNull(Object...)} throw {@code NullPointerException}
