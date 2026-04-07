@@ -2,7 +2,6 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -162,18 +161,6 @@ public class Person {
         }
 
         return otherPerson != null && otherPerson.getName().equals(getName());
-    }
-
-    /**
-     * Returns an immutable {@code Billing} object with updated payment history after deleting
-     * a recorded payment date. Due date is rolled back one recurrence cycle only when deleting
-     * the latest chronological payment date.
-     * @param paymentDate A valid {@code LocalDate}
-     * @return updated {@code Billing} object
-     * @throws IllegalArgumentException if paymentDate is not recorded
-     */
-    public Billing deleteRecordedPayment(LocalDate paymentDate) {
-        return billing.deleteRecordedPayment(paymentDate);
     }
 
     /**
