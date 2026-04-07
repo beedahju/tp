@@ -14,8 +14,9 @@ public class Name {
                     + "and not be blank";
 
     /*
-     * The first character of the address must not be a whitespace,
+     * The first character of the name must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
+     * The name must also contain at least one alphabetic character.
      */
     public static final String VALIDATION_REGEX = "(?=.*\\p{Alpha})[\\p{Alnum}][\\p{Alnum} ]*";
 
