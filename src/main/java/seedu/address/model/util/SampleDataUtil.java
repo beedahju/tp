@@ -59,7 +59,8 @@ public class SampleDataUtil {
                     .withGuardian(new Guardian(
                             new Name("Ming Yu"), new Phone("97654321"),
                             new Email("ming@example.com")))
-                    .withAppointment(Appointment.defaultAppointment().addSession(new ScheduledSession(Recurrence.BIWEEKLY,
+                    .withAppointment(Appointment.defaultAppointment().addSession(
+                        new ScheduledSession(Recurrence.BIWEEKLY,
                             LocalDateTime.of(2026, 3, 22, 16, 0),
                             LocalDateTime.of(2026, 4, 19, 16, 0),
                             new AttendanceHistory(new Attendance(true, LocalDate.of(2026, 4, 5))),

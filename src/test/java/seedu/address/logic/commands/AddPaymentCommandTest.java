@@ -106,8 +106,8 @@ public class AddPaymentCommandTest {
         assertEquals(dueDateBeforeDuplicateCommand, personAfterDuplicateFailure.getBilling().getCurrentDueDate());
     }
 
-        @Test
-        public void execute_backfilledPaymentDate_doesNotAdvanceDueDate() throws Exception {
+    @Test
+    public void execute_backfilledPaymentDate_doesNotAdvanceDueDate() throws Exception {
         Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Billing initialBilling = new Billing(Recurrence.MONTHLY, LocalDate.parse("2026-04-01"), 25.0,
             new PaymentHistory(LocalDate.parse("2026-03-15")));
@@ -121,10 +121,10 @@ public class AddPaymentCommandTest {
             .getBilling();
         assertEquals(LocalDate.parse("2026-04-01"), billingAfterCommand.getCurrentDueDate());
         assertTrue(billingAfterCommand.getPaymentHistory().hasPaidOn(LocalDate.parse("2026-03-01")));
-        }
+    }
 
-        @Test
-        public void execute_laterPaymentDate_advancesDueDate() throws Exception {
+    @Test
+    public void execute_laterPaymentDate_advancesDueDate() throws Exception {
         Person personToEdit = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Billing initialBilling = new Billing(Recurrence.MONTHLY, LocalDate.parse("2026-04-01"), 25.0,
             new PaymentHistory(LocalDate.parse("2026-03-15")));
@@ -138,7 +138,7 @@ public class AddPaymentCommandTest {
             .getBilling();
         assertEquals(LocalDate.parse("2026-05-01"), billingAfterCommand.getCurrentDueDate());
         assertTrue(billingAfterCommand.getPaymentHistory().hasPaidOn(LocalDate.parse("2026-03-20")));
-        }
+    }
 
     @Test
     public void equals() {

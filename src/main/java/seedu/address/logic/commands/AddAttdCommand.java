@@ -38,7 +38,7 @@ public class AddAttdCommand extends AddCommand {
             "The appointment index provided is invalid for the selected student.";
     public static final String MESSAGE_NON_RECURRING_ATTENDANCE_ALREADY_RECORDED =
             "Attendance has already been recorded for this non-recurring appointment.";
-        public static final String MESSAGE_RECURRING_ATTENDANCE_ALREADY_RECORDED_ON_DATE =
+    public static final String MESSAGE_RECURRING_ATTENDANCE_ALREADY_RECORDED_ON_DATE =
             "Attendance has already been recorded for this recurring appointment on %1$s.";
     public static final String MESSAGE_FUTURE_ATTENDANCE_NOT_ALLOWED =
             "Attendance cannot be recorded for a future date or time.";
