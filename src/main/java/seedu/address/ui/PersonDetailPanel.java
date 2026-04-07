@@ -482,6 +482,7 @@ public class PersonDetailPanel extends UiPart<Region> {
     }
 
     private String toSessionKey(ScheduledSession session) {
-        return session.getDescription() + "|" + session.getRecurrence() + "|" + session.getStart() + "|" + session.getNext();
+        return session.getDescription() + "|" + session.getRecurrence() + "|"
+            + session.getStart() + "|" + session.getNext();
     }
 }
