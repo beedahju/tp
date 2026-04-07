@@ -165,21 +165,6 @@ public class Person {
     }
 
     /**
-     * Returns an immutable {@code Billing} object with updated payment history.
-     * Advances billing by one recurrence cycle only when {@code paymentDate}
-     * is later than the latest previously recorded payment date.
-     * @param paymentDate A valid {@code LocalDate}
-     * @return {@code Billing} object
-     */
-    public Billing recordFeesPaidAndAdvanceBilling(LocalDate paymentDate) {
-        boolean shouldAdvanceBillingCycle = billing.getPaymentHistory().getLatestPaidDate()
-                .map(paymentDate::isAfter)
-                .orElse(true);
-        Billing updatedBilling = billing.recordTuitionPaid(paymentDate);
-        return shouldAdvanceBillingCycle ? updatedBilling.advanceDueDate() : updatedBilling;
-    }
-
-    /**
      * Returns an immutable {@code Billing} object with updated payment history after deleting
      * a recorded payment date. Due date is rolled back one recurrence cycle only when deleting
      * the latest chronological payment date.

@@ -40,7 +40,17 @@ public class AddPaymentCommandTest {
         LocalDate paymentDate = LocalDate.parse(VALID_PAYMENT_DATE);
         AddPaymentCommand addCommand = new AddPaymentCommand(INDEX_FIRST_PERSON, paymentDate);
 
-        Billing updatedBilling = personToEdit.recordFeesPaidAndAdvanceBilling(paymentDate);
+        boolean shouldAdvanceBillingCycle = personToEdit
+                .getBilling()
+                .getPaymentHistory()
+                .getLatestPaidDate()
+                .map(paymentDate::isAfter)
+                .orElse(true);
+        Billing updatedBilling = personToEdit.getBilling().recordTuitionPaid(paymentDate);
+        if (shouldAdvanceBillingCycle) {
+            updatedBilling = updatedBilling.advanceDueDate();
+        }
+
         Person editedPerson = new PersonBuilder(personToEdit)
                 .withBilling(updatedBilling)
                 .build();
@@ -73,7 +83,17 @@ public class AddPaymentCommandTest {
         Person initialPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         AddPaymentCommand firstAddCommand = new AddPaymentCommand(INDEX_FIRST_PERSON, paymentDate);
 
-        Billing billingAfterFirstPayment = initialPerson.recordFeesPaidAndAdvanceBilling(paymentDate);
+        boolean shouldAdvanceBillingCycle = initialPerson
+                .getBilling()
+                .getPaymentHistory()
+                .getLatestPaidDate()
+                .map(paymentDate::isAfter)
+                .orElse(true);
+        Billing billingAfterFirstPayment = initialPerson.getBilling().recordTuitionPaid(paymentDate);
+        if (shouldAdvanceBillingCycle) {
+            billingAfterFirstPayment = billingAfterFirstPayment.advanceDueDate();
+        }
+
         Person personAfterFirstPayment = new PersonBuilder(initialPerson)
             .withBilling(billingAfterFirstPayment)
             .build();
@@ -135,7 +155,7 @@ public class AddPaymentCommandTest {
         addCommand.execute(model);
 
         Billing billingAfterCommand = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased())
-            .getBilling();
+                .getBilling();
         assertEquals(LocalDate.parse("2026-05-01"), billingAfterCommand.getCurrentDueDate());
         assertTrue(billingAfterCommand.getPaymentHistory().hasPaidOn(LocalDate.parse("2026-03-20")));
     }
