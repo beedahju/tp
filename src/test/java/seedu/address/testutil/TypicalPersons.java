@@ -60,17 +60,17 @@ public class TypicalPersons {
     public static final Person DANIEL = getPersonBuilder("Daniel Meier", "87652533",
             "cornelia@example.com", "10th street")
             .withTags(Set.of(new Tag("friends"))).build();
-    public static final Person ELLE = getPersonBuilder("Elle Meyer", "9482224",
+    public static final Person ELLE = getPersonBuilder("Elle Meyer", "94822240",
             "werner@example.com", "michegan ave").build();
-    public static final Person FIONA = getPersonBuilder("Fiona Kunz", "9482427",
+    public static final Person FIONA = getPersonBuilder("Fiona Kunz", "94824270",
             "lydia@example.com", "little tokyo").build();
-    public static final Person GEORGE = getPersonBuilder("George Best", "9482442",
+    public static final Person GEORGE = getPersonBuilder("George Best", "94824420",
             "anna@example.com", "4th street").build();
 
     // Manually added
-    public static final Person HOON = getPersonBuilder("Hoon Meier", "8482424",
+    public static final Person HOON = getPersonBuilder("Hoon Meier", "98482424",
             "stefan@example.com", "little india").build();
-    public static final Person IDA = getPersonBuilder("Ida Mueller", "8482131",
+    public static final Person IDA = getPersonBuilder("Ida Mueller", "98482131",
             "hans@example.com", "chicago ave").build();
 
     // Manually added - Person's details found in {@code CommandTestUtil}
