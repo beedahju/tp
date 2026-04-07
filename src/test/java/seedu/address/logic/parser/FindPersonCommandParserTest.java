@@ -26,4 +26,18 @@ public class FindPersonCommandParserTest {
         assertParseSuccess(parser, "Alice Bob", expectedFindPersonCommand);
         assertParseSuccess(parser, " \n Alice \n \t Bob  \t", expectedFindPersonCommand);
     }
+
+    @Test
+    public void parse_singleKeyword_returnsFindPersonCommand() {
+        FindPersonCommand expectedFindPersonCommand =
+                new FindPersonCommand(new NameContainsKeywordsPredicate(Arrays.asList("Alice")));
+        assertParseSuccess(parser, "Alice", expectedFindPersonCommand);
+    }
+
+    @Test
+    public void parse_punctuationKeywords_returnsFindPersonCommand() {
+        FindPersonCommand expectedFindPersonCommand =
+                new FindPersonCommand(new NameContainsKeywordsPredicate(Arrays.asList("Amy-Lim", "O'Neil")));
+        assertParseSuccess(parser, "Amy-Lim O'Neil", expectedFindPersonCommand);
+    }
 }
