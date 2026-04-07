@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import seedu.address.commons.util.AppClock;
 import seedu.address.model.academic.Subject;
 import seedu.address.model.attendance.Attendance;
 import seedu.address.model.person.Person;
@@ -298,7 +299,7 @@ public class PersonDetailPanel extends UiPart<Region> {
             return "No due date";
         }
 
-        LocalDate today = LocalDate.now();
+        LocalDate today = AppClock.today();
         if (dueDate.isEqual(today)) {
             return "Due today";
         }
