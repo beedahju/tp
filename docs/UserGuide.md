@@ -194,8 +194,8 @@ Format: `add tag INDEX t/TAG [t/TAG]...`
 Details:
 * Adds the given tag or tags to the student at `INDEX`.
 * At least one `t/` prefix is required.
-* Existing tags are kept.
-* Duplicate tags are ignored.
+* Existing tags are kept; tags already present are ignored.
+* Duplicate tag names within the same command are also ignored.
 
 Examples:
 * `add tag 1 t/JC`
@@ -209,7 +209,8 @@ Format: `edit tag INDEX [t/TAG]...`
 
 Details:
 * All existing tags are replaced by the tags you provide.
-* Use `t/` with no value to clear all tags from that student.
+* Use exactly one `t/` with no value to clear all tags from that student.
+* Using more than one empty `t/`, or mixing an empty `t/` with real tag values, is invalid.
 
 Examples:
 * `edit tag 1 t/JC t/J1`
@@ -224,6 +225,7 @@ Format: `delete tag INDEX t/TAG_INDEX [t/TAG_INDEX]...`
 Details:
 * `INDEX` is the student index in the current displayed list.
 * Each `TAG_INDEX` is taken from the numbered tag list in that student's detail panel.
+* Tag names are stored and displayed in **title case** (e.g. `jc` -> `Jc`) and listed in **case-insensitive alphabetical order**.
 * At least one `t/` prefix is required.
 
 Examples:
@@ -256,15 +258,17 @@ Use academic records to keep track of the subjects a student takes and any overa
 
 ### Adding subjects to a student : `add acad`
 
-Adds one or more subjects to a student's academic record.
+Adds one or more subjects to a student's academic record. If a subject name already exists, that entry is updated (upserted).
 
 Format: `add acad INDEX s/SUBJECT [l/LEVEL] [s/SUBJECT [l/LEVEL]]...`
 
 Details:
 * At least one `s/` prefix is required.
 * `l/LEVEL` is optional and applies to the subject immediately before it.
-* Existing subjects are kept.
-* Duplicate subjects are not added again.
+* Accepted levels are `basic` and `strong` (case-insensitive).
+* Existing subjects not named in the command are kept unchanged.
+* If the student already has a subject with the same name, that subject is replaced by the new entry.
+* Duplicate subject names within the same command are invalid.
 
 Examples:
 * `add acad 1 s/Math l/Strong`
@@ -272,21 +276,22 @@ Examples:
 
 ### Editing a student's academics : `edit acad`
 
-Replaces the student's subjects and/or updates the overall academic note.
+Overwrites the student's subject list and/or updates the overall academic note.
 
 Format: `edit acad INDEX [s/SUBJECT [l/LEVEL]]... [dsc/DESCRIPTION]`
 
 Details:
 * At least one of `s/` or `dsc/` must be provided.
-* If you provide subject fields, they replace the existing subject list.
-* If you provide no `s/` fields, the current subject list is kept.
+* Accepted levels are `basic` and `strong` (case-insensitive).
 * Use `s/` with no value to clear all subjects.
 * Use `dsc/` with no value to clear the academic description.
+* Only one `dsc/` field is allowed per command.
+* Duplicate subject names within the same command are invalid.
 
 Examples:
 * `edit acad 1 s/Math l/Strong s/Science`
 * `edit acad 1 dsc/Good progress this semester`
-* `edit acad 2 s/Physics l/Weak dsc/Needs extra support`
+* `edit acad 2 s/Physics l/Basic dsc/Needs extra support`
 * `edit acad 3 s/`
 
 ### Deleting subjects from a student : `delete acad`
@@ -298,6 +303,7 @@ Format: `delete acad INDEX s/SUBJECT_INDEX [s/SUBJECT_INDEX]...`
 Details:
 * `INDEX` is the student index in the current displayed list.
 * Each `SUBJECT_INDEX` is taken from the numbered subject list in that student's detail panel.
+* Subject names are stored and displayed in **title case** (e.g. `math` -> `Math`) and listed in **case-insensitive alphabetical order**.
 * At least one `s/` prefix is required.
 
 Examples:
@@ -689,3 +695,20 @@ Action | Format | Example
 **Clear** | `clear` | `clear`
 **Exit** | `exit` | `exit`
 **Navigate command history** | `up` and `down` keyboard arrow keys | -
+
+--------------------------------------------------------------------------------------------------------------------
+
+## Prefix reference
+
+Prefix | Stands for | Used in
+-------|------------|--------
+`n/` | Name | `add student`, `edit student`, `edit parent`, `find parent`
+`p/` | Phone | `add student`, `edit student`, `edit parent`, `find parent`
+`e/` | Email | `add student`, `edit student`, `edit parent`, `find parent`
+`a/` | Address / Amount | Address: `add student`, `edit student` · Amount: `edit billing`
+`t/` | Tag / Tag index | Tag value: `add student`, `add tag`, `edit tag` · Tag index: `delete tag` · Keyword: `find tag`
+`s/` | Subject / Subject index | Subject value: `add acad`, `edit acad` · Subject index: `delete acad` · Keyword: `find acad` · Session index (no prefix): `add attd`, `delete appt`
+`l/` | Level | `add acad`, `edit acad` — must immediately follow the `s/` it applies to; accepted values are `basic` and `strong`
+`d/` | Date / Date-time / Year-month | Date: `add payment`, `delete payment`, `find appt` · Date-time: `add appt` · Date or date-time: `add attd` · Year-month (`YYYY-MM`): `find billing`
+`r/` | Recurrence | `add appt` — accepted values are `NONE`, `WEEKLY`, `BIWEEKLY`, `MONTHLY`
+`dsc/` | Description | `add appt`, `edit acad`
