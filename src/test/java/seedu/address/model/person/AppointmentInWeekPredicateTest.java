@@ -54,7 +54,7 @@ public class AppointmentInWeekPredicateTest {
     }
 
     @Test
-    public void test_multipleSessions_anyMatchWithinWeek_returnsTrue() {
+    public void test_multipleSessionsAnyMatchWithinWeek_returnsTrue() {
         AppointmentInWeekPredicate predicate = new AppointmentInWeekPredicate(LocalDate.of(2026, 4, 8));
         Person person = buildPersonWithSessionNext(
                 LocalDateTime.of(2026, 4, 5, 9, 0),

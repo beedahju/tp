@@ -77,8 +77,7 @@ public class AttendanceHistoryTest {
     public void getRecords_returnsUnmodifiableList() {
         AttendanceHistory history = new AttendanceHistory(FIRST_RECORD);
 
-        assertThrows(UnsupportedOperationException.class,
-                () -> history.getRecords().add(SECOND_RECORD));
+        assertThrows(UnsupportedOperationException.class, () -> history.getRecords().add(SECOND_RECORD));
     }
 
     @Test

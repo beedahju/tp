@@ -53,7 +53,7 @@ public class JsonAdaptedAppointmentAttendanceTest {
     }
 
     @Test
-    public void constructor_fromAttendance_roundTrip_returnsEquivalentAttendance() throws Exception {
+    public void constructor_roundTrip_returnsEquivalentAttendance() throws Exception {
         Attendance source = new Attendance(true, LocalDateTime.of(2026, 1, 29, 8, 30));
         JsonAdaptedAppointmentAttendance adapted = new JsonAdaptedAppointmentAttendance(source);
 
