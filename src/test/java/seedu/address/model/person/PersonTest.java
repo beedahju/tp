@@ -16,10 +16,13 @@ import static seedu.address.testutil.TypicalPersons.getPersonBuilder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.model.academic.Academics;
 import seedu.address.model.attendance.Attendance;
 import seedu.address.model.attendance.AttendanceHistory;
 import seedu.address.model.billing.Billing;
@@ -40,7 +43,11 @@ public class PersonTest {
                 ALICE.getPhone(),
                 ALICE.getEmail(),
                 ALICE.getAddress(),
-                tags
+                tags,
+                new Academics(),
+                Optional.empty(),
+                Appointment.defaultAppointment(),
+                Billing.defaultBilling()
         );
 
         // basic fields
@@ -71,7 +78,9 @@ public class PersonTest {
                     ALICE.getPhone(),
                     ALICE.getEmail(),
                     ALICE.getAddress(),
-                    tags);
+                    tags,
+                    new Academics(), Optional.empty(),
+                    Appointment.defaultAppointment(), Billing.defaultBilling());
         });
 
         assertThrows(NullPointerException.class, () -> {
@@ -80,7 +89,8 @@ public class PersonTest {
                     null,
                     ALICE.getEmail(),
                     ALICE.getAddress(),
-                    tags);
+                    tags,
+                    new Academics(), Optional.empty(), Appointment.defaultAppointment(), Billing.defaultBilling());
         });
 
         assertThrows(NullPointerException.class, () -> {
@@ -89,7 +99,8 @@ public class PersonTest {
                     ALICE.getPhone(),
                     null,
                     ALICE.getAddress(),
-                    tags);
+                    tags,
+                    new Academics(), Optional.empty(), Appointment.defaultAppointment(), Billing.defaultBilling());
         });
 
         assertThrows(NullPointerException.class, () -> {
@@ -98,7 +109,8 @@ public class PersonTest {
                     ALICE.getPhone(),
                     ALICE.getEmail(),
                     null,
-                    tags);
+                    tags,
+                    new Academics(), Optional.empty(), Appointment.defaultAppointment(), Billing.defaultBilling());
         });
 
         assertThrows(NullPointerException.class, () -> {
@@ -107,7 +119,9 @@ public class PersonTest {
                     ALICE.getPhone(),
                     ALICE.getEmail(),
                     ALICE.getAddress(),
-                    null);
+                    null,
+                    new Academics(), Optional.empty(),
+                    Appointment.defaultAppointment(), Billing.defaultBilling());
         });
     }
 
@@ -121,7 +135,11 @@ public class PersonTest {
                 ALICE.getPhone(),
                 ALICE.getEmail(),
                 ALICE.getAddress(),
-                tags
+                tags,
+                new Academics(),
+                Optional.empty(),
+                Appointment.defaultAppointment(),
+                Billing.defaultBilling()
         );
 
         tags.clear();
@@ -151,16 +169,15 @@ public class PersonTest {
     @Test
     public void getAttendance_withAppointment_returnsAppointmentAttendance() {
         Person person = new PersonBuilder(ALICE)
-                .withAppointment(Appointment.of(
-                        "2026-01-13T08:00:00", "Algebra", Recurrence.NONE).withAttendance(
-                                AttendanceHistory.EMPTY.addAttendance(
-                                        new Attendance(
-                                                true, LocalDateTime.parse("2026-01-29T08:00:00")))))
+                .withAppointment(new Appointment(List.of(
+                        Appointment.of("2026-01-13T08:00:00", "Algebra", Recurrence.NONE).getSessions().get(0)
+                                .withAttendance(AttendanceHistory.EMPTY.addAttendance(
+                                        new Attendance(true, LocalDateTime.parse("2026-01-29T08:00:00")))))))
                 .build();
         assertEquals(LocalDateTime.parse("2026-01-29T08:00:00"),
                 person.getNextAppointment()
                         .orElseThrow()
-                        .getAttendance()
+                        .getAttendanceHistory()
                         .getLastRecord()
                         .orElseThrow()
                         .getRecordedAt()
@@ -235,11 +252,10 @@ public class PersonTest {
         assertFalse(ALICE.equals(editedAlice));
 
         editedAlice = new PersonBuilder(ALICE)
-                .withAppointment(Appointment.of(
-                        "2026-01-13T08:00:00", "Algebra", Recurrence.NONE).withAttendance(
-                                AttendanceHistory.EMPTY.addAttendance(
-                                        new Attendance(
-                                                true, LocalDateTime.parse("2026-01-29T08:00:00")))))
+                .withAppointment(new Appointment(List.of(
+                        Appointment.of("2026-01-13T08:00:00", "Algebra", Recurrence.NONE).getSessions().get(0)
+                                .withAttendance(AttendanceHistory.EMPTY.addAttendance(
+                                        new Attendance(true, LocalDateTime.parse("2026-01-29T08:00:00")))))))
                 .build();
         assertFalse(ALICE.equals(editedAlice));
     }

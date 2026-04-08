@@ -1,15 +1,14 @@
 package seedu.address.storage;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.model.attendance.AttendanceHistory;
 import seedu.address.model.recurrence.Recurrence;
 import seedu.address.model.session.ScheduledSession;
@@ -21,8 +20,6 @@ class JsonAdaptedScheduledSession {
 
     private static final String SESSION_START_MESSAGE_CONSTRAINTS =
             "Session start date-time must be in ISO 8601 local format, e.g. 2026-01-13T08:00:00";
-    private static final DateTimeFormatter DATETIME_FORMATTER =
-            DateTimeFormatter.ISO_LOCAL_DATE_TIME.withResolverStyle(ResolverStyle.STRICT);
 
     private final String start;
     private final String next;
@@ -62,7 +59,7 @@ class JsonAdaptedScheduledSession {
 
         LocalDateTime modelStart;
         try {
-            modelStart = LocalDateTime.parse(start, DATETIME_FORMATTER);
+            modelStart = LocalDateTime.parse(start, DateTimeUtil.ISO_LOCAL_DATE_TIME_STRICT_FORMATTER);
         } catch (DateTimeParseException e) {
             throw new IllegalValueException(SESSION_START_MESSAGE_CONSTRAINTS);
         }
@@ -70,7 +67,7 @@ class JsonAdaptedScheduledSession {
         LocalDateTime modelNext = modelStart;
         if (next != null) {
             try {
-                modelNext = LocalDateTime.parse(next, DATETIME_FORMATTER);
+                modelNext = LocalDateTime.parse(next, DateTimeUtil.ISO_LOCAL_DATE_TIME_STRICT_FORMATTER);
             } catch (DateTimeParseException e) {
                 throw new IllegalValueException(SESSION_START_MESSAGE_CONSTRAINTS);
             }

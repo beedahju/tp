@@ -7,11 +7,11 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_RECURRENCE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SESSION;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -46,8 +46,6 @@ public class EditApptCommand extends EditCommand {
             "The appointment index provided is invalid for the selected student.";
     public static final String MESSAGE_DUPLICATE_APPOINTMENT_DESCRIPTION =
             "Appointment description \"%1$s\" already exists for %2$s";
-
-    private static final DateTimeFormatter APPOINTMENT_DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     private final Index sessionIndex;
     private final Optional<LocalDateTime> appointmentStart;
@@ -134,7 +132,7 @@ public class EditApptCommand extends EditCommand {
     }
 
     private String formatSession(ScheduledSession session) {
-        return session.getNext().format(APPOINTMENT_DATE_TIME_FORMATTER)
+        return session.getNext().format(DateTimeUtil.ISO_LOCAL_DATE_TIME_FORMATTER)
                 + " (" + session.getRecurrence() + ", " + session.getDescription() + ")";
     }
 

@@ -3,9 +3,9 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -70,7 +70,7 @@ public class AddApptCommand extends AddCommand {
                 .build();
 
         model.setPerson(personToEdit, editedPerson);
-        String formattedStart = appointmentStart.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String formattedStart = appointmentStart.format(DateTimeUtil.ISO_LOCAL_DATE_TIME_FORMATTER);
         return new CommandResult(String.format(MESSAGE_ADD_APPT_SUCCESS,
                 Messages.format(editedPerson), formattedStart), editedPerson);
     }

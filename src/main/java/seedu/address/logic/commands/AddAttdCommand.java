@@ -4,11 +4,11 @@ import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.AppClock;
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -50,8 +50,6 @@ public class AddAttdCommand extends AddCommand {
             "Attendance has already been recorded for this recurring appointment on %1$s.";
     public static final String MESSAGE_FUTURE_ATTENDANCE_NOT_ALLOWED =
             "Attendance cannot be recorded for a future date or time.";
-
-    private static final DateTimeFormatter ATTENDANCE_DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     private final Index personIndex;
     private final Index sessionIndex;
@@ -122,7 +120,7 @@ public class AddAttdCommand extends AddCommand {
         if (recordedAt.toLocalTime().equals(LocalTime.MIDNIGHT)) {
             return recordedAt.toLocalDate().toString();
         }
-        return recordedAt.format(ATTENDANCE_DATE_TIME_FORMATTER);
+        return recordedAt.format(DateTimeUtil.ISO_LOCAL_DATE_TIME_FORMATTER);
     }
 
     private String buildNextSessionFeedback(Recurrence recurrence,
@@ -142,7 +140,7 @@ public class AddAttdCommand extends AddCommand {
     }
 
     private String formatSessionNext(LocalDateTime nextDateTime) {
-        return nextDateTime.format(ATTENDANCE_DATE_TIME_FORMATTER);
+        return nextDateTime.format(DateTimeUtil.ISO_LOCAL_DATE_TIME_FORMATTER);
     }
 
     private ScheduledSession getTargetSession(Person person) throws CommandException {

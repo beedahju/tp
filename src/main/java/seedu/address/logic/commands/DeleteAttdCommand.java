@@ -7,11 +7,11 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_SESSION;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -51,8 +51,6 @@ public class DeleteAttdCommand extends DeleteCommand {
             "The appointment index provided is invalid for the selected student.";
     public static final String MESSAGE_ATTENDANCE_NOT_FOUND =
             "No attendance record found for the selected session on %1$s.";
-
-    private static final DateTimeFormatter ATTENDANCE_DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     private final Index sessionIndex;
     private final Optional<LocalDateTime> recordedAt;
@@ -161,7 +159,7 @@ public class DeleteAttdCommand extends DeleteCommand {
             if (targetDateTime.toLocalTime().equals(LocalTime.MIDNIGHT)) {
                 return targetDateTime.toLocalDate().toString();
             }
-            return targetDateTime.format(ATTENDANCE_DATE_TIME_FORMATTER);
+            return targetDateTime.format(DateTimeUtil.ISO_LOCAL_DATE_TIME_FORMATTER);
         }
         return recordedDate.get().toString();
     }
@@ -183,7 +181,7 @@ public class DeleteAttdCommand extends DeleteCommand {
     }
 
     private String formatSessionNext(LocalDateTime nextDateTime) {
-        return nextDateTime.format(ATTENDANCE_DATE_TIME_FORMATTER);
+        return nextDateTime.format(DateTimeUtil.ISO_LOCAL_DATE_TIME_FORMATTER);
     }
 
     @Override

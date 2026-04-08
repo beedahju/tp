@@ -2,10 +2,10 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.util.DateTimeUtil;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -29,8 +29,6 @@ public class DeleteApptCommand extends DeleteCommand {
     public static final String MESSAGE_DELETE_APPT_SUCCESS = "Removed appointment session(s) for %1$s: %2$s.";
     public static final String MESSAGE_INVALID_APPOINTMENT_INDEX =
             "One or more session indices provided are invalid for the selected student.";
-
-    private static final DateTimeFormatter APPOINTMENT_DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     private final List<Index> sessionIndices;
 
@@ -76,7 +74,8 @@ public class DeleteApptCommand extends DeleteCommand {
 
     private String formatSessions(List<ScheduledSession> sessions) {
         List<String> formattedSessions = sessionIndices.stream()
-                .map(index -> sessions.get(index.getZeroBased()).getStart().format(APPOINTMENT_DATE_TIME_FORMATTER))
+            .map(index -> sessions.get(index.getZeroBased()).getStart()
+                .format(DateTimeUtil.ISO_LOCAL_DATE_TIME_FORMATTER))
                 .toList();
         if (formattedSessions.size() == 1) {
             return formattedSessions.get(0);

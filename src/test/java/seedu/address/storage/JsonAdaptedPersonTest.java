@@ -28,6 +28,8 @@ import seedu.address.model.person.PersonBuilder;
 import seedu.address.model.person.Phone;
 import seedu.address.model.recurrence.Recurrence;
 import seedu.address.model.session.Appointment;
+import seedu.address.model.session.ScheduledSession;
+
 
 public class JsonAdaptedPersonTest {
     private static final String INVALID_NAME = "R@chel";
@@ -351,9 +353,9 @@ public class JsonAdaptedPersonTest {
                 VALID_ATTENDANCE_HISTORY);
         Person modelPerson = person.toModelType();
 
-        assertEquals(2, modelPerson.getNextAppointment().orElseThrow().getAttendance().getRecords().size());
+        assertEquals(2, modelPerson.getNextAppointment().orElseThrow().getAttendanceHistory().getRecords().size());
         assertEquals(LocalDateTime.parse("2026-01-29T08:00:00"),
-                modelPerson.getNextAppointment().orElseThrow().getAttendance().getLastRecord().orElseThrow()
+                modelPerson.getNextAppointment().orElseThrow().getAttendanceHistory().getLastRecord().orElseThrow()
                         .getRecordedAt());
     }
 
@@ -368,9 +370,9 @@ public class JsonAdaptedPersonTest {
                 VALID_ATTENDANCE_HISTORY);
         Person modelPerson = person.toModelType();
 
-        assertEquals(2, modelPerson.getNextAppointment().orElseThrow().getAttendance().getRecords().size());
+        assertEquals(2, modelPerson.getNextAppointment().orElseThrow().getAttendanceHistory().getRecords().size());
         assertEquals(LocalDateTime.parse("2026-01-29T08:00:00"),
-                modelPerson.getNextAppointment().orElseThrow().getAttendance().getLastRecord().orElseThrow()
+                modelPerson.getNextAppointment().orElseThrow().getAttendanceHistory().getLastRecord().orElseThrow()
                         .getRecordedAt());
     }
 
@@ -465,12 +467,12 @@ public class JsonAdaptedPersonTest {
     @Test
     public void toModelType_multipleAppointments_roundTripsSuccessfully() throws Exception {
         Person person = new PersonBuilder(BENSON)
-                .withAppointment(Appointment.of("2026-01-13T08:00:00", "Algebra", Recurrence.NONE))
-                .addAppointment(new Appointment(Recurrence.WEEKLY,
+                .withAppointment(Appointment.of("2026-01-13T08:00:00", "Algebra", Recurrence.NONE)
+                    .addSession(new ScheduledSession(Recurrence.WEEKLY,
                         LocalDateTime.parse("2026-02-03T09:00:00"),
                         LocalDateTime.parse("2026-02-03T09:00:00"),
                         AttendanceHistory.EMPTY,
-                        "Physics"))
+                        "Physics")))
                 .build();
 
         assertEquals(person, new JsonAdaptedPerson(person).toModelType());
