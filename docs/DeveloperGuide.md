@@ -57,7 +57,7 @@ For a typical mutating command such as `delete student 1`, the components intera
 
 1. The `UI` passes the raw command text to `Logic`.
 1. `Logic` parses the command and executes it against the `Model`.
-1. If the command changes the address book data, `Logic` asks `Storage` to persist the updated state.
+1. If the command changes TutorFlow's persisted student data, `Logic` asks `Storage` to persist the updated state.
 1. The `UI` observes the updated `Model` state and refreshes the displayed list and detail panels.
 
 Each of the four main components (also shown in the diagram above),
@@ -125,7 +125,7 @@ How the parsing works:
 
 The `Model` component,
 
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
+* stores TutorFlow's core student data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * stores the currently displayed `Person` objects as a separate _filtered_ list that is exposed as an unmodifiable `ObservableList<Person>`. The UI binds to this list so it updates automatically when the model changes.
 * supports both replacing the current filter and narrowing the currently displayed list further with an additional predicate.
 * preserves edited persons temporarily when a filter is active so an edited record does not disappear from the UI immediately after an edit.
@@ -146,7 +146,7 @@ The `Model` component,
 <img src="images/StorageClassDiagram.png" width="550" />
 
 The `Storage` component,
-* can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
+* can save both student data and user preference data in JSON format, and read them back into corresponding objects.
 * inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
@@ -170,8 +170,8 @@ How the `edit` command works:
 1. `EditCommandParser` dispatches by subcommand name and currently supports `student`, `tag`, `acad`, `parent`, and `billing`.
 1. The concrete parser parses the target index and command-specific prefixed arguments, then constructs the corresponding `Edit...Command`.
 1. During execution, the command resolves the target student from the currently displayed list, builds the edited `Person`, and checks any command-specific constraints.
-1. The command updates the `Model`, which replaces the target `Person` in the `AddressBook`. If a filter is active, the edited person is temporarily preserved in the displayed list.
-1. `LogicManager` detects that the address book changed and persists the updated state through `Storage`.
+1. The command updates the `Model`, which replaces the target `Person` in the student registry. If a filter is active, the edited person is temporarily preserved in the displayed list.
+1. `LogicManager` detects that persisted student data changed and persists the updated state through `Storage`.
 
 
 ### Find command
@@ -183,8 +183,8 @@ How the `find` command works:
 1. `AddressBookParser` recognizes `find` as the command word and forwards the remaining input to `FindCommandParser`.
 1. `FindCommandParser` uses a dispatcher to route the input by subcommand name and currently supports `student`, `appt`, `tag`, `acad`, `billing`, and `parent`.
 1. The concrete parser validates the input arguments and constructs the corresponding `Find...Command` with an appropriate predicate.
-1. During execution, the command applies the predicate to the `Model` using `updateFilteredPersonListWithAnd(...)`, which narrows the currently displayed list further instead of resetting it to the full address book.
-1. `LogicManager` checks whether the underlying `AddressBook` has changed. Since `find` only modifies transient model state (the filtered list), no changes are detected in the `AddressBook`, and the storage step is therefore skipped.
+1. During execution, the command applies the predicate to the `Model` using `updateFilteredPersonListWithAnd(...)`, which narrows the currently displayed list further instead of resetting it to the full student list.
+1. `LogicManager` checks whether the underlying persisted student data has changed. Since `find` only modifies transient model state (the filtered list), no persisted changes are detected, and the storage step is therefore skipped.
 
 ### Find appointments command
 
@@ -198,7 +198,7 @@ How the `find appt` command works:
 1. `FindApptCommand` constructs an `AppointmentInWeekPredicate`, which computes the Monday-Sunday week containing the target date.
 1. During execution, the command applies that predicate with `updateFilteredPersonListWithAnd(...)`, so only students already in the displayed list and also matching the target week remain visible.
 1. The command returns a `CommandResult` containing the number of matching appointments and the computed week range.
-1. Unlike `edit`, `find appt` does not modify the address book, so `LogicManager` does not save any data to storage after execution.
+1. Unlike `edit`, `find appt` does not modify persisted student data, so `LogicManager` does not save any data to storage after execution.
 
 ### Subject-related commands
 
@@ -228,7 +228,7 @@ How the payment and billing feature works:
 
 1. `EditBillingCommandParser` parses the student index together with optional `a/AMOUNT` and `d/DATE` fields.
 1. `EditBillingCommand` updates the student's tuition fee, payment due date, or both, without touching payment history.
-1. `AddPaymentCommandParser` parses `add payment INDEX d/DATE`, and `AddPaymentCommand` records that payment date and advances the billing due date by one recurrence cycle.
+1. `AddPaymentCommandParser` parses `add payment INDEX d/DATE`, and `AddPaymentCommand` records that payment date. The billing due date advances by one recurrence cycle only if the added date is later than the latest recorded payment date.
 1. `DeletePaymentCommandParser` parses `delete payment INDEX d/DATE`, and `DeletePaymentCommand` removes that recorded payment date. If the removed date is the latest recorded payment, the due date is rolled back by one recurrence cycle.
 1. `FindBillingCommandParser` parses `find billing d/YYYY-MM` and creates a `PaymentDueMonthPredicate`.
 1. `FindBillingCommand` applies that predicate to the displayed list so only students with matching billing due months remain visible.
@@ -237,7 +237,6 @@ How the payment and billing feature works:
 ### Future work
 
 Undo/redo and data archiving are not implemented in the current codebase.
-
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -271,9 +270,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 | Priority | As a …​ | I want to …​ | So that I can…​ |
 | -------- | ------- | ------------ | ---------------- |
-| `* * *` | tutor | add a new contact to the address book | track which tutees I currently teach |
-| `* * *` | new user | delete a contact | remove contacts that I no longer need |
-| `* * *` | tutor | add appointment details to a contact | track lesson schedules with students |
+| `* * *` | tutor | add a new student contact to TutorFlow | track which tutees I currently teach |
+| `* * *` | new user | delete a student record | remove records that I no longer need |
+| `* * *` | tutor | add appointment details to a student | track lesson schedules with students |
 | `* * *` | freelance tutor | view what appointments I have for the week | plan my tutoring schedule appropriately |
 | `* * *` | tutor | track whether a client has paid tuition fees for the month | keep track of outstanding payments |
 | `* *` | tutor | view the payment dates | know when my clients have paid for lessons |
@@ -295,7 +294,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1. Tutor requests to view all students.
 2. TutorFlow shows all the students available in the system.
 
-Use case ends
+Use case ends.
 
 **Extensions**
 * 2a. There are no students available in the system
@@ -317,10 +316,10 @@ Use case ends.
 * 1a. Tutor provides an invalid request.
     * 1a1. TutorFlow indicates that the request is invalid and asks for a valid date.
     * 1a2. Steps 1 to 1a2 are repeated until a valid request is provided.
-* Use case resumes at step 2
+* Use case resumes at step 2.
 
-* 4a. No appointments exist for the target week.
-    * 4a1. TutorFlow indicates that there are no appointments.
+* 3a. No appointments exist for the target week.
+   * 3a1. TutorFlow indicates that there are no appointments.
 * Use case ends.
 
 ---
@@ -346,24 +345,24 @@ Use case ends.
 **Use case: Record student attendance**
 
 **MSS**
-1. Tutor requests to view all students
-2. TutorFlow shows all students
-3. Tutor selects a student
-4. Tutor records that the student has attended today’s lesson
+1. Tutor requests to view all students.
+2. TutorFlow shows all students.
+3. Tutor selects a student.
+4. Tutor records that the student has attended today’s lesson.
 5. TutorFlow updates the student’s attendance and displays confirmation.
 
 Use case ends.
 
 **Extensions**
 
-* 3a. Tutor records that the student has attended a previous lesson
-* Use case resumes from step 5.
+* 3a. Tutor records that the student has attended a previous lesson.
+* Use case resumes at step 5.
 
 * 4a. TutorFlow detects an error in the entered data.
-   * 4a1. TutorFlow requests for the correct data.
+   * 4a1. TutorFlow requests the correct data.
    * 4a2. Tutor enters new data.
-* Steps 4a1-4a2 are repeated until the data entered are correct.
-* Use case resumes from step 5.
+* Steps 4a1 to 4a2 are repeated until the data entered is correct.
+* Use case resumes at step 5.
 
 ---
 **Use case: Record tuition payment for a student**
@@ -382,14 +381,14 @@ Use case ends.
 
 * 2a. The student list is empty.
 
-  * 2a1. TutorFlow informs the tutor that there are no students recorded.
+   * 2a1. TutorFlow informs the tutor that there are no students recorded.
 * Use case ends.
 
 * 4a. The tutor enters invalid payment information.
 
-  * 4a1. TutorFlow shows an error message.
-  * 4a2. Tutor re-enters the payment information.
-  * Steps 4a1 to 4a2 are repeated until the tutor enters valid payment details.
+   * 4a1. TutorFlow shows an error message.
+   * 4a2. Tutor re-enters the payment information.
+   * Steps 4a1 to 4a2 are repeated until the tutor enters valid payment details.
 * Use case resumes at step 5.
 
 ---
@@ -418,12 +417,12 @@ Use case ends.
 ### Non-Functional Requirements
 
 1.  Application should work on any _mainstream OS_ as long as it has Java `17` or above installed.
-2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+2.  Should be able to hold up to 1000 student records without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 4.  Application should respond within one second.
-5.  Expected to adhere to a schedule that delivers a feature set every one week.
+5.  Core features should remain usable without requiring internet access.
 6.  Not required to handle communication between Tutors and Students.
-7.  Not required to handle payments between Tutors and Students.
+7.  Not required to process real monetary transactions between Tutors and Students (e.g., payment gateway integration); only payment tracking records are in scope.
 
 ### Glossary
 
@@ -461,7 +460,7 @@ testers are expected to do more *exploratory* testing.
    1. Download the jar file and copy into an empty folder
 
    1. Double-click the jar file.<br>
-      Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+      Expected: Shows the GUI with a set of sample students. The window size may not be optimum.
 
 1. Saving window preferences
 
@@ -472,22 +471,69 @@ testers are expected to do more *exploratory* testing.
 
 1. Additional launch tests should cover starting the app from the command line and closing it after making edits.
 
-### Deleting a person
+### Deleting a student
 
-1. Deleting a person while all persons are being shown
+1. Deleting a student while all students are being shown
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+   1. Prerequisites: List all students using the `list` command. Multiple students in the list.
 
    1. Test case: `delete student 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+      Expected: First student is deleted from the list. Details of the deleted student are shown in the status message. Timestamp in the status bar is updated.
 
    1. Test case: `delete student 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+      Expected: No student is deleted. Error details shown in the status message. Status bar remains the same.
 
    1. Other incorrect delete commands to try: `delete`, `delete student`, `delete student x`, `delete student 999`<br>
       Expected: Similar to previous.
 
 1. Additional deletion tests should cover deleting a student from a filtered list.
+
+### Finding appointments
+
+1. Finding appointments for a target week
+
+   1. Prerequisites: At least one student has an appointment within the target week.
+
+   1. Test case: `find appt d/2026-02-13`<br>
+      Expected: The student list is filtered to students with appointments in that Monday-Sunday week. Result message shows number of matches.
+
+   1. Test case: `find appt`<br>
+      Expected: Uses current local date and filters by the current week.
+
+   1. Invalid input to try: `find appt d/13-02-2026`<br>
+      Expected: No list changes. Error message with command format guidance is shown.
+
+### Billing and payment updates
+
+1. Editing billing fields
+
+   1. Prerequisites: List all students; pick a student index with existing billing data.
+
+   1. Test case: `edit billing 1 a/120`<br>
+      Expected: Tuition fee is updated for student 1. Payment history remains unchanged.
+
+   1. Test case: `edit billing 1 d/2026-04-01`<br>
+      Expected: Billing due date is updated for student 1.
+
+2. Recording a payment
+
+   1. Prerequisites: Student has billing configured and at least one due date.
+
+   1. Test case: `add payment 1 d/2026-03-20`<br>
+      Expected: Payment date is recorded. Due date advances only if this date is later than the latest recorded payment date.
+
+   1. Test case: Repeat `add payment 1 d/2026-03-20`<br>
+      Expected: No data changes. Error indicates payment date already exists for that student.
+
+3. Deleting a payment
+
+   1. Prerequisites: Student has at least one recorded payment date.
+
+   1. Test case: `delete payment 1 d/2026-03-20`<br>
+      Expected: Payment date is removed. If the deleted date was the latest recorded payment date, due date rolls back by one recurrence cycle.
+
+   1. Invalid input to try: `delete payment 1 d/2026-01-01` when date is not recorded<br>
+      Expected: No data changes. Error indicates payment date is not recorded for that student.
 
 ### Saving data
 
@@ -499,4 +545,4 @@ testers are expected to do more *exploratory* testing.
 
    1. Corrupted data file:
       Edit `data/tutorflow.json` and replace part of the file with invalid JSON, then launch the app.<br>
-      Expected: The app starts with an empty address book, and the log records that the data file could not be loaded.
+       Expected: The app starts with an empty student list, and the log records that the data file could not be loaded.
