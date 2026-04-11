@@ -80,6 +80,8 @@ For commands such as `delete tag`, `delete acad`, `delete appt`, and `add attd`,
 
 **Command format notes**
 
+* All commands are **case insensitive**! For example, `dElEte STUdenT 1` works the same as `delete student 1`.
+
 * Words in `UPPER_CASE` are values you must supply.
   Example: in `add student n/NAME`, replace `NAME` with an actual name such as `John Doe`.
 
