@@ -37,7 +37,7 @@ TutorFlow keeps your student list, parent / guardian details, academics, tuition
 
 1. Move the jar file into the folder you want TutorFlow to use as its home folder.
 
-1. Open a terminal, `cd` into that folder, and run:
+1. Open a terminal, `cd` into that folder, for example, `cd target_directory/tutorflow_app`, and run:
 
    `java -jar tutorflow.jar`
 
