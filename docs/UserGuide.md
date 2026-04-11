@@ -434,6 +434,7 @@ Details:
 * The payment date cannot be later than today.
 * Recording a payment advances the student's billing due date by one billing cycle only when the new payment date
   is later than the latest recorded payment date.
+* The duration of each billing cycle is one month. Each advancement brings the due date forward by one month. 
 * If you add an older (backfilled) payment date, TutorFlow records it but keeps the due date unchanged.
 
 Examples:
@@ -450,6 +451,7 @@ Details:
 * The date cannot be later than today.
 * The specified date must already exist in that student's payment history.
 * If you delete the most recent recorded payment date, TutorFlow rolls the due date back by one billing cycle.
+* The duration of each billing cycle is one month. Each rollback brings the due date back by one month. 
 * If you delete an older payment date, the due date stays unchanged.
 
 Examples:
