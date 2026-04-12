@@ -233,8 +233,8 @@ public class ParserUtilTest {
 
     @Test
     public void parseAmount_precisionLossValue_throwsParseException() {
-        assertThrows(ParseException.class, ParserUtil.MESSAGE_INVALID_AMOUNT_PRECISION,
-                () -> ParserUtil.parseAmount("9999999999999999"));
+        assertThrows(ParseException.class, ParserUtil.MESSAGE_INVALID_AMOUNT_PRECISION, () ->
+            ParserUtil.parseAmount("9999999999999999"));
     }
 
     @Test
