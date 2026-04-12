@@ -189,8 +189,8 @@ Details:
   Example: `alex` matches `Alex`
 * The order of keywords does not matter.
 * Only student names are searched.
-* Matching is by full word, not substring.
-  Example: `Al` does not match `Alex`
+* Matching is by substring.
+* Example: `Al` matches `Alex`
 * A student is returned if the name matches **at least one** keyword.
 
 Examples:
@@ -382,8 +382,7 @@ Details:
 * Each prefix may be used at most once.
 * You can give multiple keywords inside a single prefix by separating them with spaces.
   Example: `n/Susan Meier`
-* Parent name matching is case-insensitive and based on full words.
-* Parent phone and email matching are case-insensitive and based on partial text.
+* Parent name, phone, and email matching are case-insensitive and based on partial text.
 * Within a single field, multiple keywords behave as an `OR` search.
   Example: `n/Susan Meier` matches a parent name containing either `Susan` or `Meier`.
 * If you supply more than one field, the student must match **every supplied field**.
