@@ -97,10 +97,6 @@ For commands such as `delete tag`, `delete acad`, `delete appt`, and `add attd`,
 * For `NAME` values in `add student`, `edit student`, and `edit parent`, the value must contain at least one alphabetic character.
   It may use letters, numbers, spaces, apostrophes (`'`), hyphens (`-`), and periods (`.`).
 
-* `find` commands narrow the **currently displayed list** instead of always searching all students.
-  This means you can combine multiple `find` commands to refine results step by step.
-  Use `list` if you want to reset the view and search from the full student list again.
-
 * Whenever a command uses `INDEX`, it must be a positive integer such as `1`, `2`, or `3`.
 
 * Unless stated otherwise, `INDEX` refers to the **currently displayed student list**, not to a permanent student ID.
@@ -109,6 +105,19 @@ For commands such as `delete tag`, `delete acad`, `delete appt`, and `add attd`,
 * Commands without parameters, such as `help`, `list`, `clear`, and `exit`, ignore extra text after the command word.
 
 * If you are using a PDF version of this guide, be careful when copying multi-line commands. Some PDF viewers may remove spaces around line breaks.
+
+</div>
+
+<div markdown="block" class="alert alert-info">
+
+**How finding works**
+
+* `find` commands search within the **currently displayed list**, not always the full student list.
+* You can run multiple `find` commands one after another to narrow results step by step.
+* Use `list` to reset back to the full student list before searching again.
+* For most `find` commands, TutorFlow looks for your search word anywhere in the text and ignores upper/lower case.
+  Example: `al` can match `Alex`.
+* Date-based `find` commands (`find appt`, `find billing`) search by date or month instead of text.
 
 </div>
 
@@ -198,8 +207,8 @@ Details:
   Example: `alex` matches `Alex`
 * The order of keywords does not matter.
 * Only student names are searched.
-* Matching is by full word, not substring.
-  Example: `Al` does not match `Alex`
+* Matching is by substring.
+* Example: `Al` matches `Alex`
 * A student is returned if the name matches **at least one** keyword.
 
 Examples:
@@ -392,8 +401,7 @@ Details:
 * Each prefix may be used at most once.
 * You can give multiple keywords inside a single prefix by separating them with spaces.
   Example: `n/Susan Meier`
-* Parent name matching is case-insensitive and based on full words.
-* Parent phone and email matching are case-insensitive and based on partial text.
+* Parent name, phone, and email matching are case-insensitive and based on partial text.
 * Within a single field, multiple keywords behave as an `OR` search.
   Example: `n/Susan Meier` matches a parent name containing either `Susan` or `Meier`.
 * If you supply more than one field, the student must match **every supplied field**.
