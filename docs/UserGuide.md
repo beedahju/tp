@@ -325,8 +325,6 @@ Examples:
   Use `view INDEX` first and take `TAG_INDEX` from that selected student's tag list.
 * **`edit tag` with `t/` behaves differently from expected**
   Use `edit tag INDEX t/` to clear all tags. Do not mix an empty `t/` with normal tag values.
-* **Tag appears with different capitalization**
-  TutorFlow normalizes tags to title case (for example, `jc` becomes `Jc`).
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -561,9 +559,9 @@ Examples:
   Use `YYYY-MM-DD` for `edit billing`, `add payment`, and `delete payment`.
 * **`find billing` date is rejected**
   Use `d/YYYY-MM` (year and month only, no day).
-* **`add payment` does not move due date forward**
+* **`add payment` does not always move due date forward**
   The due date advances only when the new payment date is later than the latest recorded payment date.
-* **`delete payment` does not roll due date back**
+* **`delete payment` does not always roll due date back**
   Only deleting the latest recorded payment date rolls due date back by one billing cycle.
 
 --------------------------------------------------------------------------------------------------------------------
