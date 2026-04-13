@@ -21,6 +21,7 @@ TutorFlow keeps your student list, parent / guardian details, academics, tuition
 * [General Commands](#general-commands)
 * [Data Management](#data-management)
 * [FAQ](#faq)
+* [Troubleshooting](#troubleshooting)
 * [Known issues](#known-issues)
 * [Command summary](#command-summary)
 * [Prefix reference](#prefix-reference)
@@ -225,6 +226,18 @@ Examples:
 * `find student alex david`
   ![Result for 'find student alex david'](images/findAlexDavidResult.png)
 
+<a id="student-common-mistakes"></a>
+### Common mistakes and recovery
+
+* **`edit student`, `delete student`, or `view` says the student index is invalid**
+  Run `list` first, then use the index from the currently displayed list.
+* **`find student` does not show someone you expected**
+  `find` works on the current filtered list. Run `list` to reset, then run `find student` again.
+* **Phone number is rejected in `add student` or `edit student`**
+  Use digits only, at least 8 digits, with no `+`, spaces, or dashes.
+* **`add student` says the student already exists**
+  This usually means another record already has the same `NAME` and `EMAIL`. Use a different email or correct the existing record with `edit student`.
+
 --------------------------------------------------------------------------------------------------------------------
 
 <a id="tag-management"></a>
@@ -295,6 +308,18 @@ Details:
 Examples:
 * `find tag t/JC`
 * `find tag t/Upper t/Programming`
+
+<a id="tag-common-mistakes"></a>
+### Common mistakes and recovery
+
+* **`add tag`, `delete tag`, or `find tag` fails even though the command looks close**
+  Check that each tag input uses `t/`.
+* **`delete tag` removes the wrong tag or says index is invalid**
+  Use `view INDEX` first and take `TAG_INDEX` from that selected student's tag list.
+* **`edit tag` with `t/` behaves differently from expected**
+  Use `edit tag INDEX t/` to clear all tags. Do not mix an empty `t/` with normal tag values.
+* **Tag appears with different capitalization**
+  TutorFlow normalizes tags to title case (for example, `jc` becomes `Jc`).
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -374,6 +399,18 @@ Examples:
 * `find acad s/Math`
 * `find acad s/Math s/Science`
 
+<a id="academic-common-mistakes"></a>
+### Common mistakes and recovery
+
+* **`add acad` or `edit acad` fails because of `l/LEVEL`**
+  `l/` must come after the subject it belongs to, and level must be `basic` or `strong`.
+* **`add acad` or `edit acad` rejects duplicate subjects**
+  In one command, each subject name can appear only once.
+* **`delete acad` says subject index is invalid**
+  Run `view INDEX` first and use the numbered `SUBJECT_INDEX` shown for that student.
+* **Need to clear academics**
+  Use `edit acad INDEX s/` to clear all subjects. Use `dsc/` with no value to clear the academic description.
+
 --------------------------------------------------------------------------------------------------------------------
 
 <a id="parent-guardian-management"></a>
@@ -418,6 +455,18 @@ Examples:
 * `find parent n/Susan`
 * `find parent n/Susan p/9999`
 * `find parent e/example.com`
+
+<a id="parent-common-mistakes"></a>
+### Common mistakes and recovery
+
+* **`edit parent` fails when adding parent phone/email for the first time**
+  If the student has no parent record yet, include `n/PARENT_NAME` in the same command.
+* **Parent phone or email is rejected**
+  Phone must be digits only and at least 8 digits. Email must be in a valid email format.
+* **`find parent` results are unexpected**
+  Use one prefix once (`n/`, `p/`, or `e/`) and put multiple words inside that one prefix, for example `n/Susan Meier`.
+* **`find parent n/... p/...` seems too broad**
+  When multiple fields are provided, TutorFlow returns students matching any provided field.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -495,6 +544,18 @@ Details:
 Examples:
 * `find billing d/2026-03`
 * `find billing d/2025-12`
+
+<a id="billing-common-mistakes"></a>
+### Common mistakes and recovery
+
+* **Date input is rejected in billing or payment commands**
+  Use `YYYY-MM-DD` for `edit billing`, `add payment`, and `delete payment`.
+* **`find billing` date is rejected**
+  Use `d/YYYY-MM` (year and month only, no day).
+* **`add payment` does not move due date forward**
+  The due date advances only when the new payment date is later than the latest recorded payment date.
+* **`delete payment` does not roll due date back**
+  Only deleting the latest recorded payment date rolls due date back by one billing cycle.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -616,6 +677,22 @@ Examples:
 * `delete attd 1 s/2 d/2026-01-29`
 * `delete attd 1 s/2 d/2026-01-29T08:00:00`
 
+<a id="appt-common-mistakes"></a>
+### Common mistakes and recovery
+
+* **`add appt` or `edit appt` rejects date-time input**
+  Use ISO date-time format: `YYYY-MM-DDTHH:MM:SS`.
+* **`add appt` or `edit appt` rejects recurrence value**
+  Use only `NONE`, `WEEKLY`, `BIWEEKLY`, or `MONTHLY`.
+* **Appointment or attendance command says session index is invalid**
+  Run `view INDEX` first and use the session index from that selected student's detail panel.
+* **`add attd` status is not accepted**
+  Type literal `y` for attended or `n` for absent.
+* **`add attd` fails for date/time reasons**
+  Use a past or current date/time, not a future one. Recurring sessions allow only one attendance record per date.
+* **`delete attd` does not remove what you expected**
+  Use `d/YYYY-MM-DD` to remove records on that date, or exact date-time to remove only one specific record.
+
 --------------------------------------------------------------------------------------------------------------------
 
 <a id="general-commands"></a>
@@ -649,6 +726,16 @@ Format: `exit`
 
 The `up` and `down` arrow keys on your keyboard can be used to navigate through the past commands you have entered.
 
+<a id="general-common-mistakes"></a>
+### Common mistakes and recovery
+
+* **A new search starts returning too few students**
+  Run `list` first to reset to the full student list before your next `find`.
+* **Accidentally cleared data with `clear`**
+  `clear` is irreversible. If you need recovery, restore from a backup copy of `data/tutorflow.json`.
+* **Running `help` does not show a new window**
+  If Help is minimized, restore that existing Help window (TutorFlow does not open a second one).
+
 --------------------------------------------------------------------------------------------------------------------
 
 <a id="data-management"></a>
@@ -677,6 +764,21 @@ If you edit the data file into an invalid format, TutorFlow may fail to load the
 
 **Q:** How do I move my TutorFlow data to another computer?
 **A:** Install TutorFlow on the other computer, run it once, then replace the new `data/tutorflow.json` file with the one from your old TutorFlow folder.
+
+--------------------------------------------------------------------------------------------------------------------
+
+<a id="troubleshooting"></a>
+## Troubleshooting
+
+If a command fails, go to the matching section below for common fixes:
+
+* [Student Management common mistakes](#student-common-mistakes)
+* [Tag Management common mistakes](#tag-common-mistakes)
+* [Academic Management common mistakes](#academic-common-mistakes)
+* [Parent / Guardian Management common mistakes](#parent-common-mistakes)
+* [Billing & Payment Management common mistakes](#billing-common-mistakes)
+* [Appointment & Attendance Management common mistakes](#appt-common-mistakes)
+* [General Commands common mistakes](#general-common-mistakes)
 
 --------------------------------------------------------------------------------------------------------------------
 
