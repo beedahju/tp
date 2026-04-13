@@ -16,7 +16,7 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](https://github.com/khayliang)]
 
 * Role: Developer
-* Responsibilities: ?
+* Responsibilities: Model design, invariants, model tests
 
 ### Minh Duc
 
@@ -25,7 +25,7 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](https://github.com/vuminhducvmd)]
 
 * Role: Developer
-* Responsibilities: ?
+* Responsibilities: Parser flow, input validation, error messaging
 
 ### Tang Zhi Xiang
 
@@ -34,7 +34,7 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](https://github.com/darkrelicz)]
 
 * Role: Developer
-* Responsibilities: ?
+* Responsibilities: Command logic, behaviour consistency, regression tests
 
 ### Tan Yu Quan
 
@@ -43,7 +43,7 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](http://github.com/yuquanzzz)]
 
 * Role: Developer
-* Responsibilities: ?
+* Responsibilities: JavaFX UI, FXML-controller sync, usability polish
 
 ### Judah Pang
 
@@ -52,4 +52,4 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](http://github.com/beedahju)]
 
 * Role: Developer
-* Responsibilities: ?
+* Responsibilities: User guide updates, developer docs, doc-implementation sync
