@@ -572,12 +572,13 @@ Examples:
 
 Records attendance for a specific session.
 
-Format: `add attd INDEX s/SESSION_INDEX [y|n] [d/DATE_OR_DATE_TIME]`
+Format: `add attd INDEX s/SESSION_INDEX [STATUS] [d/DATE_OR_DATE_TIME]`
 
 Details:
 * Records attendance for the student at `INDEX`.
 * `SESSION_INDEX` refers to the numbered session shown for that student in the app.
-* If `y` or `n` is omitted, `y` (attended) is assumed.
+* `STATUS` is optional and must be typed as a literal `y` (attended) or `n` (absent).
+* If `STATUS` is omitted, `y` (attended) is assumed.
 * `y` records that the student attended the selected session.
 * `n` records that the student was absent for the selected session.
 * If `d/DATE_OR_DATE_TIME` is omitted, the selected session's `next` date is used.
@@ -743,7 +744,7 @@ Action | Format | Example
 **Delete appointment** | `delete appt INDEX s/SESSION_INDEX [s/SESSION_INDEX]...` | `delete appt 1 s/2 s/3`
 **Edit appointment** | `edit appt INDEX s/SESSION_INDEX [d/DATETIME] [r/RECURRENCE] [dsc/DESCRIPTION]` | `edit appt 1 s/2 r/MONTHLY dsc/Physics consultation`
 **Find weekly appointments** | `find appt [d/DATE]` | `find appt d/2026-02-13`
-**Add attendance** | `add attd INDEX s/SESSION_INDEX [y\|n] [d/DATE_OR_DATE_TIME]` | `add attd 1 s/2 y d/2026-01-29`
+**Add attendance** | `add attd INDEX s/SESSION_INDEX [STATUS] [d/DATE_OR_DATE_TIME]` | `add attd 1 s/2 y d/2026-01-29`
 **Delete attendance** | `delete attd INDEX s/SESSION_INDEX d/DATE_OR_DATE_TIME` | `delete attd 1 s/2 d/2026-01-29T08:00:00`
 
 ### General
