@@ -180,7 +180,6 @@ Format: `delete student INDEX`
 
 Details:
 * Deletes the student at the specified `INDEX`.
-* The index must refer to a student in the current displayed list.
 
 Examples:
 * `list` followed by `delete student 2`
@@ -271,7 +270,6 @@ Deletes specific tags from a student by tag index.
 Format: `delete tag INDEX t/TAG_INDEX [t/TAG_INDEX]...`
 
 Details:
-* `INDEX` is the student index in the current displayed list.
 * Each `TAG_INDEX` is taken from the numbered tag list in that student's detail panel.
 * Tag names are stored and displayed in **title case** (e.g. `jc` -> `Jc`) and listed in **case-insensitive alphabetical order**.
 * At least one `t/` prefix is required.
@@ -350,7 +348,6 @@ Deletes specific subjects from a student by subject index.
 Format: `delete acad INDEX s/SUBJECT_INDEX [s/SUBJECT_INDEX]...`
 
 Details:
-* `INDEX` is the student index in the current displayed list.
 * Each `SUBJECT_INDEX` is taken from the numbered subject list in that student's detail panel.
 * Subject names are stored and displayed in **title case** (e.g. `math` -> `Math`) and listed in **case-insensitive alphabetical order**.
 * At least one `s/` prefix is required.
