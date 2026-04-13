@@ -705,9 +705,9 @@ Deletes all student records from TutorFlow.
 
 Format: `clear`
 
-<div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
-This action is irreversible.
-</div>
+<box type="warning" seamless>
+**Caution:** This action is irreversible.
+</box>
 
 ### Exiting the program : `exit`
 
@@ -746,9 +746,9 @@ TutorFlow stores data in:
 
 Advanced users may edit the JSON file directly.
 
-<div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
-If you edit the data file into an invalid format, TutorFlow may fail to load the stored data correctly on the next run. Make a backup first if you plan to edit the file manually.
-</div>
+<box type="warning" seamless>
+**Caution:** If you edit the data file into an invalid format, TutorFlow may fail to load the stored data correctly on the next run. Make a backup first if you plan to edit the file manually.
+</box>
 
 --------------------------------------------------------------------------------------------------------------------
 

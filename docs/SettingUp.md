@@ -14,9 +14,7 @@
 ## Setting up the project in your computer
 
 <box type="warning" seamless>
-
-**Caution:**
-Follow the steps in the following guide precisely. Things will not work out if you deviate in some steps.
+**Caution:** Follow the steps in the following guide precisely. Things will not work out if you deviate in some steps.
 </box>
 
 First, **fork** this repo, and **clone** the fork into your computer.
