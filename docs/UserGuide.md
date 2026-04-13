@@ -763,12 +763,12 @@ Action | Format | Example
 Prefix | Stands for | Used in
 -------|------------|--------
 `n/` | Name / Name keywords | `add student`, `edit student`, `edit parent`, `find parent`
-`p/` | Phone | `add student`, `edit student`, `edit parent`, `find parent`
-`e/` | Email | `add student`, `edit student`, `edit parent`, `find parent`
+`p/` | Phone / Phone keywords | `add student`, `edit student`, `edit parent`, `find parent`
+`e/` | Email / Email keywords | `add student`, `edit student`, `edit parent`, `find parent`
 `a/` | Address / Amount | Address: `add student`, `edit student` · Amount: `edit billing`
 `t/` | Tag / Tag index | Tag value: `add student`, `add tag`, `edit tag` · Tag index: `delete tag` · Keyword: `find tag`
-`s/` | Subject / Subject index / Session index | Subject value: `add acad`, `edit acad` · Subject index: `delete acad` · Keyword: `find acad` · Session index: `add attd`, `delete appt`
+`s/` | Subject / Subject index / Session index | Subject value: `add acad`, `edit acad` · Subject index: `delete acad` · Keyword: `find acad` · Session index: `add attd`, `delete appt`, `edit appt`, `delete attd`
 `l/` | Level | `add acad`, `edit acad` — must immediately follow the `s/` it applies to; accepted values are `basic` and `strong`
-`d/` | Date / Date-time / Year-month | Date: `add payment`, `delete payment`, `find appt` · Date-time: `add appt` · Date or date-time: `add attd` · Year-month (`YYYY-MM`): `find billing`
-`r/` | Recurrence | `add appt` — accepted values are `NONE`, `WEEKLY`, `BIWEEKLY`, `MONTHLY`
-`dsc/` | Description | `add appt`, `edit acad`
+`d/` | Date / Date-time / Year-month | Date: `edit billing`, `add payment`, `delete payment`, `find appt` · Date-time: `add appt`, `edit appt` · Date or date-time: `add attd`, `delete attd` · Year-month (`YYYY-MM`): `find billing`
+`r/` | Recurrence | `add appt`, `edit appt` — accepted values are `NONE`, `WEEKLY`, `BIWEEKLY`, `MONTHLY`
+`dsc/` | Description | `add appt`, `edit appt`, `edit acad`
