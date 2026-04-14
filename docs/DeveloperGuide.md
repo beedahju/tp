@@ -741,7 +741,7 @@ Team size: 5
 2. Improve appointment model and date-time handling to enforce temporal consistency
 
    The current appointment model and date-time handling do not strictly enforce logical constraints such as start time being before end time, may allow overlapping appointments, and have limited validation for edge cases (e.g., invalid formats or boundary values).
-   We plan to standardize date-time parsing, enhance validation for invalid or ambiguous inputs, enforce temporal consistency (e.g., start < end), and introduce checks to prevent conflicting appointments, supported by improved test coverage.
+   We plan to standardize date-time parsing, enhance validation for invalid or ambiguous inputs, enforce temporal consistency (e.g., `start < end`), and introduce checks to prevent conflicting appointments, supported by improved test coverage.
 
 3. Extend academic model to better support subject-level details and tutor requirements
 
@@ -753,7 +753,7 @@ Team size: 5
    Several parser failures currently surface the same generic message in the command result display: `Invalid command format!` followed only by usage text.
    For example:
    * `add attd` uses the same generic message for different causes such as missing `s/SESSION_INDEX`, malformed preamble/session arguments, or conflicting attendance status placement.
-   * `delete attd` uses the same generic message for missing/blank `d/DATE_OR_DATE_TIME` and other argument-shape errors.
+   * `delete attd` uses the same generic message for missing/blank `d/DATE_OR_DATE_TIME` and other argument format or structure errors.
    * `find billing` uses the same generic message for missing `d/` prefix, blank month values, and invalid month formats.
    We plan to return cause-specific messages (e.g., missing required prefix vs invalid date/month format) so users can correct inputs faster.
 
