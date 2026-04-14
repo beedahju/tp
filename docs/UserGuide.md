@@ -47,10 +47,9 @@ TutorFlow keeps your student list, parent / guardian details, academics, tuition
 
 TutorFlow is organized around a few core areas:
 
-* The **student list** shows the students in the current view. Any command that uses `INDEX` refers to this displayed list.
-* The **detail panel** shows the selected student's full record, including numbered tags, subjects, and appointments.
-* The **result display** confirms whether a command succeeded or failed.
-* The **command box** is where you type commands.
+* The **student list** panel shows the students in the current view. Any command that uses `INDEX` refers to this displayed list.
+* The **student detail panel** shows the selected student's full record, including numbered tags, subjects, and appointments.
+* The **command and result panel** is where you type commands, and confirm whether a command succeeded or failed.
 
 <box type="tip" seamless header="**Tip**">
 <md>
