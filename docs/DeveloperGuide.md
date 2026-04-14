@@ -807,7 +807,7 @@ Team size: 5
 
 1. Make `dsc/` handling stricter in appointment commands
 
-   The current `add appt` and `edit appt` parsing flow may mis-handle malformed prefix sequences, which can cause `dsc/` content to be ignored or interpreted unexpectedly.
+   The current `add appt` and `edit appt` parsing flow may mishandle malformed prefix sequences, which can cause `dsc/` content to be ignored or interpreted unexpectedly.
    We plan to tighten parser validation so invalid prefix order and malformed trailing text are rejected with clear, cause-specific errors instead of being silently misinterpreted.
 
 2. Make `dsc/` handling stricter in academic commands
@@ -825,12 +825,12 @@ Team size: 5
    Some commands currently report index-related failures in a generic way, which slows user recovery.
    We plan to update these messages so they specify whether the invalid value is a student index or a sub-item index, and remind users whether the value should come from the student list or the selected student's detail panel.
 
-5. Use of `BigDecimal` for amount in `Billing` and `Payment` models for accuracy
+5. Use `BigDecimal` for amounts in `Billing` and `Payment` models for accuracy
 
    The current billing flow stores monetary values as `double` (for example, tuition fee in `Billing`), which can introduce binary floating-point precision artifacts such as `0.1` not being represented exactly.
    We plan to migrate amount storage and operations to `BigDecimal`, define a consistent scale and rounding policy for money values, and update parser, formatting, and storage adapter logic accordingly.
 
-6. Add validation to prevent parent names from matching student names
+6. Add warnings when parent / guardian names match student names
 
-   The current parent/guardian update flow does not check whether a parent name matches any student (tutee) name in the address book, which can lead to avoidable data-entry confusion.
+   The current parent / guardian update flow does not check whether a parent name matches any student (tutee) name in the address book, which can lead to avoidable data-entry confusion.
    We plan to add a warning check in parent-related commands so users are alerted when such a name match is detected; this warning will not block the update but will highlight the issue in the command result display.
