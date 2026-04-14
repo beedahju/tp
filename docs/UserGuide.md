@@ -172,7 +172,7 @@ Format: `delete student INDEX`
 * `find student Betsy` followed by `delete student 1`
 
 ### Viewing a student's details : `view`
-![Result for 'view index'](images/view_idx.png =350x)
+![Result for 'view index'](images/view_idx.png)
 
 Selects a student and shows the full record in the detail panel.
 
@@ -211,7 +211,7 @@ Format: `find student KEYWORD [MORE_KEYWORDS]`
 * `find student John`
 * `find student bernice david`
 
-![Result for 'find student bernice david'](images/find_student_bernice_david.png =350x)
+![Result for 'find student bernice david'](images/find_student_bernice_david.png)
 
 <a id="student-common-mistakes"></a>
 ### Common mistakes and recovery
@@ -279,8 +279,8 @@ Format: `delete tag INDEX t/TAG_INDEX [t/TAG_INDEX]...`
 * `delete tag 1 t/2`
 * `delete tag 1 t/1 t/2`
 
-![Result for 'delete tag 1 t/1 t/2 before'](images/delete-tag-before.png =260x)
-![Result for 'delete tag 1 t/1 t/2'](images/delete-tag-after.png =260x)
+![Result for 'delete tag 1 t/1 t/2 before'](images/delete-tag-before.png)
+![Result for 'delete tag 1 t/1 t/2'](images/delete-tag-after.png)
 
 ### Locating students by tag : `find tag`
 
@@ -627,8 +627,8 @@ Format: `find appt [d/DATE]`
 * `find appt`
 * `find appt d/2026-04-13`
 
-![appt diag](images/appt-diag.png =310x)
-![Result for 'find appt d/2026-04-13'](images/find_appt_20260413.png =350x)
+![appt diag](images/appt-diag.png)
+![Result for 'find appt d/2026-04-13'](images/find_appt_20260413.png)
 
 ### Recording appointment attendance : `add attd`
 
