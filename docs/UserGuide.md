@@ -3,6 +3,7 @@ layout: default.md
 title: User Guide
 pageNav: 3
 ---
+<page-nav-print />
 
 ![TutorFlow logo](images/tutorflow-logo.png)
 
