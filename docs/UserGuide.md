@@ -216,7 +216,7 @@ Format: `find student KEYWORD [MORE_KEYWORDS]`
 <a id="student-common-mistakes"></a>
 ### Common mistakes and recovery
 
-<panel type="seamless" header="Quick fixes" minimized>
+<panel type="seamless" header="Quick fixes">
 <ul>
   <li><strong><code>edit student</code>, <code>delete student</code>, or <code>view</code> says the student index is invalid:</strong> Run <code>list</code> first, then use the index from the currently displayed list.</li>
   <li><strong><code>find student</code> does not show someone you expected:</strong> <code>find</code> works on the current filtered list. Run <code>list</code> to reset, then run <code>find student</code> again.</li>
@@ -303,12 +303,11 @@ Format: `find tag t/TAG [t/TAG]...`
 <a id="tag-common-mistakes"></a>
 ### Common mistakes and recovery
 
-<panel type="seamless" header="Quick fixes" minimized>
+<panel type="seamless" header="Quick fixes">
 <ul>
   <li><strong><code>add tag</code>, <code>delete tag</code>, or <code>find tag</code> fails even though the command looks close:</strong> Check that each tag input uses <code>t/</code>.</li>
   <li><strong><code>delete tag</code> removes the wrong tag or says index is invalid:</strong> Use <code>view INDEX</code> first and take <code>TAG_INDEX</code> from that selected student's tag list.</li>
   <li><strong><code>edit tag</code> with <code>t/</code> behaves differently from expected:</strong> Use <code>edit tag INDEX t/</code> to clear all tags. Do not mix an empty <code>t/</code> with normal tag values.</li>
-  <li><strong>Tag appears with different capitalization:</strong> TutorFlow normalizes tags to title case (for example, <code>jc</code> becomes <code>Jc</code>).</li>
 </ul>
 </panel>
 
@@ -395,7 +394,7 @@ Format: `find acad s/SUBJECT [s/SUBJECT]...`
 <a id="academic-common-mistakes"></a>
 ### Common mistakes and recovery
 
-<panel type="seamless" header="Quick fixes" minimized>
+<panel type="seamless" header="Quick fixes">
 <ul>
   <li><strong><code>add acad</code> or <code>edit acad</code> fails because of <code>l/LEVEL</code>:</strong> <code>l/</code> must come after the subject it belongs to, and level must be <code>basic</code> or <code>strong</code>.</li>
   <li><strong><code>add acad</code> or <code>edit acad</code> rejects duplicate subjects:</strong> In one command, each subject name can appear only once.</li>
@@ -452,7 +451,7 @@ Format: `find parent [n/NAME_KEYWORDS] [p/PHONE_KEYWORDS] [e/EMAIL_KEYWORDS]`
 <a id="parent-common-mistakes"></a>
 ### Common mistakes and recovery
 
-<panel type="seamless" header="Quick fixes" minimized>
+<panel type="seamless" header="Quick fixes">
 <ul>
   <li><strong><code>edit parent</code> fails when adding parent phone/email for the first time:</strong> If the student has no parent record yet, include <code>n/PARENT_NAME</code> in the same command.</li>
   <li><strong>Parent phone or email is rejected:</strong> Phone must be digits only and at least 8 digits. Email must be in a valid email format.</li>
@@ -545,7 +544,7 @@ Format: `find billing d/YYYY-MM`
 <a id="billing-common-mistakes"></a>
 ### Common mistakes and recovery
 
-<panel type="seamless" header="Quick fixes" minimized>
+<panel type="seamless" header="Quick fixes">
 <markdown>
 * **Date input is rejected in billing or payment commands:** Use `YYYY-MM-DD` for `edit billing`, `add payment`, and `delete payment`.
 * **`find billing` date is rejected:** Use `d/YYYY-MM` (year and month only, no day).
@@ -681,7 +680,7 @@ Format: `delete attd INDEX s/SESSION_INDEX d/DATE_OR_DATE_TIME`
 <a id="appt-common-mistakes"></a>
 ### Common mistakes and recovery
 
-<panel type="seamless" header="Quick fixes" minimized>
+<panel type="seamless" header="Quick fixes">
 <ul>
   <li><strong><code>add appt</code> or <code>edit appt</code> rejects date-time input:</strong> Use ISO date-time format: <code>YYYY-MM-DDTHH:MM:SS</code>.</li>
   <li><strong><code>add appt</code> or <code>edit appt</code> rejects recurrence value:</strong> Use only <code>NONE</code>, <code>WEEKLY</code>, <code>BIWEEKLY</code>, or <code>MONTHLY</code>.</li>
@@ -728,7 +727,7 @@ The `up` and `down` arrow keys on your keyboard can be used to navigate through 
 <a id="general-common-mistakes"></a>
 ### Common mistakes and recovery
 
-<panel type="seamless" header="Quick fixes" minimized>
+<panel type="seamless" header="Quick fixes">
 <ul>
   <li><strong>A new search starts returning too few students:</strong> Run <code>list</code> first to reset to the full student list before your next <code>find</code>.</li>
   <li><strong>Accidentally cleared data with <code>clear</code>:</strong> <code>clear</code> is irreversible. If you need recovery, restore from a backup copy of <code>data/tutorflow.json</code>.</li>
@@ -788,8 +787,8 @@ If a command fails, go to the matching section below for common fixes:
 
 1. **Multiple screens:** if you move the app to a secondary display and later switch back to a single-display setup, the window may reopen off-screen. Delete the `preferences.json` file before launching TutorFlow again.
 2. **Help window:** if the Help window is minimized and you run `help` again, TutorFlow does not open a second Help window. Restore the minimized Help window manually.
-3. **Parsing limitations:** in appointment and academic commands: certain input formats may not be handled correctly by the parser, leading to ignored or misinterpreted fields (e.g., description `dsc/`). Users should ensure inputs follow the expected command format strictly to avoid unexpected behavior.
-4. **Lack of detailed error feedback**: Generic error messages: some command failures return general error messages without specifying the exact cause, making it harder for users to correct their input.
+3. **Parsing limitations:** In appointment and academic commands, certain input formats may not be handled correctly by the parser, leading to ignored or misinterpreted fields such as `dsc/`. Follow the documented command formats closely to avoid unexpected behavior.
+4. **Limited error detail:** Some command failures return general error messages without identifying the exact cause, which can make corrections harder.
 
 --------------------------------------------------------------------------------------------------------------------
 
