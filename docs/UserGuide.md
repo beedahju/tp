@@ -3,9 +3,10 @@ layout: default.md
 title: User Guide
 pageNav: 3
 ---
-<page-nav-print />
 
 ![TutorFlow logo](images/tutorflow-logo.png)
+
+<page-nav-print />
 
 TutorFlow is a **desktop app for freelance private tutors who need to manage students, parents, billing, and lesson schedules in one place**. It is optimized for keyboard-first use, so tutors who are comfortable typing commands can update records faster than with a mouse-only workflow.
 
