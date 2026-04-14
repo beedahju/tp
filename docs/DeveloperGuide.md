@@ -728,3 +728,26 @@ testers are expected to do more *exploratory* testing.
    1. Corrupted data file:
       Edit `data/tutorflow.json` and replace part of the file with invalid JSON, then launch the app.<br>
        Expected: The app starts with an empty student list, and the log records that the data file could not be loaded.
+
+## **Planned Enhancements**
+
+Team size: 5
+
+1. Fix inconsistent parsing behavior in appointment and academic commands
+
+   The current parser for appointment and academic commands may incorrectly handle certain input sequences, leading to unexpected parsing results or ignored fields (e.g., description `dsc/` being misinterpreted or dropped).  
+   We plan to refine the parser logic to enforce stricter prefix handling and ensure all valid fields are correctly captured and validated during parsing.
+
+2. Improve appointment model and date-time handling to enforce temporal consistency
+
+   The current appointment model and date-time handling do not strictly enforce logical constraints such as start time being before end time, may allow overlapping appointments, and have limited validation for edge cases (e.g., invalid formats or boundary values).  
+   We plan to standardize date-time parsing, enhance validation for invalid or ambiguous inputs, enforce temporal consistency (e.g., start < end), and introduce checks to prevent conflicting appointments, supported by improved test coverage.
+
+3. Extend academic model to better support subject-level details and tutor requirements 
+
+   The current academic model has limited flexibility in representing subject-related information (e.g., levels, notes, or multiple attributes per subject), which may not fully meet tutor needs.  
+   We plan to refine the model structure to better support richer subject metadata while maintaining compatibility with existing commands.
+
+4. Lack of detailed error feedback     
+
+   Generic error messages: some command failures return general error messages without specifying the exact cause, making it harder for users to correct their input.
