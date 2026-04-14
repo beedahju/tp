@@ -1,7 +1,9 @@
 ---
-layout: page
-title: About Us
+  layout: default.md
+  title: "About Us"
 ---
+
+# About Us
 
 We are a team based in the [School of Computing, National University of Singapore](https://www.comp.nus.edu.sg).
 
@@ -14,7 +16,7 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](https://github.com/khayliang)]
 
 * Role: Developer
-* Responsibilities: ?
+* Responsibilities: Model design, invariants, model tests
 
 ### Minh Duc
 
@@ -23,7 +25,7 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](https://github.com/vuminhducvmd)]
 
 * Role: Developer
-* Responsibilities: ?
+* Responsibilities: Parser flow, input validation, error messaging
 
 ### Tang Zhi Xiang
 
@@ -32,22 +34,22 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](https://github.com/darkrelicz)]
 
 * Role: Developer
-* Responsibilities: ?
+* Responsibilities: Command logic, behaviour consistency, regression tests
 
 ### Tan Yu Quan
 
 <img src="images/yuquanzzz.png" width="200px">
 
-[[github](http://github.com/yuquanzzz)]
+[[github](https://github.com/yuquanzzz)]
 
 * Role: Developer
-* Responsibilities: ?
+* Responsibilities: JavaFX UI, FXML-controller sync, usability polish
 
 ### Judah Pang
 
 <img src="images/beedahju.png" width="200px">
 
-[[github](http://github.com/beedahju)]
+[[github](https://github.com/beedahju)]
 
 * Role: Developer
-* Responsibilities: ?
+* Responsibilities: User guide updates, developer docs, doc-implementation sync
