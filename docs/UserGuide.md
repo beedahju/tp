@@ -10,14 +10,37 @@ pageNav: 3
 
 TutorFlow is a **desktop app for freelance private tutors who need to manage students, parents, billing, and lesson schedules in one place**. It is optimized for keyboard-first use, so tutors who are comfortable typing commands can update records faster than with a mouse-only workflow.
 
-TutorFlow keeps your student list, parent / guardian details, academics, tuition billing, payment history, appointments, and attendance records together in a single interface.
+Replace scattered spreadsheets, chat messages, and sticky notes with a single, always-consistent student database.
+
+**Key features:**
+
+* Student and parent / guardian contact management
+* Subject and proficiency-level tracking
+* Recurring lesson scheduling with attendance logging
+* Tuition billing with automatic due-date advancement
+* Powerful search and filtering across all record types
+
+<box type="info" seamless header="**Who this guide is for**">
+<md>
+
+This guide assumes you:
+
+* Are comfortable opening a terminal (Command Prompt on Windows, Terminal on macOS / Linux).
+* Can install and run a Java application.
+* Prefer typing commands over clicking through menus.
+
+No programming experience is required.
+
+</md>
+</box>
 
 --------------------------------------------------------------------------------------------------------------------
 
-<a id="quick-start"></a>
-## Quick start
+<a id="quick-start-tutorial"></a>
+## Quick Start / Tutorial
 
 1. Ensure that Java `17` or above is installed on your computer.
+   Run `java -version` in your terminal — you should see `java version "17.x.x"` or higher.
    **Mac users:** follow the setup notes [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
 1. Download the latest `tutorflow.jar` from the [releases page](https://github.com/AY2526S2-CS2103T-T09-3/tp/releases).
@@ -28,15 +51,44 @@ TutorFlow keeps your student list, parent / guardian details, academics, tuition
 
    `java -jar tutorflow.jar`
 
-1. On first launch, or when no existing data file is present, TutorFlow starts with sample data so that you can try the commands immediately.
+1. On first launch, or when no existing data file is present, TutorFlow starts with sample data so that you can try the commands immediately. You should see a window similar to the one below, pre-loaded with sample students.
+
+   ![TutorFlow first launch](images/quick-start-launch.png)
+
+   For a detailed overview of TutorFlow's interface panels, see [TutorFlow at a glance](#tutorflow-at-a-glance).
 
 1. Type a command into the command box and press Enter to run it. Try these first:
 
-   * `list`
-   * `view 1`
-   * `find student alex`
-   * `help`
-   * `exit`
+   * `list` — shows all students.
+   * `view 1` — selects the first student and shows their full record.
+   * `find student alex` — filters the list to students whose name contains "alex".
+   * `help` — opens the help window.
+   * `exit` — closes TutorFlow.
+
+1. **Quick tutorial — try this end-to-end workflow:**
+
+   a. Add a student:
+      `add student n/Alice Tan p/91234567 e/alice@example.com a/Bishan St 22`
+
+   b. View her record:
+      `view 7`
+
+   c. Add tags:
+      `add tag 7 t/Sec 3 t/Math`
+
+   d. Add a subject with proficiency level:
+      `add acad 7 s/Math l/Strong`
+
+   e. Set up billing:
+      `edit billing 7 a/200 d/2026-05-01`
+
+   f. Schedule a weekly lesson:
+      `add appt 7 d/2026-04-15T15:00:00 r/WEEKLY dsc/Math tuition`
+
+   g. Record attendance for the lesson:
+      `add attd 7 s/1`
+
+   ![Quick tutorial result](images/quick-start-tutorial.png)
 
 1. Refer to the [Command Reference](#student-management) sections below for full details.
 
@@ -47,11 +99,11 @@ TutorFlow keeps your student list, parent / guardian details, academics, tuition
 
 ![TutorFlow interface](images/Ui_v1.6_annotated.png)
 
-TutorFlow is organized around a few core areas:
+TutorFlow is organized around three main areas:
 
 * The **student list** panel shows the students in the current view. Any command that uses `INDEX` refers to this displayed list.
-* The **student detail panel** shows the selected student's full record, including numbered tags, subjects, and appointments.
-* The **command and result panel** is where you type commands, and confirm whether a command succeeded or failed.
+* The **student detail** panel shows the selected student's full record, including numbered tags, subjects, and appointments.
+* The **command and result** panel is where you type commands, and confirm whether a command succeeded or failed.
 
 <box type="tip" seamless header="**Tip**">
 <md>
@@ -86,7 +138,7 @@ For commands such as `delete tag`, `delete acad`, `delete appt`, and `add attd`,
 
 * Whenever a command uses `INDEX`, it must be a positive integer such as `1`, `2`, or `3`.
 
-* Unless stated otherwise, `INDEX` refers to the **currently displayed student list**, not to a permanent student ID.
+* Unless stated otherwise, `INDEX` refers to the **currently displayed student list**, which may change after filtering or deleting students.
   Some commands also use sub-item indexes such as `TAG_INDEX`, `SUBJECT_INDEX`, or `APPT_INDEX`; those come from the selected student's detail panel.
 
 * Commands without parameters, such as `help`, `list`, `clear`, and `exit`, ignore extra text after the command word.
@@ -143,6 +195,12 @@ Format: `add student n/NAME p/PHONE e/EMAIL a/ADDRESS [t/TAG]...`
 * `add student n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add student n/Betsy Crowe p/91234567 e/betsycrowe@example.com a/10 Clementi Road t/Upper Sec t/Math`
 
+<box type="info" seamless header="**Expected output**">
+<md>
+`Added student to TutorFlow: NAME.`
+</md>
+</box>
+
 ### Editing a student : `edit student`
 
 Edits the basic contact details of an existing student.
@@ -160,6 +218,12 @@ Format: `edit student INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS]`
 * `edit student 1 n/John Doe p/91234567 e/johndoe@example.com`
 * `edit student 2 n/Betsy Crowe`
 
+<box type="info" seamless header="**Expected output**">
+<md>
+`Updated student details: NAME.`
+</md>
+</box>
+
 ### Deleting a student : `delete student`
 
 Deletes the specified student from TutorFlow.
@@ -170,10 +234,17 @@ Format: `delete student INDEX`
 * Deletes the student at the specified `INDEX`.
 
 #### Examples
-* `list` followed by `delete student 2`
-* `find student Betsy` followed by `delete student 1`
+* `list` followed by `delete student 2` — run `list` first to ensure the index matches the full student list.
+* `find student Betsy` followed by `delete student 1` — deletes the first student in the filtered results.
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Removed student from TutorFlow: NAME.`
+</md>
+</box>
 
 ### Viewing a student's details : `view`
+
 ![Result for 'view index'](images/view_idx.png)
 
 Selects a student and shows the full record in the detail panel.
@@ -188,11 +259,23 @@ Format: `view INDEX`
 * `view 1`
 * `view 3`
 
+<box type="info" seamless header="**Expected output**">
+<md>
+`Showing details for student: NAME.`
+</md>
+</box>
+
 ### Listing all students : `list`
 
 Shows the full student list.
 
 Format: `list`
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Showing all students in TutorFlow.`
+</md>
+</box>
 
 ### Locating students by name : `find student`
 
@@ -213,25 +296,37 @@ Format: `find student KEYWORD [MORE_KEYWORDS]`
 * `find student John`
 * `find student bernice david`
 
+<box type="info" seamless header="**Expected output**">
+<md>
+`Found N matching student(s).`
+</md>
+</box>
+
+<box type="tip" seamless header="**Tip**">
+<md>
+`find` searches only the currently displayed list. Run `list` first to search all students. You can also chain multiple `find` commands to narrow results step by step. [More on finding →](#reading-command-formats)
+</md>
+</box>
+
 ![Result for 'find student bernice david'](images/find_student_bernice_david.png)
 
 <a id="student-common-mistakes"></a>
 ### Common mistakes and recovery
 
 <panel type="seamless" header="Quick fixes">
-<ul>
-  <li><strong><code>edit student</code>, <code>delete student</code>, or <code>view</code> says the student index is invalid:</strong> Run <code>list</code> first, then use the index from the currently displayed list.</li>
-  <li><strong><code>find student</code> does not show someone you expected:</strong> <code>find</code> works on the current filtered list. Run <code>list</code> to reset, then run <code>find student</code> again.</li>
-  <li><strong>Phone number is rejected in <code>add student</code> or <code>edit student</code>:</strong> Use digits only, at least 8 digits, with no <code>+</code>, spaces, or dashes.</li>
-  <li><strong><code>add student</code> says the student already exists:</strong> This usually means another record already has the same <code>NAME</code> and <code>EMAIL</code>. Use a different email or correct the existing record with <code>edit student</code>.</li>
-</ul>
+<markdown>
+* **`edit student`, `delete student`, or `view` says the student index is invalid:** Run `list` first, then use the index from the currently displayed list.
+* **`find student` does not show someone you expected:** `find` works on the current filtered list. Run `list` to reset, then run `find student` again.
+* **Phone number is rejected in `add student` or `edit student`:** Use digits only, at least 8 digits, with no `+`, spaces, or dashes.
+* **`add student` says the student already exists:** This usually means another record already has the same `NAME` and `EMAIL`. Use a different email or correct the existing record with `edit student`.
+</markdown>
 </panel>
 
 --------------------------------------------------------------------------------------------------------------------
 
 <a id="tag-management"></a>
 ## Tag Management
-![Highlighted tags](images/highlighted-tags.png =518x)
+![Highlighted tags](images/highlighted-tags.png)
 
 Use tags to group students by level, stream, exam target, or any other label that fits your teaching workflow.
 
@@ -251,6 +346,18 @@ Format: `add tag INDEX t/TAG [t/TAG]...`
 * `add tag 1 t/JC`
 * `add tag 2 t/Upper Sec t/Programming`
 
+<box type="info" seamless header="**Expected output**">
+<md>
+`Added tags for student: NAME.`
+</md>
+</box>
+
+<box type="tip" seamless header="**Tip**">
+<md>
+To add tags without affecting existing ones, use `add tag`. To replace all tags at once, use [`edit tag`](#editing-a-student-s-tags-edit-tag) instead.
+</md>
+</box>
+
 ### Editing a student's tags : `edit tag`
 
 Replaces the student's full tag list.
@@ -266,6 +373,18 @@ Format: `edit tag INDEX [t/TAG]...`
 * `edit tag 1 t/JC t/J1`
 * `edit tag 2 t/`
 
+<box type="warning" seamless header="**Caution**">
+<md>
+This command **replaces all existing tags**. To add tags without removing existing ones, use [`add tag`](#adding-tags-to-a-student-add-tag) instead.
+</md>
+</box>
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Replaced tags for student: NAME.`
+</md>
+</box>
+
 ### Deleting tags from a student : `delete tag`
 
 Deletes specific tags from a student by tag index.
@@ -274,7 +393,7 @@ Format: `delete tag INDEX t/TAG_INDEX [t/TAG_INDEX]...`
 
 #### Details
 * Each `TAG_INDEX` is taken from the numbered tag list in that student's detail panel.
-* Tag names keep the user's input casing and are listed in **case-insensitive alphabetical order**.
+* Tag names keep the user's input casing and are listed in alphabetical order (ignoring upper/lower case).
 * At least one `t/` prefix is required.
 
 #### Examples
@@ -283,6 +402,12 @@ Format: `delete tag INDEX t/TAG_INDEX [t/TAG_INDEX]...`
 
 ![Result for 'delete tag 1 t/1 t/2 before'](images/delete-tag-before.png)
 ![Result for 'delete tag 1 t/1 t/2'](images/delete-tag-after.png)
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Removed tag(s): TAG_NAME(S).`
+</md>
+</box>
 
 ### Locating students by tag : `find tag`
 
@@ -302,28 +427,34 @@ Format: `find tag t/TAG [t/TAG]...`
 * `find tag t/JC`
 * `find tag t/Upper t/Programming`
 
+<box type="info" seamless header="**Expected output**">
+<md>
+`Found N matching student(s).`
+</md>
+</box>
+
 <a id="tag-common-mistakes"></a>
 ### Common mistakes and recovery
 
 <panel type="seamless" header="Quick fixes">
-<ul>
-  <li><strong><code>add tag</code>, <code>delete tag</code>, or <code>find tag</code> fails even though the command looks close:</strong> Check that each tag input uses <code>t/</code>.</li>
-  <li><strong><code>delete tag</code> removes the wrong tag or says index is invalid:</strong> Use <code>view INDEX</code> first and take <code>TAG_INDEX</code> from that selected student's tag list.</li>
-  <li><strong><code>edit tag</code> with <code>t/</code> behaves differently from expected:</strong> Use <code>edit tag INDEX t/</code> to clear all tags. Do not mix an empty <code>t/</code> with normal tag values.</li>
-</ul>
+<markdown>
+* **`add tag`, `delete tag`, or `find tag` fails even though the command looks close:** Check that each tag input uses `t/`.
+* **`delete tag` removes the wrong tag or says index is invalid:** Use `view INDEX` first and take `TAG_INDEX` from that selected student's tag list.
+* **`edit tag` with `t/` behaves differently from expected:** Use `edit tag INDEX t/` to clear all tags. Do not mix an empty `t/` with normal tag values.
+</markdown>
 </panel>
 
 --------------------------------------------------------------------------------------------------------------------
 
 <a id="academic-management"></a>
 ## Academic Management
-![highlighted academics](images/highlight-acad.png =489x)
+![highlighted academics](images/highlight-acad.png)
 
 Use academic records to keep track of the subjects a student takes and any overall academic notes.
 
 ### Adding subjects to a student : `add acad`
 
-Adds one or more subjects to a student's academic record. If a subject name already exists, that entry is updated (upserted).
+Adds one or more subjects to a student's academic record. If a subject name already exists, that entry is updated with the new values.
 
 Format: `add acad INDEX s/SUBJECT [l/LEVEL] [s/SUBJECT [l/LEVEL]]...`
 
@@ -339,6 +470,12 @@ Format: `add acad INDEX s/SUBJECT [l/LEVEL] [s/SUBJECT [l/LEVEL]]...`
 #### Examples
 * `add acad 1 s/Math l/Strong`
 * `add acad 1 s/Math l/Strong s/Science`
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Added academic subjects for student: NAME.`
+</md>
+</box>
 
 ### Editing a student's academics : `edit acad`
 
@@ -360,6 +497,20 @@ Format: `edit acad INDEX [s/SUBJECT [l/LEVEL]]... [dsc/DESCRIPTION]`
 * `edit acad 2 s/Physics l/Basic dsc/Needs extra support`
 * `edit acad 3 s/`
 
+<box type="warning" seamless header="**Caution**">
+<md>
+When `s/` subjects are provided, this command **replaces the entire subject list**. To add subjects without removing existing ones, use [`add acad`](#adding-subjects-to-a-student-add-acad) instead.
+</md>
+</box>
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Updated academics for student: NAME.`
+</md>
+</box>
+
+See also: [Adding subjects](#adding-subjects-to-a-student-add-acad)
+
 ### Deleting subjects from a student : `delete acad`
 
 Deletes specific subjects from a student by subject index.
@@ -368,12 +519,18 @@ Format: `delete acad INDEX s/SUBJECT_INDEX [s/SUBJECT_INDEX]...`
 
 #### Details
 * Each `SUBJECT_INDEX` is taken from the numbered subject list in that student's detail panel.
-* Subject names keep the user's input casing and are listed in **case-insensitive alphabetical order**.
+* Subject names keep the user's input casing and are listed in alphabetical order (ignoring upper/lower case).
 * At least one `s/` prefix is required.
 
 #### Examples
 * `delete acad 1 s/2`
 * `delete acad 1 s/2 s/4`
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Removed subject(s): SUBJECT_NAME(S).`
+</md>
+</box>
 
 ### Locating students by subject : `find acad`
 
@@ -393,16 +550,22 @@ Format: `find acad s/SUBJECT [s/SUBJECT]...`
 * `find acad s/Math`
 * `find acad s/Math s/Science`
 
+<box type="info" seamless header="**Expected output**">
+<md>
+`Found N matching student(s).`
+</md>
+</box>
+
 <a id="academic-common-mistakes"></a>
 ### Common mistakes and recovery
 
 <panel type="seamless" header="Quick fixes">
-<ul>
-  <li><strong><code>add acad</code> or <code>edit acad</code> fails because of <code>l/LEVEL</code>:</strong> <code>l/</code> must come after the subject it belongs to, and level must be <code>basic</code> or <code>strong</code>.</li>
-  <li><strong><code>add acad</code> or <code>edit acad</code> rejects duplicate subjects:</strong> In one command, each subject name can appear only once.</li>
-  <li><strong><code>delete acad</code> says subject index is invalid:</strong> Run <code>view INDEX</code> first and use the numbered <code>SUBJECT_INDEX</code> shown for that student.</li>
-  <li><strong>Need to clear academics:</strong> Use <code>edit acad INDEX s/</code> to clear all subjects. Use <code>dsc/</code> with no value to clear the academic description.</li>
-</ul>
+<markdown>
+* **`add acad` or `edit acad` fails because of `l/LEVEL`:** `l/` must come after the subject it belongs to, and level must be `basic` or `strong`.
+* **`add acad` or `edit acad` rejects duplicate subjects:** In one command, each subject name can appear only once.
+* **`delete acad` says subject index is invalid:** Run `view INDEX` first and use the numbered `SUBJECT_INDEX` shown for that student.
+* **Need to clear academics:** Use `edit acad INDEX s/` to clear all subjects. Use `dsc/` with no value to clear the academic description.
+</markdown>
 </panel>
 
 --------------------------------------------------------------------------------------------------------------------
@@ -428,6 +591,12 @@ Format: `edit parent INDEX [n/PARENT_NAME] [p/PARENT_PHONE] [e/PARENT_EMAIL]`
 * `edit parent 3 n/John Lim p/91234567 e/johnlim@example.com`
 * `edit parent 1 p/81234567`
 
+<box type="info" seamless header="**Expected output**">
+<md>
+`Updated parent/guardian details for student: NAME.`
+</md>
+</box>
+
 ### Locating students by parent : `find parent`
 
 Finds students whose parent / guardian details match the supplied keywords.
@@ -450,16 +619,22 @@ Format: `find parent [n/NAME_KEYWORDS] [p/PHONE_KEYWORDS] [e/EMAIL_KEYWORDS]`
 * `find parent n/Susan p/9999`
 * `find parent e/example.com`
 
+<box type="info" seamless header="**Expected output**">
+<md>
+`Found N matching student(s).`
+</md>
+</box>
+
 <a id="parent-common-mistakes"></a>
 ### Common mistakes and recovery
 
 <panel type="seamless" header="Quick fixes">
-<ul>
-  <li><strong><code>edit parent</code> fails when adding parent phone/email for the first time:</strong> If the student has no parent record yet, include <code>n/PARENT_NAME</code> in the same command.</li>
-  <li><strong>Parent phone or email is rejected:</strong> Phone must be digits only and at least 8 digits. Email must be in a valid email format.</li>
-  <li><strong><code>find parent</code> results are unexpected:</strong> Use one prefix once (<code>n/</code>, <code>p/</code>, or <code>e/</code>) and put multiple words inside that one prefix, for example <code>n/Susan Meier</code>.</li>
-  <li><strong><code>find parent n/...</code> <code>p/...</code> seems too broad:</strong> When multiple fields are provided, TutorFlow returns students matching any provided field.</li>
-</ul>
+<markdown>
+* **`edit parent` fails when adding parent phone/email for the first time:** If the student has no parent record yet, include `n/PARENT_NAME` in the same command.
+* **Parent phone or email is rejected:** Phone must be digits only and at least 8 digits. Email must be in a valid email format.
+* **`find parent` results are unexpected:** Use one prefix once (`n/`, `p/`, or `e/`) and put multiple words inside that one prefix, for example `n/Susan Meier`.
+* **`find parent n/... p/...` seems too broad:** When multiple fields are provided, TutorFlow returns students matching any provided field.
+</markdown>
 </panel>
 
 --------------------------------------------------------------------------------------------------------------------
@@ -467,7 +642,7 @@ Format: `find parent [n/NAME_KEYWORDS] [p/PHONE_KEYWORDS] [e/EMAIL_KEYWORDS]`
 <a id="billing-payment-management"></a>
 ## Billing & Payment Management
 
-![highlighted billing](images/highlight-billing.png =587x)
+![highlighted billing](images/highlight-billing.png)
 
 Use billing commands to track tuition fees, next payment due dates, and payment history.
 
@@ -479,16 +654,25 @@ Format: `edit billing INDEX [a/AMOUNT] [d/DATE]`
 
 #### Details
 * At least one of `a/` or `d/` must be provided.
-* `a/AMOUNT` must be a non-negative number.
+* `a/AMOUNT` must be a non-negative number. TutorFlow does not attach a currency to billing amounts — the number you enter is stored and displayed as-is.
 * Amounts are displayed to 2 decimal places in the UI. If you enter more decimal places,
   the displayed value is rounded to 2 decimal places.
-* `d/DATE` must be in ISO 8601 local date format: `YYYY-MM-DD`.
+* `d/DATE` must be in the format `YYYY-MM-DD` (e.g., `2026-03-20`).
 * This command changes billing settings only. It does not add a payment record.
 
 #### Examples
 * `edit billing 1 a/250`
 * `edit billing 1 d/2026-03-20`
 * `edit billing 1 a/250 d/2026-03-20`
+
+<box type="info" seamless header="**Expected output**">
+<md>
+Depending on which fields you update, TutorFlow shows one of:
+* `Updated tuition fee for NAME from $OLD to $NEW.`
+* `Updated payment due date for NAME from OLD_DATE to NEW_DATE.`
+* `Updated billing for NAME: tuition fee $OLD -> $NEW, payment due date OLD_DATE -> NEW_DATE.`
+</md>
+</box>
 
 ### Recording a payment : `add payment`
 
@@ -497,17 +681,29 @@ Records that a student paid on a specific date.
 Format: `add payment INDEX d/DATE`
 
 #### Details
-* `d/DATE` must be in ISO 8601 date format: `YYYY-MM-DD`.
+* `d/DATE` must be in the format `YYYY-MM-DD`.
 * The payment date cannot be later than today.
 * Each payment date can be recorded only once per student; adding the same date again is rejected as a duplicate.
-* Recording a payment advances the student's billing due date by one billing cycle only when the new payment date
-  is later than the latest recorded payment date.
-* A billing cycle is one recurrence cycle (monthly by default). Each advancement brings the due date forward by one
-  recurrence cycle.
+* Recording a payment advances the student's billing due date by one billing cycle **only if** the new payment date is later than the most recent recorded payment.
+* A billing cycle is one recurrence cycle (monthly by default).
 * If you add an older (backfilled) payment date, TutorFlow records it but keeps the due date unchanged.
 
 #### Examples
 * `add payment 1 d/2026-03-05`
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Recorded tuition payment of $AMOUNT for NAME on DATE.` followed by a billing due-date update message.
+</md>
+</box>
+
+<box type="tip" seamless header="**Tip**">
+<md>
+TutorFlow uses the billing amount set via `edit billing` for all payment cycles. Make sure billing is configured before recording payments.
+</md>
+</box>
+
+See also: [Edit billing](#editing-billing-details-edit-billing)
 
 ### Deleting a payment record : `delete payment`
 
@@ -516,17 +712,24 @@ Deletes a previously recorded payment date.
 Format: `delete payment INDEX d/DATE`
 
 #### Details
-* `d/DATE` must be in ISO 8601 date format: `YYYY-MM-DD`.
+* `d/DATE` must be in the format `YYYY-MM-DD`.
 * The date cannot be later than today.
 * The specified date must already exist in that student's payment history.
 * If you delete the most recent recorded payment date, TutorFlow rolls the due date back by one billing cycle.
-* A billing cycle is one recurrence cycle (monthly by default). Each advancement brings the due date forward by one
-  recurrence cycle.
+* A billing cycle is one recurrence cycle (monthly by default).
 * If you delete an older payment date, the due date stays unchanged.
 
 #### Examples
 * `delete payment 1 d/2026-03-01`
 * `delete payment 2 d/2025-12-15`
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Deleted payment date DATE for NAME.`
+</md>
+</box>
+
+See also: [Add payment](#recording-a-payment-add-payment)
 
 ### Finding students by payment due month : `find billing`
 
@@ -542,6 +745,12 @@ Format: `find billing d/YYYY-MM`
 #### Examples
 * `find billing d/2026-03`
 * `find billing d/2025-12`
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Found N matching student(s).`
+</md>
+</box>
 
 <a id="billing-common-mistakes"></a>
 ### Common mistakes and recovery
@@ -559,7 +768,9 @@ Format: `find billing d/YYYY-MM`
 
 <a id="appointment-attendance-management"></a>
 ## Appointment & Attendance Management
-![highlighted appointments](images/highlight-attd.png =569x)
+![highlighted appointments](images/highlight-attd.png)
+
+In TutorFlow, an **appointment** is a scheduled lesson entry. Each appointment may have one or more **sessions** (individual occurrences). Commands use `SESSION_INDEX` to refer to a specific session within a student's appointment list.
 
 Use these commands to schedule lessons, see weekly appointments, and record whether a lesson happened.
 
@@ -570,7 +781,7 @@ Adds an appointment to a student.
 Format: `add appt INDEX d/DATETIME [r/RECURRENCE] dsc/DESCRIPTION`
 
 #### Details
-* `d/DATETIME` must be in ISO 8601 date-time format: `YYYY-MM-DDTHH:MM:SS`.
+* `d/DATETIME` must be in the format `YYYY-MM-DDTHH:MM:SS` (e.g., `2026-01-29T08:00:00` for 29 Jan 2026, 8:00 AM).
 * `r/RECURRENCE` is optional. Valid values are `NONE`, `WEEKLY`, `BIWEEKLY`, and `MONTHLY`.
 * If `r/` is omitted, TutorFlow uses `NONE`.
 * `dsc/` is required and should describe the session.
@@ -578,6 +789,12 @@ Format: `add appt INDEX d/DATETIME [r/RECURRENCE] dsc/DESCRIPTION`
 #### Examples
 * `add appt 1 d/2026-01-29T08:00:00 dsc/Weekly algebra practice`
 * `add appt 2 d/2026-02-02T15:30:00 r/WEEKLY dsc/Physics consultation`
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Added appointment session for NAME at DATE_TIME.`
+</md>
+</box>
 
 ### Deleting an appointment : `delete appt`
 
@@ -587,13 +804,19 @@ Format: `delete appt INDEX s/SESSION_INDEX [s/SESSION_INDEX]...`
 
 #### Details
 * Deletes one or more sessions from the student at `INDEX`.
-* `SESSION_INDEX` refers to the numbered session shown for that student in the app.
+* `SESSION_INDEX` refers to the numbered session shown for that student in the app. **Note:** `s/` stands for **session index** here, not subject.
 * At least one `s/` prefix must be provided.
 * All specified session indices must be valid.
 
 #### Examples
 * `delete appt 1 s/1`
 * `delete appt 2 s/1 s/3`
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Removed appointment session(s) for NAME: SESSION_DETAILS.`
+</md>
+</box>
 
 ### Editing an appointment : `edit appt`
 
@@ -605,7 +828,7 @@ Format: `edit appt INDEX s/SESSION_INDEX [d/DATETIME] [r/RECURRENCE] [dsc/DESCRI
 * Edits the selected session for the student at `INDEX`.
 * `SESSION_INDEX` refers to the numbered session shown for that student in the app.
 * At least one of `d/`, `r/`, or `dsc/` must be provided.
-* `d/DATETIME` must be in ISO 8601 date-time format (`YYYY-MM-DDTHH:MM:SS`).
+* `d/DATETIME` must be in date-time format `YYYY-MM-DDTHH:MM:SS`.
 * `r/RECURRENCE` supports `NONE`, `WEEKLY`, `BIWEEKLY`, and `MONTHLY`.
 * `dsc/DESCRIPTION` updates the session description.
 * Any field you omit remains unchanged.
@@ -613,6 +836,12 @@ Format: `edit appt INDEX s/SESSION_INDEX [d/DATETIME] [r/RECURRENCE] [dsc/DESCRI
 #### Examples
 * `edit appt 1 s/2 d/2026-02-12T09:00:00`
 * `edit appt 1 s/2 r/MONTHLY dsc/Physics consultation`
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Updated appointment session for NAME to NEW_SESSION_DETAILS.`
+</md>
+</box>
 
 ### Finding students with appointments for a week : `find appt`
 
@@ -622,7 +851,7 @@ Format: `find appt [d/DATE]`
 
 #### Details
 * If `d/DATE` is omitted, TutorFlow uses the current date (SGT) and searches that date's Monday-to-Sunday week.
-* `DATE` must be in ISO 8601 date format: `YYYY-MM-DD`.
+* `DATE` must be in the format `YYYY-MM-DD`.
 
 #### Examples
 * `find appt`
@@ -630,6 +859,12 @@ Format: `find appt [d/DATE]`
 
 ![appt diag](images/appt-diag.png)
 ![Result for 'find appt d/2026-04-13'](images/find_appt_20260413.png)
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Found N student(s) with sessions in week MONDAY to SUNDAY.`
+</md>
+</box>
 
 ### Recording appointment attendance : `add attd`
 
@@ -646,20 +881,36 @@ Format: `add attd INDEX s/SESSION_INDEX [STATUS] [d/DATE_OR_DATE_TIME]`
 * `n` records that the student was absent for the selected session.
 * If `d/DATE_OR_DATE_TIME` is omitted, the selected session's `next` date is used.
 * `d/DATE_OR_DATE_TIME` can be used with both `y` and `n`.
-* `d/DATE_OR_DATE_TIME` must be in ISO date (`YYYY-MM-DD`) or date-time (`YYYY-MM-DDTHH:MM:SS`) format.
+* `d/DATE_OR_DATE_TIME` must be in date (`YYYY-MM-DD`) or date-time (`YYYY-MM-DDTHH:MM:SS`) format.
 * Attendance cannot be recorded for a future date or time.
-* Recording attendance for a recurring session advances its next scheduled occurrence by one recurrence cycle only
-  when the new attendance date-time is later than the latest recorded attendance.
+* Recording attendance for a recurring session advances its next scheduled occurrence by one recurrence cycle **only if** the new attendance date-time is later than the latest recorded attendance.
 * If you add older (backfilled) attendance, TutorFlow records it but keeps the session's next occurrence unchanged.
 * Non-recurring sessions can only have attendance recorded once.
 * Recurring sessions allow only one attendance record per calendar date; additional records on the same date are rejected as duplicates.
 
 #### Examples
-* `add attd 1 s/1` records attendance (present) for the 1st session of student 1.
-* `add attd 1 s/2 y` same as above but explicit.
-* `add attd 1 s/2 y d/2026-01-29` records attendance on a specific date.
-* `add attd 1 s/3 n` records an absence for the 3rd session of student 1.
-* `add attd 1 s/3 n d/2026-01-29` records an absence on a specific date.
+
+Command | Effect
+--------|-------
+`add attd 1 s/1` | Records student 1, session 1 as attended (default) using the session's next date
+`add attd 1 s/2 y` | Same as above, explicit attended status
+`add attd 1 s/2 y d/2026-01-29` | Records attended on a specific date
+`add attd 1 s/3 n` | Records an absence for session 3
+`add attd 1 s/3 n d/2026-01-29` | Records an absence on a specific date
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Recorded ATTENDED/ABSENT attendance for NAME on DATE.`
+</md>
+</box>
+
+<box type="tip" seamless header="**Tip**">
+<md>
+Recording absences (`n`) helps you track attendance patterns and identify students who frequently miss sessions.
+</md>
+</box>
+
+See also: [Add appointment](#adding-an-appointment-add-appt)
 
 ### Deleting appointment attendance : `delete attd`
 
@@ -670,7 +921,7 @@ Format: `delete attd INDEX s/SESSION_INDEX d/DATE_OR_DATE_TIME`
 #### Details
 * Deletes attendance for the selected session of the student at `INDEX`.
 * `SESSION_INDEX` refers to the numbered session shown for that student in the app.
-* `d/` accepts either ISO date (`YYYY-MM-DD`) or date-time (`YYYY-MM-DDTHH:MM:SS`).
+* `d/` accepts either date (`YYYY-MM-DD`) or date-time (`YYYY-MM-DDTHH:MM:SS`) format.
 * If deleting by date, records on that date are removed.
 * If deleting by date-time, only the exact record is removed.
 * If the deleted attendance is the latest attendance for the session, recurring sessions roll back by one cycle.
@@ -679,18 +930,24 @@ Format: `delete attd INDEX s/SESSION_INDEX d/DATE_OR_DATE_TIME`
 * `delete attd 1 s/2 d/2026-01-29`
 * `delete attd 1 s/2 d/2026-01-29T08:00:00`
 
+<box type="info" seamless header="**Expected output**">
+<md>
+`Deleted attendance for NAME from session SESSION_INDEX on DATE.`
+</md>
+</box>
+
 <a id="appt-common-mistakes"></a>
 ### Common mistakes and recovery
 
 <panel type="seamless" header="Quick fixes">
-<ul>
-  <li><strong><code>add appt</code> or <code>edit appt</code> rejects date-time input:</strong> Use ISO date-time format: <code>YYYY-MM-DDTHH:MM:SS</code>.</li>
-  <li><strong><code>add appt</code> or <code>edit appt</code> rejects recurrence value:</strong> Use only <code>NONE</code>, <code>WEEKLY</code>, <code>BIWEEKLY</code>, or <code>MONTHLY</code>.</li>
-  <li><strong>Appointment or attendance command says session index is invalid:</strong> Run <code>view INDEX</code> first and use the session index from that selected student's detail panel.</li>
-  <li><strong><code>add attd</code> status is not accepted:</strong> Type literal <code>y</code> for attended or <code>n</code> for absent.</li>
-  <li><strong><code>add attd</code> fails for date/time reasons:</strong> Use a past or current date/time, not a future one. Recurring sessions allow only one attendance record per date.</li>
-  <li><strong><code>delete attd</code> does not remove what you expected:</strong> Use <code>d/YYYY-MM-DD</code> to remove records on that date, or exact date-time to remove only one specific record.</li>
-</ul>
+<markdown>
+* **`add appt` or `edit appt` rejects date-time input:** Use date-time format: `YYYY-MM-DDTHH:MM:SS`.
+* **`add appt` or `edit appt` rejects recurrence value:** Use only `NONE`, `WEEKLY`, `BIWEEKLY`, or `MONTHLY`.
+* **Appointment or attendance command says session index is invalid:** Run `view INDEX` first and use the session index from that selected student's detail panel.
+* **`add attd` status is not accepted:** Type literal `y` for attended or `n` for absent.
+* **`add attd` fails for date/time reasons:** Use a past or current date/time, not a future one. Recurring sessions allow only one attendance record per date.
+* **`delete attd` does not remove what you expected:** Use `d/YYYY-MM-DD` to remove records on that date, or exact date-time to remove only one specific record.
+</markdown>
 </panel>
 
 --------------------------------------------------------------------------------------------------------------------
@@ -704,7 +961,7 @@ Shows the help window.
 
 Format: `help`
 
-![Help message](images/helpMessage.png =350x)
+![Help message](images/helpMessage.png)
 
 ### Clearing all entries : `clear`
 
@@ -713,7 +970,15 @@ Deletes all student records from TutorFlow.
 Format: `clear`
 
 <box type="warning" seamless header="**Caution**">
-This action is irreversible.
+<md>
+This permanently deletes **all** student data, including parents, billing, appointments, and attendance. There is no undo. Consider backing up `data/tutorflow.json` before running this command.
+</md>
+</box>
+
+<box type="info" seamless header="**Expected output**">
+<md>
+`Cleared all students and records from TutorFlow.`
+</md>
 </box>
 
 ### Exiting the program : `exit`
@@ -730,11 +995,11 @@ The `up` and `down` arrow keys on your keyboard can be used to navigate through 
 ### Common mistakes and recovery
 
 <panel type="seamless" header="Quick fixes">
-<ul>
-  <li><strong>A new search starts returning too few students:</strong> Run <code>list</code> first to reset to the full student list before your next <code>find</code>.</li>
-  <li><strong>Accidentally cleared data with <code>clear</code>:</strong> <code>clear</code> is irreversible. If you need recovery, restore from a backup copy of <code>data/tutorflow.json</code>.</li>
-  <li><strong>Running <code>help</code> does not show a new window:</strong> If Help is minimized, restore that existing Help window (TutorFlow does not open a second one).</li>
-</ul>
+<markdown>
+* **A new search starts returning too few students:** Run `list` first to reset to the full student list before your next `find`.
+* **Accidentally cleared data with `clear`:** `clear` is irreversible. If you need recovery, restore from a backup copy of `data/tutorflow.json`.
+* **Running `help` does not show a new window:** If Help is minimized, restore that existing Help window (TutorFlow does not open a second one).
+</markdown>
 </panel>
 
 --------------------------------------------------------------------------------------------------------------------
@@ -755,7 +1020,15 @@ TutorFlow stores data in:
 Advanced users may edit the JSON file directly.
 
 <box type="warning" seamless header="**Caution**">
-If you edit the data file into an invalid format, TutorFlow may fail to load the stored data correctly on the next run. Make a backup first if you plan to edit the file manually.
+<md>
+If you edit the data file into an invalid format, TutorFlow may fail to start or may start with an empty student list on the next run. Make a backup first if you plan to edit the file manually.
+</md>
+</box>
+
+<box type="tip" seamless header="**Tip**">
+<md>
+Periodically copy `data/tutorflow.json` to a safe location. This is your only recovery option if data is accidentally cleared or corrupted.
+</md>
 </box>
 
 --------------------------------------------------------------------------------------------------------------------
@@ -767,12 +1040,37 @@ If you edit the data file into an invalid format, TutorFlow may fail to load the
 
 **A:** Install TutorFlow on the other computer, run it once, then replace the new `data/tutorflow.json` file with the one from your old TutorFlow folder.
 
+**Q:** Can I undo a command?
+
+**A:** No. TutorFlow does not support undo. If you accidentally delete or clear data, restore from a backup copy of `data/tutorflow.json`.
+
+**Q:** What currency does TutorFlow use for billing amounts?
+
+**A:** TutorFlow stores the number you enter without attaching a currency. Treat the amount as whichever currency you use.
+
+**Q:** Can multiple tutors share the same TutorFlow data file?
+
+**A:** TutorFlow is designed for single-user use. Simultaneous access to the same data file is not supported and may cause data corruption. Each tutor should use their own copy.
+
+**Q:** What happens if my data file is corrupted?
+
+**A:** TutorFlow may fail to start or may start with an empty student list. Replace `data/tutorflow.json` with a backup copy, or delete the corrupted file and relaunch to start fresh with sample data.
+
 --------------------------------------------------------------------------------------------------------------------
 
 <a id="troubleshooting"></a>
 ## Troubleshooting
 
-If a command fails, go to the matching section below for common fixes:
+### General issues
+
+* **TutorFlow does not launch:** Verify Java 17 or above is installed by running `java -version` in your terminal. Ensure you are running `java -jar tutorflow.jar` from the folder containing the JAR file.
+* **Window opens off-screen:** Delete `preferences.json` in the TutorFlow folder and relaunch the application.
+* **Data file corrupted / app starts with empty list:** Restore from a backup of `data/tutorflow.json`. If no backup exists, delete the corrupted file and relaunch to start with sample data.
+* **Command returns an unexpected error:** Check that you are using the correct command format. Run `help` for a quick reference, or consult the relevant section in this guide.
+
+### Command-specific quick fixes
+
+If a specific command fails, go to the matching section below:
 
 * [Student Management common mistakes](#student-common-mistakes)
 * [Tag Management common mistakes](#tag-common-mistakes)
@@ -789,7 +1087,7 @@ If a command fails, go to the matching section below for common fixes:
 
 1. **Multiple screens:** if you move the app to a secondary display and later switch back to a single-display setup, the window may reopen off-screen. Delete the `preferences.json` file before launching TutorFlow again.
 2. **Help window:** if the Help window is minimized and you run `help` again, TutorFlow does not open a second Help window. Restore the minimized Help window manually.
-3. **Parsing limitations:** In appointment and academic commands, certain input formats may not be handled correctly by the parser, leading to ignored or misinterpreted fields such as `dsc/`. Follow the documented command formats closely to avoid unexpected behavior.
+3. **Input handling limitations:** In appointment and academic commands, certain date or description inputs may be ignored or misinterpreted silently. Follow the exact formats shown in this guide to avoid unexpected behavior.
 4. **Limited error detail:** Some command failures return general error messages without identifying the exact cause, which can make corrections harder.
 
 --------------------------------------------------------------------------------------------------------------------
@@ -801,66 +1099,66 @@ If a command fails, go to the matching section below for common fixes:
 
 Action | Format | Example
 -------|--------|--------
-**Add student** | `add student n/NAME p/PHONE e/EMAIL a/ADDRESS [t/TAG]...` | `add student n/James Ho p/22224444 e/jamesho@example.com a/123 Clementi Rd t/Upper Sec`
-**Edit student** | `edit student INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS]` | `edit student 2 n/James Lee e/jameslee@example.com`
-**Delete student** | `delete student INDEX` | `delete student 3`
-**View student** | `view INDEX` | `view 1`
-**List all students** | `list` | `list`
-**Find by name** | `find student KEYWORD [MORE_KEYWORDS]` | `find student James Jake`
+**[Add student](#adding-a-student-add-student)** | `add student n/NAME p/PHONE e/EMAIL a/ADDRESS [t/TAG]...` | `add student n/James Ho p/22224444 e/jamesho@example.com a/123 Clementi Rd t/Upper Sec`
+**[Edit student](#editing-a-student-edit-student)** | `edit student INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS]` | `edit student 2 n/James Lee e/jameslee@example.com`
+**[Delete student](#deleting-a-student-delete-student)** | `delete student INDEX` | `delete student 3`
+**[View student](#viewing-a-student-s-details-view)** | `view INDEX` | `view 1`
+**[List all students](#listing-all-students-list)** | `list` | `list`
+**[Find by name](#locating-students-by-name-find-student)** | `find student KEYWORD [MORE_KEYWORDS]` | `find student James Jake`
 
 ### Tag Management
 
 Action | Format | Example
 -------|--------|--------
-**Add tags** | `add tag INDEX t/TAG [t/TAG]...` | `add tag 1 t/JC t/Programming`
-**Edit tags** | `edit tag INDEX [t/TAG]...` | `edit tag 1 t/JC t/J1`
-**Delete tags** | `delete tag INDEX t/TAG_INDEX [t/TAG_INDEX]...` | `delete tag 1 t/2 t/3`
-**Find by tag** | `find tag t/TAG [t/TAG]...` | `find tag t/JC t/Programming`
+**[Add tags](#adding-tags-to-a-student-add-tag)** | `add tag INDEX t/TAG [t/TAG]...` | `add tag 1 t/JC t/Programming`
+**[Edit tags](#editing-a-student-s-tags-edit-tag)** | `edit tag INDEX [t/TAG]...` | `edit tag 1 t/JC t/J1`
+**[Delete tags](#deleting-tags-from-a-student-delete-tag)** | `delete tag INDEX t/TAG_INDEX [t/TAG_INDEX]...` | `delete tag 1 t/2 t/3`
+**[Find by tag](#locating-students-by-tag-find-tag)** | `find tag t/TAG [t/TAG]...` | `find tag t/JC t/Programming`
 
 ### Academic Management
 
 Action | Format | Example
 -------|--------|--------
-**Add subjects** | `add acad INDEX s/SUBJECT [l/LEVEL] [s/SUBJECT [l/LEVEL]]...` | `add acad 1 s/Math l/Strong s/Science`
-**Edit academics** | `edit acad INDEX [s/SUBJECT [l/LEVEL]]... [dsc/DESCRIPTION]` | `edit acad 1 s/Math l/Strong dsc/Good progress`
-**Delete subjects** | `delete acad INDEX s/SUBJECT_INDEX [s/SUBJECT_INDEX]...` | `delete acad 1 s/2 s/4`
-**Find by subject** | `find acad s/SUBJECT [s/SUBJECT]...` | `find acad s/Math s/Science`
+**[Add subjects](#adding-subjects-to-a-student-add-acad)** | `add acad INDEX s/SUBJECT [l/LEVEL] [s/SUBJECT [l/LEVEL]]...` | `add acad 1 s/Math l/Strong s/Science`
+**[Edit academics](#editing-a-student-s-academics-edit-acad)** | `edit acad INDEX [s/SUBJECT [l/LEVEL]]... [dsc/DESCRIPTION]` | `edit acad 1 s/Math l/Strong dsc/Good progress`
+**[Delete subjects](#deleting-subjects-from-a-student-delete-acad)** | `delete acad INDEX s/SUBJECT_INDEX [s/SUBJECT_INDEX]...` | `delete acad 1 s/2 s/4`
+**[Find by subject](#locating-students-by-subject-find-acad)** | `find acad s/SUBJECT [s/SUBJECT]...` | `find acad s/Math s/Science`
 
 ### Parent / Guardian Management
 
 Action | Format | Example
 -------|--------|--------
-**Edit parent** | `edit parent INDEX [n/PARENT_NAME] [p/PARENT_PHONE] [e/PARENT_EMAIL]` | `edit parent 3 n/John Lim p/91234567 e/johnlim@example.com`
-**Find by parent** | `find parent [n/NAME_KEYWORDS] [p/PHONE_KEYWORDS] [e/EMAIL_KEYWORDS]` | `find parent n/Susan p/9999`
+**[Edit parent](#editing-parent-details-edit-parent)** | `edit parent INDEX [n/PARENT_NAME] [p/PARENT_PHONE] [e/PARENT_EMAIL]` | `edit parent 3 n/John Lim p/91234567 e/johnlim@example.com`
+**[Find by parent](#locating-students-by-parent-find-parent)** | `find parent [n/NAME_KEYWORDS] [p/PHONE_KEYWORDS] [e/EMAIL_KEYWORDS]` | `find parent n/Susan p/9999`
 
 ### Billing & Payment Management
 
 Action | Format | Example
 -------|--------|--------
-**Edit billing** | `edit billing INDEX [a/AMOUNT] [d/DATE]` | `edit billing 1 a/250 d/2026-03-20`
-**Add payment** | `add payment INDEX d/DATE` | `add payment 1 d/2026-03-05`
-**Delete payment** | `delete payment INDEX d/DATE` | `delete payment 1 d/2026-03-01`
-**Find by due month** | `find billing d/YYYY-MM` | `find billing d/2026-03`
+**[Edit billing](#editing-billing-details-edit-billing)** | `edit billing INDEX [a/AMOUNT] [d/DATE]` | `edit billing 1 a/250 d/2026-03-20`
+**[Add payment](#recording-a-payment-add-payment)** | `add payment INDEX d/DATE` | `add payment 1 d/2026-03-05`
+**[Delete payment](#deleting-a-payment-record-delete-payment)** | `delete payment INDEX d/DATE` | `delete payment 1 d/2026-03-01`
+**[Find by due month](#finding-students-by-payment-due-month-find-billing)** | `find billing d/YYYY-MM` | `find billing d/2026-03`
 
 ### Appointment & Attendance Management
 
 Action | Format | Example
 -------|--------|--------
-**Add appointment** | `add appt INDEX d/DATETIME [r/RECURRENCE] dsc/DESCRIPTION` | `add appt 1 d/2026-01-29T08:00:00 dsc/Weekly algebra practice`
-**Delete appointment** | `delete appt INDEX s/SESSION_INDEX [s/SESSION_INDEX]...` | `delete appt 1 s/2 s/3`
-**Edit appointment** | `edit appt INDEX s/SESSION_INDEX [d/DATETIME] [r/RECURRENCE] [dsc/DESCRIPTION]` | `edit appt 1 s/2 r/MONTHLY dsc/Physics consultation`
-**Find weekly appointments** | `find appt [d/DATE]` | `find appt d/2026-02-13`
-**Add attendance** | `add attd INDEX s/SESSION_INDEX [STATUS] [d/DATE_OR_DATE_TIME]` | `add attd 1 s/2 y d/2026-01-29`
-**Delete attendance** | `delete attd INDEX s/SESSION_INDEX d/DATE_OR_DATE_TIME` | `delete attd 1 s/2 d/2026-01-29T08:00:00`
+**[Add appointment](#adding-an-appointment-add-appt)** | `add appt INDEX d/DATETIME [r/RECURRENCE] dsc/DESCRIPTION` | `add appt 1 d/2026-01-29T08:00:00 dsc/Weekly algebra practice`
+**[Delete appointment](#deleting-an-appointment-delete-appt)** | `delete appt INDEX s/SESSION_INDEX [s/SESSION_INDEX]...` | `delete appt 1 s/2 s/3`
+**[Edit appointment](#editing-an-appointment-edit-appt)** | `edit appt INDEX s/SESSION_INDEX [d/DATETIME] [r/RECURRENCE] [dsc/DESCRIPTION]` | `edit appt 1 s/2 r/MONTHLY dsc/Physics consultation`
+**[Find weekly appointments](#finding-students-with-appointments-for-a-week-find-appt)** | `find appt [d/DATE]` | `find appt d/2026-02-13`
+**[Add attendance](#recording-appointment-attendance-add-attd)** | `add attd INDEX s/SESSION_INDEX [STATUS] [d/DATE_OR_DATE_TIME]` | `add attd 1 s/2 y d/2026-01-29`
+**[Delete attendance](#deleting-appointment-attendance-delete-attd)** | `delete attd INDEX s/SESSION_INDEX d/DATE_OR_DATE_TIME` | `delete attd 1 s/2 d/2026-01-29T08:00:00`
 
 ### General
 
 Action | Format | Example
 -------|--------|--------
-**Help** | `help` | `help`
-**Clear** | `clear` | `clear`
-**Exit** | `exit` | `exit`
-**Navigate command history** | `up` and `down` keyboard arrow keys | -
+**[Help](#viewing-help-help)** | `help` | `help`
+**[Clear](#clearing-all-entries-clear)** | `clear` | `clear`
+**[Exit](#exiting-the-program-exit)** | `exit` | `exit`
+**[Navigate command history](#navigating-command-history)** | `up` and `down` keyboard arrow keys | -
 
 --------------------------------------------------------------------------------------------------------------------
 

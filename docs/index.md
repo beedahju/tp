@@ -17,7 +17,7 @@ title: TutorFlow
 
 TutorFlow is built for full-time freelance private tutors who teach primary school mathematics and programming. It centralizes client communication, lets you log weekly sessions, and shows the next upcoming appointment for each student directly in the contact book. This prevents double-booking and lost income, without requiring a full calendar workflow.
 
-* If you are interested in using TutorFlow, head over to the [_Quick Start_ section of the **User Guide**](UserGuide.html#quick-start).
+* If you are interested in using TutorFlow, head over to the [_Quick Start / Tutorial_ section of the **User Guide**](UserGuide.html#quick-start-tutorial).
 * If you are interested about developing TutorFlow, the [**Developer Guide**](DeveloperGuide.html) is a good place to start.
 
 
